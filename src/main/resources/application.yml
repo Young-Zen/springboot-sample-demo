@@ -1,0 +1,21 @@
+#server:
+#  port: 8080 #comment out this configuration because of adding it with -Dserver.port=8080 in VM options
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: always
+
+#override the method WebSecurityConfigurerAdapter.configure(AuthenticationManagerBuilder auth),the following configurations fails
+#spring:
+#  security:
+#    user:
+#      name: actuator
+#      password: actuator
+#      roles: ACTUATOR_ADMIN
