@@ -36,7 +36,7 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
         //super.configure(auth);    //error
         //下面注释的是旧版本的创建方式因为新的Spring security 5.0中新增了多种加密方式，也改变了密码的格式,所以无法使用
         //auth.inMemoryAuthentication().withUser("demo1").password("demo1").roles("DEMO");
-        BCryptPasswordEncoder bCryptPasswordEncoder=new BCryptPasswordEncoder();
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         auth.inMemoryAuthentication().passwordEncoder(bCryptPasswordEncoder)
                 .withUser("user")
                 .password(bCryptPasswordEncoder.encode("user"))
@@ -46,7 +46,7 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
         auth.inMemoryAuthentication().passwordEncoder(encoder)
                 .withUser("admin")
                 .password(encoder.encode("admin"))
-                .roles("USER","ADMIN")
+                .roles("USER", "ADMIN")
                 .and()
                 .withUser("actuator")
                 .password(encoder.encode("actuator"))
@@ -55,12 +55,13 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.exceptionHandling().accessDeniedHandler(new DefaultAccessDeniedHandler());
         http.authorizeRequests()
                 .requestMatchers(EndpointRequest.to(ShutdownEndpoint.class)).hasRole("ACTUATOR_ADMIN")
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .antMatchers("/","/swagger-ui.html", "/swagger-resources/**").permitAll()
-                .antMatchers("/demo/**").hasAnyRole("ADMIN","USER")
+                .antMatchers("/", "/swagger-ui.html", "/swagger-resources/**").permitAll()
+                .antMatchers("/demo/**").hasAnyRole("ADMIN", "USER")
                 //.antMatchers("/**").authenticated()
                 .anyRequest().authenticated()
                 .and()

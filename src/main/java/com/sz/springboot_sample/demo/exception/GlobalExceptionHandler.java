@@ -20,6 +20,11 @@ public class GlobalExceptionHandler {
         return ResponseResultDTO.fail(ResponseCodeEnum.INTERNAL_SERVER_ERROR.getCode(), e.getClass().getName());
     }
 
+    @ExceptionHandler(BaseException.class)
+    public ResponseResultDTO handlerBaseException(BaseException e) {
+        return ResponseResultDTO.fail(e.getCode(), e.getMsg());
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseResultDTO handlerAccessDeniedException(AccessDeniedException e) {
         return ResponseResultDTO.fail(ResponseCodeEnum.FORBIDDEN);
