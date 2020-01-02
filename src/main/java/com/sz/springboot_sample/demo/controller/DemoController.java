@@ -1,6 +1,7 @@
 package com.sz.springboot_sample.demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.sz.springboot_sample.demo.annotation.IgnoreTracing;
 import com.sz.springboot_sample.demo.dto.ResponseResultDTO;
 import com.sz.springboot_sample.demo.exception.BaseException;
 import com.sz.springboot_sample.demo.mapper.DemoMapper;
@@ -22,7 +23,7 @@ import java.util.Date;
 public class DemoController {
 
     @Autowired
-    DemoService demoService;
+    private DemoService demoService;
 
     @GetMapping("/demo/lombok/chain")
     public DemoVO chain() {
@@ -55,5 +56,20 @@ public class DemoController {
         wrapper.last("limit 1");
         DemoPO demoPO = demoService.getOne(wrapper);
         return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPO2DemoVO(demoPO));
+    }
+
+    @GetMapping("/ignoreTracing")
+    @IgnoreTracing
+    public ResponseResultDTO ignoreTracing() {QueryWrapper wrapper = new QueryWrapper();
+        wrapper.eq("name", "mybatisPlus");
+        wrapper.last("limit 1");
+        DemoPO demoPO = demoService.getOne(wrapper);
+        return ResponseResultDTO.ok("look console");
+    }
+
+    @GetMapping("/async")
+    public ResponseResultDTO async() {
+        demoService.async();
+        return ResponseResultDTO.ok("look console");
     }
 }

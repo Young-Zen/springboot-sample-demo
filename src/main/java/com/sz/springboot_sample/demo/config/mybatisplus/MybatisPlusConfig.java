@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.incrementer.H2KeyGenerator;
 import com.baomidou.mybatisplus.extension.parsers.BlockAttackSqlParser;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PerformanceInterceptor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -23,6 +24,7 @@ public class MybatisPlusConfig {
      * mybatis-plus SQL执行效率插件【生产环境可以关闭】
      */
     @Bean
+    @ConditionalOnProperty(name = "custom.mybatisPlus.performance.enable", havingValue = "true")
     public PerformanceInterceptor performanceInterceptor() {
         return new PerformanceInterceptor();
     }
@@ -46,7 +48,7 @@ public class MybatisPlusConfig {
      * 注入主键生成器
      */
     @Bean
-    public IKeyGenerator keyGenerator(){
+    public IKeyGenerator keyGenerator() {
         return new H2KeyGenerator();
     }
 }

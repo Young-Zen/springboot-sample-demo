@@ -8,4 +8,5 @@ import com.sz.springboot_sample.demo.po.DemoPO;
  * @date 1/1/2020
  */
 public interface DemoService extends IService<DemoPO> {
+    public void async();
 }

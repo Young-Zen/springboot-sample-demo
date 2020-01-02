@@ -20,6 +20,14 @@ management:
     health:
       show-details: always
 
+custom:
+  mybatisPlus:
+    performance:
+      enable: true
+  log:
+    result: false
+#    enable: false
+
 #override the method WebSecurityConfigurerAdapter.configure(AuthenticationManagerBuilder auth),the following configurations fails
 #spring:
 #  security:
