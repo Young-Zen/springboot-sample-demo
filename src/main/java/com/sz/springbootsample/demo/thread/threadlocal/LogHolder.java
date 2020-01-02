@@ -8,17 +8,17 @@ import com.sz.springbootsample.demo.dto.LogDTO;
  * @date 1/2/2020
  */
 public class LogHolder {
-    private static final TransmittableThreadLocal<LogDTO> logHolder = new TransmittableThreadLocal<>();
+    private static final TransmittableThreadLocal<LogDTO> LOGHOLDER = new TransmittableThreadLocal<>();
 
     public static void setLogDto(LogDTO logDto) {
-        logHolder.set(logDto);
+        LOGHOLDER.set(logDto);
     }
 
     public static LogDTO getLogDto() {
-        return logHolder.get();
+        return LOGHOLDER.get();
     }
 
     public static void clean() {
-        logHolder.remove();
+        LOGHOLDER.remove();
     }
 }

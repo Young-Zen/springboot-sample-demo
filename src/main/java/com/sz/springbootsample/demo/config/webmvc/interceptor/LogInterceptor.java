@@ -17,7 +17,6 @@ import java.util.UUID;
  * @author Yanghj
  * @date 1/2/2020
  */
-@Component
 @Slf4j
 public class LogInterceptor implements HandlerInterceptor {
     @Override

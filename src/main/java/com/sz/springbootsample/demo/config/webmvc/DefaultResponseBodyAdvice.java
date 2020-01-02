@@ -25,9 +25,12 @@ public class DefaultResponseBodyAdvice implements ResponseBodyAdvice {
 
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        HttpServletResponse response = ((ServletServerHttpResponse) serverHttpResponse).getServletResponse();
-        response.setHeader("PointcutCount", LogHolder.getLogDto().getAdviceCount().toString());
-        response.setHeader("LogStep", LogHolder.getLogDto().getLogStep().toString());
+        //因为 HandlerInterceptor 拦截不到 Spring Boot Actuator 端点的请求
+        if (LogHolder.getLogDto() != null) {
+            HttpServletResponse response = ((ServletServerHttpResponse) serverHttpResponse).getServletResponse();
+            response.setHeader("PointcutCount", LogHolder.getLogDto().getAdviceCount().toString());
+            response.setHeader("LogStep", LogHolder.getLogDto().getLogStep().toString());
+        }
         return o;
     }
 }
