@@ -33,7 +33,7 @@ public class LogAspect {
      *
      * @param proceedingJoinPoint
      */
-    @Around(value = "com.sz.springbootsample.demo.aspect.Pointcuts.controllerAspect()")
+    /*@Around(value = "com.sz.springbootsample.demo.aspect.Pointcuts.controllerAspect()")
     public Object methodAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         System.out.println(proceedingJoinPoint.getSignature() + "LogAspect around before proceed advice");
         LogDTO logDto = LogHolder.getLogDto();
@@ -47,7 +47,7 @@ public class LogAspect {
         } finally {
             System.out.println(proceedingJoinPoint.getSignature() + "LogAspect around after proceed advice");
         }
-    }
+    }*/
 
     /**
      * 方法前置通知，打印方法入参

@@ -1,15 +1,18 @@
 package com.sz.springbootsample.demo.config.webmvc.interceptor;
 
+import com.sz.springbootsample.demo.annotation.IgnoreTracing;
 import com.sz.springbootsample.demo.dto.LogDTO;
 import com.sz.springbootsample.demo.thread.threadlocal.LogHolder;
 import com.sz.springbootsample.demo.util.RequestUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.util.UUID;
 
@@ -21,6 +24,9 @@ import java.util.UUID;
 public class LogInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (!(handler instanceof HandlerMethod)) {
+            return true;
+        }
         LogDTO logDTO = new LogDTO();
         String logCode = "http_" + UUID.randomUUID();
         logDTO.setLogCode(logCode)
@@ -28,6 +34,11 @@ public class LogInterceptor implements HandlerInterceptor {
                 .setAdviceCount(0)
                 .setIsThrowing(false)
                 .setIsIgnoreTracing(false);
+        // 设置 isIgnoreTracing
+        IgnoreTracing ignoreTracing = ((HandlerMethod) handler).getMethod().getAnnotation(IgnoreTracing.class);
+        if (ignoreTracing != null) {
+            logDTO.setIsIgnoreTracing(true);
+        }
         LogHolder.setLogDto(logDTO);
         log.info("{}，服务器IP：{}，请求IP：{}，请求方式：{}，URL：{}", logCode, InetAddress.getLocalHost().getHostAddress(), RequestUtils.getInstance().getRemoteIp(request), request.getMethod(), request.getRequestURL());
         return true;
