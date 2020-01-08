@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.sz.springboot_sample</groupId>
 	<artifactId>demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<name>springboot-sample-demo</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -116,6 +116,14 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<!-- 使单元测试不影响项目的编译 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>   <!-- 跳过单元测试 -->
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -143,13 +151,7 @@
 				<version>${maven.pmd.version}</version>
 				<configuration>
 					<sourceEncoding>${project.build.sourceEncoding}</sourceEncoding>
-					<minimumPriority>1</minimumPriority>
-					<excludeRoots>
-						<excludeRoot>com/alibaba/csp/sentinel/benchmark</excludeRoot>
-					</excludeRoots>
-					<excludes>
-						<exclude>**/*_jmhTest.java</exclude>
-					</excludes>
+					<minimumPriority>2</minimumPriority>
 					<printFailingErrors>true</printFailingErrors>
 					<rulesets>
 						<ruleset>rulesets/java/ali-comment.xml</ruleset>
