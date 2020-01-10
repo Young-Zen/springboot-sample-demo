@@ -11,6 +11,7 @@
 	<groupId>com.sz.springbootsample</groupId>
 	<artifactId>springboot-sample-demo</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
+
 	<name>springboot-sample-demo</name>
 	<description>Demo project for Spring Boot</description>
 
@@ -23,7 +24,7 @@
 		<org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
 		<alibaba.fastjson.version>1.2.62</alibaba.fastjson.version>
 		<alibaba.transmittable-thread-local.version>2.11.2</alibaba.transmittable-thread-local.version>
-		<alibaba.p3c-pmd.version>2.0.1</alibaba.p3c-pmd.version>
+		<alibaba.p3c-pmd.version>1.3.6</alibaba.p3c-pmd.version>
 		<spring-boot-admin.version>2.1.6</spring-boot-admin.version>
 	</properties>
 
@@ -117,14 +118,6 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			<!-- 使单元测试不影响项目的编译 -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<skip>true</skip>   <!-- 跳过单元测试 -->
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -149,6 +142,29 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+			<!-- 使单元测试不影响项目的编译 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>   <!-- 跳过单元测试 -->
+				</configuration>
+			</plugin>
+			<!-- 编码规约扫描命令： mvn pmd:pmd -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-pmd-plugin</artifactId>
 				<version>${maven.pmd.version}</version>
 				<configuration>
@@ -169,14 +185,25 @@
 					</rulesets>
 				</configuration>
 				<executions>
+					<!-- 绑定pmd:check到verify生命周期 -->
 					<execution>
+						<id>pmd-check-verify</id>
 						<phase>verify</phase>
 						<goals>
 							<goal>check</goal>
 						</goals>
 					</execution>
+					<!-- 绑定pmd:pmd到site生命周期 -->
+					<execution>
+						<id>pmd-pmd-site</id>
+						<phase>site</phase>
+						<goals>
+							<goal>pmd</goal>
+						</goals>
+					</execution>
 				</executions>
 				<dependencies>
+					<!-- p3c依赖 -->
 					<dependency>
 						<groupId>com.alibaba.p3c</groupId>
 						<artifactId>p3c-pmd</artifactId>
