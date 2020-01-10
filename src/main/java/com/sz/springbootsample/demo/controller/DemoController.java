@@ -54,6 +54,7 @@ public class DemoController {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("name", "mybatisPlus");
         wrapper.last("limit 1");
+        wrapper.orderByDesc("pk_demo_id");
         DemoPO demoPO = demoService.getOne(wrapper);
         return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPO2DemoVO(demoPO));
     }
