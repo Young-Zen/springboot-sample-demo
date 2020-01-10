@@ -16,7 +16,10 @@ public class ResponseResultDTO {
     private Object data;
 
     public <T> T getData(Class<T> clazz) {
-        return JSONObject.parseObject(JSON.toJSONString(data), clazz);
+        if (clazz.isInstance(data)) {
+            return clazz.cast(data);
+        }
+        return null;
     }
 
     public static ResponseResultDTO ok() {
