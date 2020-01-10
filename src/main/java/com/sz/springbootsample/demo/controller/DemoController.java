@@ -1,6 +1,8 @@
 package com.sz.springbootsample.demo.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sz.springbootsample.demo.annotation.IgnoreTracing;
 import com.sz.springbootsample.demo.dto.ResponseResultDTO;
 import com.sz.springbootsample.demo.exception.BaseException;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Yanghj
@@ -59,9 +62,24 @@ public class DemoController {
         return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPO2DemoVO(demoPO));
     }
 
+    @GetMapping("/mybatisPlus/list")
+    public ResponseResultDTO list() {
+        List<DemoPO> demoPOList = demoService.list();
+        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPOs2demoVOs(demoPOList));
+    }
+
+    @GetMapping("/mybatisPlus/page")
+    public ResponseResultDTO page() {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.orderByDesc("pk_demo_id");
+        IPage<DemoPO> page = demoService.page(new Page<>(0, 10), wrapper);
+        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPOPage2demoVOPage(page));
+    }
+
     @GetMapping("/ignoreTracing")
     @IgnoreTracing
-    public ResponseResultDTO ignoreTracing() {QueryWrapper wrapper = new QueryWrapper();
+    public ResponseResultDTO ignoreTracing() {
+        QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("name", "mybatisPlus");
         wrapper.last("limit 1");
         DemoPO demoPO = demoService.getOne(wrapper);
