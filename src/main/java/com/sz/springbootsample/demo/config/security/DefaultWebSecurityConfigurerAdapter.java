@@ -56,9 +56,10 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.exceptionHandling().accessDeniedHandler(new DefaultAccessDeniedHandler());
+        http.csrf()
+                .ignoringAntMatchers("/actuator/**");
         http.authorizeRequests()
-                .requestMatchers(EndpointRequest.to(ShutdownEndpoint.class)).hasRole("ACTUATOR_ADMIN")
-                .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
+                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR_ADMIN")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .antMatchers("/", "/swagger-ui.html", "/swagger-resources/**").permitAll()
                 .antMatchers("/demo/**").hasAnyRole("ADMIN", "USER")

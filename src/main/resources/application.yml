@@ -5,8 +5,13 @@ spring:
     admin:
       client:
         url: http://localhost:8081
+        username: admin
+        password: admin
         instance:
           name: springboot-sample-demo
+          metadata:
+            user.name: actuator
+            user.password: actuator
   datasource:
     url: jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
     username: root
