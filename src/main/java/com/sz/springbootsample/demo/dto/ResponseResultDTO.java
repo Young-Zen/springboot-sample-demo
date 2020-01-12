@@ -1,18 +1,24 @@
 package com.sz.springbootsample.demo.dto;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * @author Yanghj
  * @date 1/1/2020
  */
 @Data
+@Accessors(chain = true)
+@ApiModel(description = "响应返回结果")
 public class ResponseResultDTO {
+    @ApiModelProperty("响应码")
     private String code;
+    @ApiModelProperty("响应消息")
     private String msg;
+    @ApiModelProperty("响应数据")
     private Object data;
 
     public <T> T getData(Class<T> clazz) {

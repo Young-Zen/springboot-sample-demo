@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sz.springbootsample.demo.po.DemoPO;
 import com.sz.springbootsample.demo.vo.DemoVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -17,8 +19,14 @@ import java.util.List;
 public interface DemoMapper {
     DemoMapper INSTANCE = Mappers.getMapper(DemoMapper.class);
 
+    @Mappings({
+            @Mapping(source = "demoId",target = "pkDemoId")
+    })
     DemoPO demoVO2DemoPO(DemoVO demoVO);
 
+    @Mappings({
+            @Mapping(source = "pkDemoId",target = "demoId")
+    })
     DemoVO demoPO2DemoVO(DemoPO demoPO);
 
     List<DemoPO> demoVOs2demoPOs(List<DemoVO> demoVOs);

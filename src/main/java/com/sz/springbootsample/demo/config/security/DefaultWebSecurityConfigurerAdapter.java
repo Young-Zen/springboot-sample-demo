@@ -1,5 +1,6 @@
 package com.sz.springbootsample.demo.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.actuate.context.ShutdownEndpoint;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -53,15 +54,19 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
                 .roles("ACTUATOR_ADMIN");
     }
 
+    @Autowired
+    CsrfRequireMatcher csrfRequireMatcher;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.exceptionHandling().accessDeniedHandler(new DefaultAccessDeniedHandler());
         http.csrf()
+                .requireCsrfProtectionMatcher(csrfRequireMatcher)
                 .ignoringAntMatchers("/actuator/**");
         http.authorizeRequests()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR_ADMIN")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .antMatchers("/", "/swagger-ui.html", "/swagger-resources/**").permitAll()
+                .antMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**").permitAll()
                 .antMatchers("/demo/**").hasAnyRole("ADMIN", "USER")
                 //.antMatchers("/**").authenticated()
                 .anyRequest().authenticated()

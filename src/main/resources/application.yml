@@ -1,6 +1,10 @@
-#server:
-#  port: 8080 #comment out this configuration because of adding it with -Dserver.port=8080 in VM options
+server:
+  servlet:
+    context-path: /
+  port: 80 #comment out this configuration because of adding it with -Dserver.port=8080 in VM options
 spring:
+  application:
+    name: springboot-sample-demo
   boot:
     admin:
       client:
@@ -34,6 +38,8 @@ management:
       show-details: always
 
 custom:
+#  swagger:
+#    enable: false
   mybatisPlus:
     performance:
       enable: true

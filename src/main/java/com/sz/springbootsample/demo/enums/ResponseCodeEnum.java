@@ -16,6 +16,11 @@ public enum ResponseCodeEnum {
     FAIL("1", "操作失败"),
 
     /**
+     * 参数校验失败
+     */
+    ARGUMENT_VALID_FAIL("2", "参数校验失败"),
+
+    /**
      * 无权访问
      */
     FORBIDDEN("403", "禁止访问"),
