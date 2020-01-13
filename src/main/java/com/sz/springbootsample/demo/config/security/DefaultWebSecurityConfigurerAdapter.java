@@ -1,8 +1,8 @@
 package com.sz.springbootsample.demo.config.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.google.common.collect.ImmutableList;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
-import org.springframework.boot.actuate.context.ShutdownEndpoint;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.List;
 
 /**
  * @author Yanghj
@@ -54,14 +56,17 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
                 .roles("ACTUATOR_ADMIN");
     }
 
-    @Autowired
-    CsrfRequireMatcher csrfRequireMatcher;
+    @Value("${server.port:8080}")
+    private String port;
+
+    @Value("${server.servlet.context-path:/}")
+    private String applicationContextPath;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.exceptionHandling().accessDeniedHandler(new DefaultAccessDeniedHandler());
         http.csrf()
-                .requireCsrfProtectionMatcher(csrfRequireMatcher)
+                //.requireCsrfProtectionMatcher(new CsrfRequireMatcher(this.getAllowedRemoteHost(), this.getAllowedRefererList()))
                 .ignoringAntMatchers("/actuator/**");
         http.authorizeRequests()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR_ADMIN")
@@ -74,5 +79,40 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
                 .formLogin()
                 .and()
                 .httpBasic();
+    }
+
+    private List<String> getAllowedRemoteHost() {
+        ImmutableList<String> allowedRemoteHost = ImmutableList.of("127.0.0.1", "0:0:0:0:0:0:0:1");
+        return allowedRemoteHost;
+    }
+
+    private List<String> getAllowedRefererList() {
+        if ("80".equals(port)) {
+            port = "";
+        } else {
+            port = ":" + port;
+        }
+
+        final String swaggerReferer1 = "http://localhost" + port + this.trimTail(applicationContextPath, '/') + "/swagger-ui.html";
+        final String swaggerReferer2 = "http://127.0.0.1" + port + this.trimTail(applicationContextPath, '/') + "/swagger-ui.html";
+        List<String> allowedRefererList = ImmutableList.of(swaggerReferer1, swaggerReferer2);
+        return allowedRefererList;
+    }
+
+    private String trimTail(String source, char tail) {
+        int len = source.length();
+        int st = 0;
+
+        while ((st < len) && (source.charAt(st) <= ' ')) {
+            st++;
+        }
+        while ((st < len) && (source.charAt(len - 1) <= ' ')) {
+            len--;
+        }
+
+        while ((st < len) && (source.charAt(len - 1) == tail)) {
+            len--;
+        }
+        return ((st > 0) || (len < source.length())) ? source.substring(st, len) : source;
     }
 }

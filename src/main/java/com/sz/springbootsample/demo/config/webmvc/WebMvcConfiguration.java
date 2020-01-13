@@ -3,6 +3,7 @@ package com.sz.springbootsample.demo.config.webmvc;
 import com.sz.springbootsample.demo.config.property.LogProperties;
 import com.sz.springbootsample.demo.config.webmvc.interceptor.LogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,10 +18,18 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Autowired
     LogProperties logProperties;
 
+    @Value("${custom.log.additional-skip-pattern:}")
+    private String additionalSkipPattern;
+
+    @Value("${server.servlet.context-path:/}")
+    private String applicationContextPath;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         if (logProperties.getEnable()) {
-            registry.addInterceptor(new LogInterceptor());
+            LogInterceptor logInterceptor = new LogInterceptor(additionalSkipPattern);
+            logInterceptor.setApplicationContextPath(applicationContextPath);
+            registry.addInterceptor(logInterceptor);
         }
     }
 }

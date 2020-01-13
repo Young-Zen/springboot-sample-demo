@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Order(1)
-@ConditionalOnProperty(name = "custom.log.enable", matchIfMissing = true)
+@ConditionalOnProperty(name = "custom.log.enable", havingValue = "true", matchIfMissing = true)
 @Component
 @Slf4j
 public class LogAspect {

@@ -39,7 +39,7 @@ import java.util.List;
  */
 @EnableSwagger2
 @Configuration
-@ConditionalOnProperty(name = "custom.swagger.enable", matchIfMissing = true)
+@ConditionalOnProperty(name = "custom.swagger.enable", havingValue = "true", matchIfMissing = true)
 @Import({springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration.class})
 public class Swagger2Configuration {
 
