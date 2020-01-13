@@ -42,8 +42,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseResultDTO handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        Map<String, String> errors = new HashMap<>();
-        e.getBindingResult().getAllErrors().forEach((error) -> {
+        List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
+        Map<String, String> errors = new HashMap<>(allErrors.size());
+        allErrors.forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);

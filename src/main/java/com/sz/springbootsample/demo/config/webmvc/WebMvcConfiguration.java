@@ -18,16 +18,13 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Autowired
     LogProperties logProperties;
 
-    @Value("${custom.log.additional-skip-pattern:}")
-    private String additionalSkipPattern;
-
     @Value("${server.servlet.context-path:/}")
     private String applicationContextPath;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         if (logProperties.getEnable()) {
-            LogInterceptor logInterceptor = new LogInterceptor(additionalSkipPattern);
+            LogInterceptor logInterceptor = new LogInterceptor(logProperties.getAdditionalSkipPattern());
             logInterceptor.setApplicationContextPath(applicationContextPath);
             registry.addInterceptor(logInterceptor);
         }

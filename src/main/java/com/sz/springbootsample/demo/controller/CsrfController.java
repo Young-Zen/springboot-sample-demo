@@ -2,7 +2,7 @@ package com.sz.springbootsample.demo.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 1/13/2020
  */
 @RestController
-@ConditionalOnProperty(name = {"custom.swagger.enable", "custom.swagger.csrf.enable"}, havingValue = "true")
+//@ConditionalOnProperty(name = {"custom.swagger.enable", "custom.swagger.csrf.enable"}, havingValue = "true")
+@ConditionalOnExpression("${custom.swagger.enable:true} && ${custom.swagger.csrf.enable:false}")
 @Api(tags = "设置csrf token")
 public class CsrfController {
 

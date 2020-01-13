@@ -64,14 +64,14 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.exceptionHandling().accessDeniedHandler(new DefaultAccessDeniedHandler());
+        //http.exceptionHandling().accessDeniedHandler(new DefaultAccessDeniedHandler());
         http.csrf()
                 //.requireCsrfProtectionMatcher(new CsrfRequireMatcher(this.getAllowedRemoteHost(), this.getAllowedRefererList()))
                 .ignoringAntMatchers("/actuator/**");
         http.authorizeRequests()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR_ADMIN")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .antMatchers("/", "/error", "/csrf", "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**").permitAll()
+                .antMatchers("/", "/error", "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**").permitAll()
                 .antMatchers("/demo/**").hasAnyRole("ADMIN", "USER")
                 //.antMatchers("/**").authenticated()
                 .anyRequest().authenticated()

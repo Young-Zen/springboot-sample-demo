@@ -12,7 +12,7 @@ spring:
         username: admin
         password: admin
         instance:
-          name: springboot-sample-demo
+#          name: springboot-sample-demo
           metadata:
             user.name: actuator
             user.password: actuator
@@ -39,7 +39,7 @@ management:
 
 custom:
   swagger:
-    enable: true
+#    enable: false
     csrf:
       enable: true
   mybatisPlus:

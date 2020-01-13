@@ -115,7 +115,7 @@ public class Swagger2Configuration {
     }
 
     private ApiKey apiKey() {
-        return new ApiKey("Authorization", "token", "header");  //Here we use ApiKey as the security schema that is identified by the name:Authorization
+        return new ApiKey("token", "Authorization", "header");  //Here we use ApiKey as the security schema that is identified by the name:Authorization
     }
 
     private SecurityContext securityContext() {
@@ -131,6 +131,6 @@ public class Swagger2Configuration {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         return Lists.newArrayList(
-                new SecurityReference("Authorization", authorizationScopes));   //Here we use the same key defined in the security scheme:Authorization
+                new SecurityReference("token", authorizationScopes));   //Here we use the same key defined in the security scheme:Authorization
     }
 }

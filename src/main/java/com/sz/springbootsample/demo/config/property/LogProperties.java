@@ -15,4 +15,5 @@ public class LogProperties {
     private Boolean enable = Boolean.TRUE;
     private Boolean param = Boolean.TRUE;
     private Boolean result = Boolean.TRUE;
+    private String additionalSkipPattern = "";
 }
