@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
+ * 日志传输对象
+ *
  * @author Yanghj
  * @date 1/2/2020
  */

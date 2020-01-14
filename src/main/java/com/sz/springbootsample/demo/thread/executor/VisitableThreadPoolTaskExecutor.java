@@ -9,6 +9,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
+ * “可视化”的异步线程池；
+ * 通过日志打印线程池的状态
+ *
  * @author Yanghj
  * @date 1/2/2020
  */

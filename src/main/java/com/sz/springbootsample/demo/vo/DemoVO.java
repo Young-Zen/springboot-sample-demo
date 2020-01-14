@@ -15,6 +15,8 @@ import javax.validation.groups.Default;
 import java.util.Date;
 
 /**
+ * Demo的视图对象
+ *
  * @author Yanghj
  * @date 1/1/2020
  */

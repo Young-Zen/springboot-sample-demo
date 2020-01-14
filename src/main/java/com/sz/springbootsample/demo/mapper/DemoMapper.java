@@ -12,6 +12,8 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 /**
+ * Demo实体映射处理类
+ *
  * @author Yanghj
  * @date 1/1/2020
  */

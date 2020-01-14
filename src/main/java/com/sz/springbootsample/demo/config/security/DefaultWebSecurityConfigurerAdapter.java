@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.List;
 
 /**
+ * Security配置类
+ *
  * @author Yanghj
  * @date 1/1/2020
  */

@@ -3,6 +3,8 @@ package com.sz.springbootsample.demo.aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
 /**
+ * 切点类
+ *
  * @author Yanghj
  * @date 1/2/2020
  */

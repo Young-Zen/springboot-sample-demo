@@ -4,6 +4,8 @@ import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
 import lombok.Data;
 
 /**
+ * 业务异常类
+ *
  * @author Yanghj
  * @date 1/1/2020
  */

@@ -5,6 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
+ * 自定义日志属性类
+ *
  * @author Yanghj
  * @date 1/2/2020
  */

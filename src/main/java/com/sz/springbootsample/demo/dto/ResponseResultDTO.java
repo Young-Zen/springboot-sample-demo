@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 /**
+ * 响应结果对象
+ *
  * @author Yanghj
  * @date 1/1/2020
  */

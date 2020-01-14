@@ -9,6 +9,8 @@ import javax.servlet.ServletResponse;
 import java.lang.annotation.Annotation;
 
 /**
+ * AOP工具类
+ *
  * @author Yanghj
  * @date 1/2/2020
  */
@@ -25,12 +27,15 @@ public class AspectUtils {
     }
 
     /**
-     * 获取方法的参数
+     * 获取方法的可序列化参数
      *
-     * @param joinPoint
-     * @return
+     * @param joinPoint 连接点{@link JoinPoint}
+     * @return Object[]
      */
     public Object[] getMethodParams(JoinPoint joinPoint) {
+        if (joinPoint == null) {
+            return null;
+        }
         Object[] params = joinPoint.getArgs();
         Object[] arguments = new Object[params.length];
         for (int i = 0; i < params.length; i++) {
@@ -44,7 +49,31 @@ public class AspectUtils {
         return arguments;
     }
 
-    public <T extends Annotation> T getAnnotation(JoinPoint joinPoint, Class<T> annotationClass) {
+    /**
+     * 获取方法上的注解
+     *
+     * @param joinPoint 连接点{@link JoinPoint}
+     * @param annotationClass 注解的类型
+     * @return 方法上的注解
+     */
+    public <T extends Annotation> T getMethodAnnotation(JoinPoint joinPoint, Class<T> annotationClass) {
+        if (joinPoint == null) {
+            return null;
+        }
         return ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(annotationClass);
+    }
+
+    /**
+     * 获取类上的注解
+     *
+     * @param joinPoint 连接点{@link JoinPoint}
+     * @param annotationClass 注解的类型
+     * @return 类上的注解
+     */
+    public <T extends Annotation> T getClassAnnotation(JoinPoint joinPoint, Class<T> annotationClass) {
+        if (joinPoint == null) {
+            return null;
+        }
+        return ((MethodSignature) joinPoint.getSignature()).getMethod().getDeclaringClass().getAnnotation(annotationClass);
     }
 }

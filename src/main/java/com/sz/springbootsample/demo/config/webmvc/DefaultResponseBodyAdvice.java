@@ -12,6 +12,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 封装统一响应对象类
+ *
  * @author Yanghj
  * @date 1/2/2020
  */

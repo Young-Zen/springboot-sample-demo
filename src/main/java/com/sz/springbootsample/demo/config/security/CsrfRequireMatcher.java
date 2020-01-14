@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
+ * Swagger忽略csrf的规则匹配类
+ *
  * @author Yanghj
  * @date 1/12/2020
  */

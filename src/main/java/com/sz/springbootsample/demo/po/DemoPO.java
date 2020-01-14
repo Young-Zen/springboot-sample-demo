@@ -9,6 +9,8 @@ import lombok.Data;
 import java.util.Date;
 
 /**
+ * Demo模型
+ *
  * @author Yanghj
  * @date 1/1/2020
  */

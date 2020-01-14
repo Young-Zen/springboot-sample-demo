@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * MybatisPlus配置类
+ *
  * @author Yanghj
  * @date 1/1/2020
  */

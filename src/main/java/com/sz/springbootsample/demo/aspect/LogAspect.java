@@ -1,13 +1,11 @@
 package com.sz.springbootsample.demo.aspect;
 
-import com.sz.springbootsample.demo.annotation.IgnoreTracing;
 import com.sz.springbootsample.demo.config.property.LogProperties;
 import com.sz.springbootsample.demo.dto.LogDTO;
 import com.sz.springbootsample.demo.thread.threadlocal.LogHolder;
 import com.sz.springbootsample.demo.util.AspectUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -15,6 +13,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 /**
+ * 日志切面类
+ *
  * @author Yanghj
  * @date 1/2/2020
  */
@@ -62,7 +62,7 @@ public class LogAspect {
         LogDTO logDTO = LogHolder.getLogDto();
         logDTO.setLogStep(logDTO.getLogStep() + 1)
                 .setAdviceCount(logDTO.getAdviceCount() + 1);
-        LogHolder.setLogDto(logDTO);
+//        LogHolder.setLogDto(logDTO);
         if (logDTO.getIsIgnoreTracing() || !logProperties.getParam()) {
             return;
         }
@@ -82,7 +82,7 @@ public class LogAspect {
         System.out.println(joinPoint.getSignature() + "LogAspect after returning advice");
         LogDTO logDTO = LogHolder.getLogDto();
         logDTO.setAdviceCount(logDTO.getAdviceCount() + 1);
-        LogHolder.setLogDto(logDTO);
+//        LogHolder.setLogDto(logDTO);
         if (logDTO.getIsIgnoreTracing() || !logProperties.getResult()) {
             return;
         }
@@ -95,7 +95,6 @@ public class LogAspect {
         LogDTO logDTO = LogHolder.getLogDto();
         logDTO.setAdviceCount(logDTO.getAdviceCount() + 1)
                 .setIsThrowing(true);
-        LogHolder.setLogDto(logDTO);
-        log.error("应用程序抛出异常", cause);
+//        LogHolder.setLogDto(logDTO);
     }
 }

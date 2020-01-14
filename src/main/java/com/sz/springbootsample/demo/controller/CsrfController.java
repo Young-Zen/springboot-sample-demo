@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
+ * 提供csrf token给swagger-ui.html
+ *
  * @author Yanghj
  * @date 1/13/2020
  */

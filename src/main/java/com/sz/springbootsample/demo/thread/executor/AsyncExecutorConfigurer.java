@@ -12,6 +12,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
+ * 异步线程池配置类
+ *
  * @author Yanghj
  * @date 1/2/2020
  */

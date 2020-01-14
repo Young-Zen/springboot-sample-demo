@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * security拒绝访问时的处理类
+ *
  * @author Yanghj
  * @date 1/1/2020
  */
