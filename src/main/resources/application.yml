@@ -1,14 +1,15 @@
 server:
   servlet:
     context-path: /
-  port: 80 #comment out this configuration because of adding it with -Dserver.port=80 in VM options
+  port: 8080 #comment out this configuration because of adding it with -Dserver.port=80 in VM options
+
 spring:
   application:
     name: springboot-sample-demo
   boot:
     admin:
       client:
-        url: http://localhost:8081
+        url: http://admin-service-address:8081
         username: admin
         password: admin
         instance:
@@ -17,14 +18,12 @@ spring:
             user.name: actuator
             user.password: actuator
   datasource:
-    url: jdbc:mysql://localhost:3306/demo?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://mysql-service-address:3306/demo?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  profiles:
+    active: test
 
 management:
   endpoints:
@@ -38,13 +37,6 @@ management:
       show-details: always
 
 custom:
-  swagger:
-#    enable: false
-    csrf:
-      enable: true
-  mybatisPlus:
-    performance:
-      enable: true
   log:
     additional-skip-pattern: /
     result: false
@@ -57,3 +49,25 @@ custom:
 #      name: actuator
 #      password: actuator
 #      roles: ACTUATOR_ADMIN
+
+---
+spring:
+  profiles: test
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+custom:
+  mybatisPlus:
+    performance:
+      enable: true
+  swagger:
+    csrf:
+      enable: true
+
+---
+spring:
+  profiles: prod
+
+custom:
+  swagger:
+    enable: false
