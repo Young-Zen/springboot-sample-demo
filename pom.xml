@@ -199,7 +199,7 @@
 				<version>${docker.maven.version}</version>
 				<configuration>
 					<imageName>${docker.repository.url}/${project.artifactId}</imageName>
-					<baseImage>java:8</baseImage>
+					<baseImage>openjdk:8</baseImage>
 					<imageTags>
 						<imageTag>${project.version}</imageTag>
 						<imageTag>latest</imageTag>
