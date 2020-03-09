@@ -205,13 +205,19 @@
 						<imageTag>latest</imageTag>
 					</imageTags>
 					<!--<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>-->
-					<entryPoint>java -jar -server -XX:+HeapDumpOnOutOfMemoryError -Duser.timezone=GMT+08 $JAVA_OPTS /${project.build.finalName}.jar</entryPoint>
+					<!--<entryPoint>java -jar -server -XX:+HeapDumpOnOutOfMemoryError -Duser.timezone=GMT+08 $JAVA_OPTS /${project.build.finalName}.jar</entryPoint>-->
+					<entryPoint>["sh", "start.sh"]</entryPoint>
 					<!-- copy the service's jar file from target into the root directory of the image -->
 					<resources>
 						<resource>
 							<targetPath>/</targetPath>
 							<directory>${project.build.directory}</directory>
 							<include>${project.build.finalName}.jar</include>
+						</resource>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>docker</directory>
+							<include>start.sh</include>
 						</resource>
 					</resources>
 					<serverId>docker-hosted</serverId>
