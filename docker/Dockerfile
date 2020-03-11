@@ -1,6 +1,7 @@
-FROM openjdk:8
+FROM openjdk:8-jre
 
-COPY springboot-sample-demo-1.0.0-SNAPSHOT.jar /
-COPY start.sh /
+ARG JAR_FILE
+COPY target/${JAR_FILE} /springboot-sample-demo.jar
+COPY docker/start.sh /
 
-ENTRYPOINT ["sh","start.sh"]
+ENTRYPOINT ["sh", "start.sh", "springboot-sample-demo.jar"]
