@@ -22,6 +22,48 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      # 初始化大小，最小，最大
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      # 配置获取连接等待超时的时间
+      maxWait: 60000
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      timeBetweenEvictionRunsMillis: 60000
+      # 配置一个连接在池中最小生存的时间，单位是毫秒
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1 FROM DUAL
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      # 是否缓存preparedStatement，也就是PSCache MySQL下建议关闭
+      poolPreparedStatements: true
+      filter:
+        # SQL状态监控
+        stat:
+          enabled: true
+          db-type: mysql
+          log-slow-sql: true
+          slow-sql-millis: 1000
+        # SQL防火墙
+        wall:
+          enabled: true
+          db-type: mysql
+          config:
+            delete-allow: false
+            drop-table-allow: false
+      # 监控过滤器
+      web-stat-filter:
+        enabled: true
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid*,/swagger*,/webjars/*,/v2/api-docs"
+      # druid 监控页面
+      stat-view-servlet:
+        enabled: true
+        # 禁止手动重置监控数据
+        reset-enable: false
+      # Spring监控配置
+      aop-patterns: com.sz.springbootsample.demo.controller.*,com.sz.springbootsample.demo.service.*,com.sz.springbootsample.demo.dao.*
   profiles:
     active: test
 
