@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -84,7 +85,7 @@ public class DemoController {
     @ApiOperation("MybatisPlus 例子")
     public ResponseResultDTO mybatisPlus() {
         DemoVO demoVO = new DemoVO();
-        demoVO.setAge(1).setName("mybatisPlus").setAccount(5.20).setCreateTime(new Date());
+        demoVO.setAge(1).setName("mybatisPlus").setAccount(new BigDecimal("5.2")).setCreateTime(new Date());
         demoService.save(DemoMapper.INSTANCE.demoVO2DemoPO(demoVO));
 
         QueryWrapper wrapper = new QueryWrapper();

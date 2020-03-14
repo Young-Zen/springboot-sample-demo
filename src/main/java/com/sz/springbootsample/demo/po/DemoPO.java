@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -26,10 +27,10 @@ public class DemoPO {
     private String name;
 
     @TableField("age")
-    private int age;
+    private Integer age;
 
     @TableField("account")
-    private double account;
+    private BigDecimal account;
 
     @TableField("create_time")
     private Date createTime;

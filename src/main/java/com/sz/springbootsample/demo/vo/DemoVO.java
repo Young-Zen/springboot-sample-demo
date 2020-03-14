@@ -12,6 +12,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.groups.Default;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -37,11 +38,11 @@ public class DemoVO {
 
     @ApiModelProperty("年龄")
     @Min(groups = {Add.class, Update.class}, value = 1, message = "最小年龄为1")
-    private int age;
+    private Integer age;
 
     @ApiModelProperty("账户余额")
     @DecimalMin(groups = {Add.class, Update.class}, value = "0", message = "最小金额为0")
-    private double account;
+    private BigDecimal account;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间",example = "2020-01-01 00:00:00")
