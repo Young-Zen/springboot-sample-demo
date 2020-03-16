@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -16,6 +17,7 @@ import java.util.Date;
  * @date 1/1/2020
  */
 @Data
+@Accessors(chain = true)
 @TableName("t_boot_demo")
 public class DemoPO {
 
