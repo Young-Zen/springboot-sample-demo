@@ -56,7 +56,7 @@ spring:
       # 监控过滤器
       web-stat-filter:
         enabled: true
-        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid*,/swagger*,/webjars/*,/v2/api-docs"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid*,/actuator*,/swagger*,/webjars/*,/v2/api-docs"
       # druid 监控页面
       stat-view-servlet:
         enabled: true
