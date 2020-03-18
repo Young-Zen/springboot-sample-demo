@@ -234,7 +234,7 @@
 					<baseImage>openjdk:8</baseImage>
 					<imageTags>
 						<imageTag>${project.version}</imageTag>
-						<imageTag>latest</imageTag>
+						<!--<imageTag>latest</imageTag>-->
 					</imageTags>
 					<!--<entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>-->
 					<!--<entryPoint>java -jar -server -XX:+HeapDumpOnOutOfMemoryError -Duser.timezone=GMT+08 $JAVA_OPTS /${project.build.finalName}.jar</entryPoint>-->
