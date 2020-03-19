@@ -171,6 +171,7 @@
 	</dependencyManagement>
 
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -231,7 +232,7 @@
 				<version>${docker.maven.version}</version>
 				<configuration>
 					<imageName>${docker.repository.url}/${project.artifactId}</imageName>
-					<baseImage>openjdk:8</baseImage>
+					<baseImage>openjdk:8-jdk-alpine</baseImage>
 					<imageTags>
 						<imageTag>${project.version}</imageTag>
 						<!--<imageTag>latest</imageTag>-->
@@ -243,13 +244,13 @@
 					<resources>
 						<resource>
 							<targetPath>/</targetPath>
-							<directory>${project.build.directory}</directory>
-							<include>${project.build.finalName}.jar</include>
+							<directory>docker</directory>
+							<include>start.sh</include>
 						</resource>
 						<resource>
 							<targetPath>/</targetPath>
-							<directory>docker</directory>
-							<include>start.sh</include>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
 						</resource>
 					</resources>
 					<serverId>docker-hosted</serverId>
