@@ -5,4 +5,4 @@ COPY BOOT-INF/lib /app/lib
 COPY META-INF /app/META-INF
 COPY BOOT-INF/classes /app
 
-ENTRYPOINT ["sh", "-c", "start.sh", "com.sz.springbootsample.demo.DemoApplication"]
+ENTRYPOINT ["sh", "start.sh", "com.sz.springbootsample.demo.DemoApplication"]
