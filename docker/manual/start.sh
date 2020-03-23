@@ -1,1 +1,1 @@
-exec java -cp app:app/lib/* -server -XX:+HeapDumpOnOutOfMemoryError $JAVA_OPTS $*
+exec java -cp app:app/lib/* -server -XX:+HeapDumpOnOutOfMemoryError -XX:+UnlockExperimentalVMOptions $JAVA_OPTS $*

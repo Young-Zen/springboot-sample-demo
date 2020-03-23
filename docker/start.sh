@@ -1,1 +1,1 @@
-exec java -jar -server -XX:+HeapDumpOnOutOfMemoryError $JAVA_OPTS $*
+exec java -jar -server -XX:+HeapDumpOnOutOfMemoryError -XX:+UnlockExperimentalVMOptions $JAVA_OPTS $*
