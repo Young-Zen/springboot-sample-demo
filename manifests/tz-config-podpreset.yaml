@@ -1,0 +1,22 @@
+apiVersion: settings.k8s.io/v1alpha1
+kind: PodPreset
+metadata:
+  name: tz-config-podpreset
+  namespace: test
+spec:
+  selector:
+    matchLabels:
+  volumeMounts:
+    - mountPath: /etc/localtime
+      name: localtime
+      readOnly: true
+    - mountPath: /etc/timezone
+      name: timezone
+      readOnly: true
+  volumes:
+    - name: localtime
+      hostPath:
+        path: /etc/localtime
+    - name: timezone
+      hostPath:
+        path: /etc/timezone
