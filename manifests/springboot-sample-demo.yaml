@@ -21,7 +21,20 @@ spec:
       containers:
         - name: springboot-sample-demo
           image: baiduyun.com/springboot-sample-demo:1.0.0-SNAPSHOT
-          imagePullPolicy: IfNotPresent
+          #imagePullPolicy: IfNotPresent
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /ping
+            initialDelaySeconds: 10
+            periodSeconds: 3
+          livenessProbe:
+            httpGet:
+              port: http
+              path: /actuator/health
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            timeoutSeconds: 2
           args: ["--spring.datasource.password=mysql123root"]
           securityContext:
             capabilities:
