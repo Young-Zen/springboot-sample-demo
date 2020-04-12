@@ -17,7 +17,7 @@ public class PingController {
 
     @GetMapping("/ping")
     @ApiOperation("Offer httpGet readiness probe for k8s")
-    public String csrf() {
+    public String ping() {
         return "PONG";
     }
 }

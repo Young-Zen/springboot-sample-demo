@@ -18,10 +18,12 @@ spec:
           hostnames:
             - "mysql-service-address"
             - "admin-service-address"
+      imagePullSecrets:
+        - name: registry-secret
       containers:
         - name: springboot-sample-demo
           image: baiduyun.com/springboot-sample-demo:1.0.0-SNAPSHOT
-          #imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           readinessProbe:
             httpGet:
               port: http
