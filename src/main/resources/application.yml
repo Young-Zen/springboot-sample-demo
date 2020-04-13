@@ -80,7 +80,7 @@ management:
 
 custom:
   log:
-    additional-skip-pattern: /
+    additional-skip-pattern: /|/ping
     result: false
 #    enable: false
 

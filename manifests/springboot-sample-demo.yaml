@@ -28,8 +28,9 @@ spec:
             httpGet:
               port: http
               path: /ping
-            initialDelaySeconds: 10
-            periodSeconds: 3
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            timeoutSeconds: 3
           livenessProbe:
             httpGet:
               port: http
