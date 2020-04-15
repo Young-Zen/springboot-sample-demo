@@ -13,6 +13,7 @@ spec:
       labels:
         app: springboot-sample-demo
     spec:
+      hostname: springboot-sample-demo
       hostAliases:
         - ip: "172.16.0.4"
           hostnames:
