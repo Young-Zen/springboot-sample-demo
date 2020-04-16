@@ -9,6 +9,7 @@ import com.sz.springbootsample.demo.exception.BaseException;
 import com.sz.springbootsample.demo.mapper.DemoMapper;
 import com.sz.springbootsample.demo.po.DemoPO;
 import com.sz.springbootsample.demo.service.DemoService;
+import com.sz.springbootsample.demo.util.RedisUtils;
 import com.sz.springbootsample.demo.vo.DemoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +26,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -141,5 +143,23 @@ public class DemoController {
         DemoVO demoVO = new DemoVO();
         demoVO.setName("name").setAge(10).setAccount(new BigDecimal("5.2"));
         redisTemplate.opsForValue().set("demoVO-1", demoVO, 300, TimeUnit.SECONDS);
+    }
+
+    @GetMapping("/redis/id")
+    public long redisID() {
+        return RedisUtils.getInstance().generateID("key1");
+    }
+
+    @GetMapping("/redis/distributedLock")
+    public void distributedLock() {
+        String key = "lock-1";
+        String clientId = UUID.randomUUID().toString();
+        try {
+            if (RedisUtils.getInstance().tryLock(key, clientId, 100)) {
+                System.out.println("lock");
+            }
+        } finally {
+            RedisUtils.getInstance().unLock(key, clientId);
+        }
     }
 }
