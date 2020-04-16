@@ -14,15 +14,18 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Demo演示类
@@ -37,6 +40,9 @@ public class DemoController {
 
     @Autowired
     private DemoService demoService;
+
+    @Resource
+    private RedisTemplate<String, Object> redisTemplate;
 
     @GetMapping("/demo/lombok/chain")
     @ApiOperation("Lombok 链式 set 方法例子")
@@ -128,5 +134,12 @@ public class DemoController {
     public ResponseResultDTO async() {
         demoService.async();
         return ResponseResultDTO.ok("look console");
+    }
+
+    @GetMapping("/redis")
+    public void redis() {
+        DemoVO demoVO = new DemoVO();
+        demoVO.setName("name").setAge(10).setAccount(new BigDecimal("5.2"));
+        redisTemplate.opsForValue().set("demoVO-1", demoVO, 300, TimeUnit.SECONDS);
     }
 }

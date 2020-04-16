@@ -64,6 +64,11 @@ spring:
         reset-enable: false
       # Spring监控配置
       aop-patterns: com.sz.springbootsample.demo.controller.*,com.sz.springbootsample.demo.service.*,com.sz.springbootsample.demo.dao.*
+  redis:
+    host: redis-service-address
+    port: 6379
+    password: Redis123admin
+    database: 0
   profiles:
     active: test
 
