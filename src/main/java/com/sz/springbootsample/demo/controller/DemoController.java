@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sz.springbootsample.demo.annotation.IgnoreTracing;
+import com.sz.springbootsample.demo.config.message.RabbitConfig;
 import com.sz.springbootsample.demo.dto.ResponseResultDTO;
 import com.sz.springbootsample.demo.exception.BaseException;
 import com.sz.springbootsample.demo.mapper.DemoMapper;
@@ -14,6 +15,7 @@ import com.sz.springbootsample.demo.vo.DemoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +47,9 @@ public class DemoController {
 
     @Resource
     private RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     @GetMapping("/demo/lombok/chain")
     @ApiOperation("Lombok 链式 set 方法例子")
@@ -161,5 +166,19 @@ public class DemoController {
         } finally {
             RedisUtils.getInstance().unLock(key, clientId);
         }
+    }
+
+    @GetMapping("/rabbitmq/direct")
+    public void direct() {
+        DemoVO demoVO = new DemoVO();
+        demoVO.setName("direct").setAge(10).setAccount(new BigDecimal("5.2"));
+        rabbitTemplate.convertAndSend(RabbitConfig.MAIL_DIRECT_EXCHANGE, RabbitConfig.MAIL_ROUTING_KEY, demoVO);
+    }
+
+    @GetMapping("/rabbitmq/fanout")
+    public void fanout() {
+        DemoVO demoVO = new DemoVO();
+        demoVO.setName("fanout").setAge(10).setAccount(new BigDecimal("5.2"));
+        rabbitTemplate.convertAndSend(RabbitConfig.MAIL_FANOUT_EXCHANGE, "", demoVO);
     }
 }

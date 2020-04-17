@@ -64,6 +64,22 @@ spring:
         reset-enable: false
       # Spring监控配置
       aop-patterns: com.sz.springbootsample.demo.controller.*,com.sz.springbootsample.demo.service.*,com.sz.springbootsample.demo.dao.*
+  rabbitmq:
+    host: rabbitmq-service-address
+    port: 5672
+    username: rabbitmq
+    password: rabbitmq123admin
+    virtual-host: /
+    publisher-confirms: true  # 开启confirms回调 P -> Exchange，默认false
+    publisher-returns: true   # 开启returnedMessage回调 Exchange -> Queue，默认false
+    listener:
+      simple:
+        acknowledge-mode: manual  # 设置手动确认(ack) Queue -> C
+        prefetch: 1 #消费者每次从队列获取的消息数量，如果有事务的话，必须大于等于transaction数量
+        concurrency: 4  #消费者数量
+        max-concurrency: 8  #最大消费者数量
+    connection-timeout: 10s #连接超时时间
+    requested-heartbeat: 3s #心跳超时时间
   redis:
     host: redis-service-address
     port: 6379
