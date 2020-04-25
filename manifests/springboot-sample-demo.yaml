@@ -18,6 +18,8 @@ spec:
         - ip: "172.16.0.4"
           hostnames:
             - "mysql-service-address"
+            - "redis-service-address"
+            - "rabbitmq-service-address"
             - "admin-service-address"
       imagePullSecrets:
         - name: registry-secret
