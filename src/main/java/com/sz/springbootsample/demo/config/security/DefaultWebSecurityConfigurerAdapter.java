@@ -69,7 +69,7 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
         //http.exceptionHandling().accessDeniedHandler(new DefaultAccessDeniedHandler());
         http.csrf()
                 //.requireCsrfProtectionMatcher(new CsrfRequireMatcher(this.getAllowedRemoteHost(), this.getAllowedRefererList()))
-                .ignoringAntMatchers("/actuator/**", "/druid/**");
+                .ignoringAntMatchers("/actuator/**", "/druid/**", "/demo/file/**");
         http.authorizeRequests()
                 .antMatchers("/", "/ping", "/actuator/health", "/error", "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**").permitAll()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR_ADMIN")
