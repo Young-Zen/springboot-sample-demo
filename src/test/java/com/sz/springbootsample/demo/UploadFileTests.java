@@ -49,6 +49,9 @@ public class UploadFileTests {
         long size = file.length();
         int shardTotal = (int) Math.ceil((double) size / shardSize);
         int lastShardSize = (int) (size % shardSize);
+        if (lastShardSize == 0) {
+            lastShardSize = shardSize;
+        }
 
         System.out.println(size);
         System.out.println(shardTotal);
