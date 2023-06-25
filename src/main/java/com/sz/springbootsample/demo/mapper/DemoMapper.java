@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * Demo实体映射处理类
+ * http://www.kailing.pub/MapStruct1.3/index.html
  *
  * @author Yanghj
  * @date 1/1/2020
