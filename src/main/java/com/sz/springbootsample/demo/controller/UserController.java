@@ -5,6 +5,7 @@ import com.sz.springbootsample.demo.dto.ResponseResultDTO;
 import com.sz.springbootsample.demo.mapper.UserMapper;
 import com.sz.springbootsample.demo.po.UserPO;
 import com.sz.springbootsample.demo.service.UserService;
+import com.sz.springbootsample.demo.util.ParamValidateUtil;
 import com.sz.springbootsample.demo.vo.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,10 +30,14 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private ParamValidateUtil paramValidateUtil;
 
     @PostMapping("/add")
     @ApiOperation("插入")
     public ResponseResultDTO add(@ApiParam(name = "UserVO对象", value = "json格式", required = true) @RequestBody UserVO userVO) {
+        paramValidateUtil.verifyParams(userVO);
+
         UserPO userPO = UserMapper.INSTANCE.userVO2UserPO(userVO);
         userService.save(userPO);
 

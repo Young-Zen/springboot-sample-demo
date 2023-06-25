@@ -1,11 +1,13 @@
 package com.sz.springbootsample.demo.vo;
 
+import com.sz.springbootsample.demo.annotation.validator.ValidPassword;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.validation.constraints.Email;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -30,6 +32,7 @@ public class UserVO {
     private String userName;
 
     @ApiModelProperty(value = "密码")
+    @ValidPassword
     private String password;
 
     @ApiModelProperty(value = "生日",example = "2020-01-01")
@@ -39,6 +42,7 @@ public class UserVO {
     private String phone;
 
     @ApiModelProperty(value = "邮箱")
+    @Email
     private String email;
 
     @ApiModelProperty(value = "是否禁用")
