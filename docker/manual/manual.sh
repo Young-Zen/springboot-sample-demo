@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -xeo pipefail
+
 if [ -z $2 ]; then
     rm -rf BOOT-INF;
     rm -rf META-INF;
