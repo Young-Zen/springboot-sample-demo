@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 全局异常处理类
@@ -30,7 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseResultDTO handleException(Exception e) {
         log.error("应用程序抛出异常", e);
-        return ResponseResultDTO.fail(ResponseCodeEnum.INTERNAL_SERVER_ERROR.getCode(), e.getClass().getName());
+        return ResponseResultDTO.fail(ResponseCodeEnum.INTERNAL_SERVER_ERROR.getCode(), e.getClass().getName() + e.getMessage());
     }
 
     @ExceptionHandler(BaseException.class)
@@ -61,6 +63,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseResultDTO handleConstraintViolationException(ConstraintViolationException e) {
         log.warn("请求参数校验异常", e);
-        return ResponseResultDTO.fail(ResponseCodeEnum.ARGUMENT_VALID_FAIL.getCode(), e.getMessage());
+        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+        StringBuilder sb = new StringBuilder();
+        for (ConstraintViolation<?> constraintViolation : constraintViolations) {
+            sb.append(constraintViolation.getMessage()).append("\n");
+        }
+        return ResponseResultDTO.fail(ResponseCodeEnum.ARGUMENT_VALID_FAIL.getCode(), sb.toString());
     }
 }

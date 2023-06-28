@@ -8,6 +8,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.Set;
@@ -35,11 +36,7 @@ public class ValidationAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Set<ConstraintViolation<Object>> constraintViolations = validator.forExecutables().validateParameters(joinPoint.getTarget(), signature.getMethod(), joinPoint.getArgs());
         if (!constraintViolations.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            for (ConstraintViolation<Object> constraintViolation : constraintViolations) {
-                sb.append(constraintViolation.getMessage()).append("\n");
-            }
-            throw new IllegalArgumentException(sb.toString());
+            throw new ConstraintViolationException(constraintViolations);
         }
     }
 }

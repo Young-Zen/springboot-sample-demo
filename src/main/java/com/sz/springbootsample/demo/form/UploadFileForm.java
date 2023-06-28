@@ -41,4 +41,6 @@ public class UploadFileForm {
     private String fileVersion;
     // 此次上传过程中的 id
     private String uploadId;
+    // 是否加密
+    private boolean encrypt;
 }

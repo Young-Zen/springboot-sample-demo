@@ -30,17 +30,21 @@ spec:
           readinessProbe:
             httpGet:
               port: http
-              path: /ping
+              path: /actuator/health/readiness
             initialDelaySeconds: 15
-            periodSeconds: 10
-            timeoutSeconds: 3
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 4
+            successThreshold: 1
           livenessProbe:
             httpGet:
               port: http
-              path: /actuator/health
+              path: /actuator/health/liveness
             initialDelaySeconds: 15
-            periodSeconds: 15
+            periodSeconds: 5
             timeoutSeconds: 2
+            failureThreshold: 4
+            successThreshold: 1
           args: ["--spring.datasource.username=${MYSQL_USER}","--spring.datasource.password=${MYSQL_PASSWORD}"]
           securityContext:
             capabilities:

@@ -1,5 +1,6 @@
 package com.sz.springbootsample.demo;
 
+import cn.hutool.crypto.asymmetric.RSA;
 import com.sz.springbootsample.demo.dto.ResponseResultDTO;
 import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
 import com.sz.springbootsample.demo.exception.BaseException;
@@ -7,6 +8,7 @@ import com.sz.springbootsample.demo.form.UploadFileForm;
 import com.sz.springbootsample.demo.util.JSONUtils;
 import com.sz.springbootsample.demo.util.Md5Utils;
 import com.sz.springbootsample.demo.util.OkHttpClientUtils;
+import com.sz.springbootsample.demo.util.RSAUtils;
 import com.sz.springbootsample.demo.util.RetryUtils;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
@@ -30,20 +32,22 @@ public class UploadFileTests {
 
     @Test
     public void testUploadFile() {
-        String fileName = "spring-demo.jar";
+        String fileName = "photo.jpg";
         String fileVersion = "v0.0.1";
-        String filePath = "/Users/youngzen/Desktop/spring-demo/v0.0.1/spring-demo.jar";
+        String filePath = "C:\\Users\\Zen Young\\Desktop\\photo.jpg";
 
         OkHttpClient okHttpClient = OkHttpClientUtils.createHttpClient("admin", "admin");
         try {
-            String uploadId = doUploadFile(okHttpClient, filePath, fileName, fileVersion);
+            String uploadId = doUploadFile(okHttpClient, filePath, fileName, fileVersion, true);
             log.info(uploadId);
         } catch (Exception e) {
             log.error("doUploadFile error: ", e);
         }
     }
 
-    private static String doUploadFile(OkHttpClient okHttpClient, String filePath, String fileName, String fileVersion) throws IOException {
+    private static String doUploadFile(OkHttpClient okHttpClient, String filePath, String fileName, String fileVersion, boolean encrypt) throws IOException {
+        String rsaPublicKey = getRsaPublicKey(okHttpClient);
+
         File file = new File(filePath);
         int shardSize = 360 * 1024;
         long size = file.length();
@@ -69,11 +73,12 @@ public class UploadFileTests {
                 UploadFileForm form = new UploadFileForm();
                 form.setFileName(fileName);
                 form.setFileVersion(fileVersion);
-                form.setFileContent(Base64.getEncoder().encodeToString(shardBytes));
+                form.setFileContent(getFileContent(encrypt, rsaPublicKey, shardBytes));
                 form.setFileSeg(shardIndex);
                 form.setFileSegs(shardTotal);
                 form.setUploadId(uploadId);
                 form.setChunkSize(shardSize);
+                form.setEncrypt(encrypt);
 
                 if (shardIndex == shardTotal) {
                     form.setMd5(Md5Utils.getFileMd5(filePath));
@@ -92,9 +97,26 @@ public class UploadFileTests {
         }
     }
 
+    private static String getFileContent(boolean encrypt, String rsaPublicKey, byte[] shardBytes) {
+        if (!encrypt) {
+            return Base64.getEncoder().encodeToString(shardBytes);
+        }
+        RSA rsa = new RSA(null, rsaPublicKey);
+        return RSAUtils.encrypt(rsa, shardBytes);
+    }
+
     private static String uploadFile(OkHttpClient okHttpClient, UploadFileForm form) throws IOException {
         String body = JSONUtils.writeValueAsString(form);
         String response = OkHttpClientUtils.postJson(okHttpClient, "http://127.0.0.1:8080/demo/file/upload", body);
+        ResponseResultDTO responseResultDTO = JSONUtils.readValue(response, ResponseResultDTO.class);
+        if (!Objects.equals(responseResultDTO.getCode(), ResponseCodeEnum.OK.getCode())) {
+            throw new BaseException(responseResultDTO.getCode(), responseResultDTO.getMsg());
+        }
+        return (String) responseResultDTO.getData();
+    }
+
+    private static String getRsaPublicKey(OkHttpClient okHttpClient) throws IOException {
+        String response = OkHttpClientUtils.get(okHttpClient, "http://127.0.0.1:8080/demo/file/getRsaPublicKey");
         ResponseResultDTO responseResultDTO = JSONUtils.readValue(response, ResponseResultDTO.class);
         if (!Objects.equals(responseResultDTO.getCode(), ResponseCodeEnum.OK.getCode())) {
             throw new BaseException(responseResultDTO.getCode(), responseResultDTO.getMsg());

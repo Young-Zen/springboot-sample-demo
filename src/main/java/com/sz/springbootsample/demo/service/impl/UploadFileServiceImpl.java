@@ -5,13 +5,12 @@ import com.sz.springbootsample.demo.exception.BaseException;
 import com.sz.springbootsample.demo.form.UploadFileForm;
 import com.sz.springbootsample.demo.service.UploadFileService;
 import com.sz.springbootsample.demo.util.Md5Utils;
+import com.sz.springbootsample.demo.util.RSAUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
+import sun.security.action.GetPropertyAction;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
@@ -21,6 +20,8 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Objects;
 import java.util.UUID;
+
+import static java.security.AccessController.doPrivileged;
 
 /**
  * this module only use for CD
@@ -32,7 +33,12 @@ import java.util.UUID;
 @Slf4j
 public class UploadFileServiceImpl implements UploadFileService {
 
-    public static final String UPLOAD_DIR_PATH = "/tmp/upload";
+    public static final String UPLOAD_DIR_PATH;
+
+    static {
+        Path path = Paths.get(doPrivileged(new GetPropertyAction("java.io.tmpdir")));
+        UPLOAD_DIR_PATH = Paths.get(path.toString(), "upload").toString();
+    }
 
     @Override
     public String upload(UploadFileForm form) {
@@ -65,13 +71,20 @@ public class UploadFileServiceImpl implements UploadFileService {
         try(RandomAccessFile randomAccessFile = new RandomAccessFile(uploadTempFile, "rw")) {
             int offset = (form.getFileSeg() - 1) * form.getChunkSize();
             randomAccessFile.seek(offset);
-            byte[] fileContent = Base64.getDecoder().decode(form.getFileContent().getBytes(StandardCharsets.UTF_8));
+            byte[] fileContent = this.getFileContent(form);
             randomAccessFile.write(fileContent);
         } catch (IOException e) {
             log.error("writeUploadFile error: ", e);
             throw new BaseException(ResponseCodeEnum.FAIL, e);
         }
         return uploadId;
+    }
+
+    private byte[] getFileContent(UploadFileForm form) {
+        if (!form.isEncrypt()) {
+            return Base64.getDecoder().decode(form.getFileContent().getBytes(StandardCharsets.UTF_8));
+        }
+        return RSAUtils.decrypt(form.getFileContent());
     }
 
     private void createUploadDir(UploadFileForm form) {
