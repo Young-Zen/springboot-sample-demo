@@ -30,6 +30,8 @@ import java.util.Objects;
 @Slf4j
 public class UploadFileTests {
 
+    public static final String FILE_SERVER_BASE_URL = "http://127.0.0.1:8080";
+
     @Test
     public void testUploadFile() {
         String fileName = "photo.jpg";
@@ -107,7 +109,7 @@ public class UploadFileTests {
 
     private static String uploadFile(OkHttpClient okHttpClient, UploadFileForm form) throws IOException {
         String body = JSONUtils.writeValueAsString(form);
-        String response = OkHttpClientUtils.postJson(okHttpClient, "http://127.0.0.1:8080/demo/file/upload", body);
+        String response = OkHttpClientUtils.postJson(okHttpClient, FILE_SERVER_BASE_URL + "/demo/file/upload", body);
         ResponseResultDTO responseResultDTO = JSONUtils.readValue(response, ResponseResultDTO.class);
         if (!Objects.equals(responseResultDTO.getCode(), ResponseCodeEnum.OK.getCode())) {
             throw new BaseException(responseResultDTO.getCode(), responseResultDTO.getMsg());
@@ -116,7 +118,7 @@ public class UploadFileTests {
     }
 
     private static String getRsaPublicKey(OkHttpClient okHttpClient) throws IOException {
-        String response = OkHttpClientUtils.get(okHttpClient, "http://127.0.0.1:8080/demo/file/getRsaPublicKey");
+        String response = OkHttpClientUtils.get(okHttpClient, FILE_SERVER_BASE_URL + "/demo/file/getRsaPublicKey");
         ResponseResultDTO responseResultDTO = JSONUtils.readValue(response, ResponseResultDTO.class);
         if (!Objects.equals(responseResultDTO.getCode(), ResponseCodeEnum.OK.getCode())) {
             throw new BaseException(responseResultDTO.getCode(), responseResultDTO.getMsg());

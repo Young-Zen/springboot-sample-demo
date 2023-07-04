@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   namespace: test
   name: springboot-sample-demo-deploy
+  labels:
+    app: springboot-sample-demo
 spec:
   replicas: 1
   selector:
@@ -27,6 +29,26 @@ spec:
         - name: springboot-sample-demo
           image: baiduyun.com/springboot-sample-demo:1.0.0-SNAPSHOT
           imagePullPolicy: Always
+          env:
+            - name: JAVA_OPTS
+              value: "-Djava.security.egd=file:/dev/./urandom -Dspring.datasource.druid.stat-view-servlet.allow="
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: config-secret
+                  key: mysqlUser
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: config-secret
+                  key: mysqlPassword
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 768Mi
+            requests:
+              cpu: 50m
+              memory: 512Mi
           readinessProbe:
             httpGet:
               port: http
@@ -45,9 +67,10 @@ spec:
             timeoutSeconds: 2
             failureThreshold: 4
             successThreshold: 1
-          securityContext:
-            capabilities:
-              add: ["SYS_PTRACE"]
+          lifecycle:
+            preStop:
+              exec:
+                command: [ "sleep", "10" ]
           ports:
             - name: http
               containerPort: 8080
@@ -55,19 +78,6 @@ spec:
             - name: debug
               containerPort: 9090
               protocol: TCP
-          env:
-            - name: JAVA_OPTS
-              value: "-Djava.security.egd=file:/dev/./urandom -Dspring.datasource.druid.stat-view-servlet.allow="
-            - name: spring.datasource.username
-              valueFrom:
-                secretKeyRef:
-                  name: config-secret
-                  key: mysqlUser
-            - name: spring.datasource.password
-              valueFrom:
-                secretKeyRef:
-                  name: config-secret
-                  key: mysqlPassword
           volumeMounts:
             - name: upload-data-volume
               mountPath: /tmp/upload
@@ -76,7 +86,6 @@ spec:
           hostPath:
             path: /data/upload
             type: DirectoryOrCreate
-
 ---
 apiVersion: v1
 kind: Service
