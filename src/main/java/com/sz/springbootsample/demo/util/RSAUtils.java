@@ -14,14 +14,14 @@ import java.util.Base64;
 @Slf4j
 public class RSAUtils {
 
-    private static final RSA rsa = new RSA();
+    private static final RSA RSA = new RSA();
 
     static {
         log.info("RSA PublicKey Base64: {}", getPublicKey());
     }
 
     public static String getPublicKey() {
-        return rsa.getPublicKeyBase64();
+        return RSA.getPublicKeyBase64();
     }
 
     public static String encrypt(RSA rsa, byte[] data) {
@@ -30,12 +30,12 @@ public class RSAUtils {
     }
 
     public static String encrypt(String plaintext) {
-        byte[] encrypt = rsa.encrypt(plaintext.getBytes(StandardCharsets.UTF_8), KeyType.PublicKey);
+        byte[] encrypt = RSA.encrypt(plaintext.getBytes(StandardCharsets.UTF_8), KeyType.PublicKey);
         return Base64.getEncoder().encodeToString(encrypt);
     }
 
     public static byte[] decrypt(String ciphertext) {
-        byte[] decrypt = rsa.decrypt(Base64.getDecoder().decode(ciphertext.getBytes(StandardCharsets.UTF_8)), KeyType.PrivateKey);
+        byte[] decrypt = RSA.decrypt(Base64.getDecoder().decode(ciphertext.getBytes(StandardCharsets.UTF_8)), KeyType.PrivateKey);
         return decrypt;
     }
 }

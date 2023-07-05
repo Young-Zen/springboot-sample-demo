@@ -24,23 +24,23 @@ public interface UserMapper {
     @Mappings({
             @Mapping(source = "userId",target = "pkUserId")
     })
-    UserPO userVO2UserPO(UserVO UserVO);
+    UserPO userVO2UserPO(UserVO userVO);
 
     @Mappings({
             @Mapping(source = "pkUserId",target = "userId")
     })
-    UserVO userPO2UserVO(UserPO UserPO);
+    UserVO userPO2UserVO(UserPO userPO);
 
     List<UserPO> userVOs2UserPOs(List<UserVO> userVOs);
 
     List<UserVO> userPOs2UserVOs(List<UserPO> userPOs);
 
-    default IPage<UserVO> UserPOPage2UserVOPage(IPage<UserPO> userPOIPage) {
+    default IPage<UserVO> userPOPage2UserVOPage(IPage<UserPO> userPOIPage) {
         if (userPOIPage == null) {
             return null;
         }
-        IPage<UserVO> UserVOIPage = new Page<>(userPOIPage.getCurrent(), userPOIPage.getSize(), userPOIPage.getTotal());
-        UserVOIPage.setRecords(this.userPOs2UserVOs(userPOIPage.getRecords()));
-        return UserVOIPage;
+        IPage<UserVO> userVOIPage = new Page<>(userPOIPage.getCurrent(), userPOIPage.getSize(), userPOIPage.getTotal());
+        userVOIPage.setRecords(this.userPOs2UserVOs(userPOIPage.getRecords()));
+        return userVOIPage;
     }
 }

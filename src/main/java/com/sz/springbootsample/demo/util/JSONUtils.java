@@ -21,19 +21,19 @@ import java.util.Objects;
  */
 public class JSONUtils {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     static {
         // 对象的所有字段全部列入
-        objectMapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
+        OBJECT_MAPPER.setSerializationInclusion(JsonInclude.Include.ALWAYS);
         // 取消默认转换 timestamps 形式
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        OBJECT_MAPPER.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         // 所有的日期格式都统一为以下的样式，即yyyy-MM-dd HH:mm:ss
-        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        OBJECT_MAPPER.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         // 忽略空 Bean 转 json 的错误
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        OBJECT_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         // 忽略在 json 字符串中存在，但是在 java 对象中不存在对应属性的情况。防止错误
-        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     public static <T> String writeValueAsString(T obj) {
@@ -41,7 +41,7 @@ public class JSONUtils {
             return null;
         }
         try {
-            return obj instanceof String ? (String) obj : objectMapper.writeValueAsString(obj);
+            return obj instanceof String ? (String) obj : OBJECT_MAPPER.writeValueAsString(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -52,7 +52,7 @@ public class JSONUtils {
             return null;
         }
         try {
-            return obj instanceof String ? (String) obj : objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+            return obj instanceof String ? (String) obj : OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -64,7 +64,7 @@ public class JSONUtils {
         }
 
         try {
-            return clazz.equals(String.class) ? (T) str : objectMapper.readValue(str, clazz);
+            return clazz.equals(String.class) ? (T) str : OBJECT_MAPPER.readValue(str, clazz);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -76,7 +76,7 @@ public class JSONUtils {
         }
         String str = (obj instanceof String) ? (String) obj : JSONUtils.writeValueAsString(obj);
         try {
-            return (objectMapper.readValue(str, new TypeReference<HashMap<String, Object>>() {
+            return (OBJECT_MAPPER.readValue(str, new TypeReference<HashMap<String, Object>>() {
             }));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -88,7 +88,7 @@ public class JSONUtils {
             return null;
         }
         try {
-            return (T) (objectMapper.readValue(str, new TypeReference<HashMap<String, String>>() {
+            return (T) (OBJECT_MAPPER.readValue(str, new TypeReference<HashMap<String, String>>() {
             }));
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -100,16 +100,16 @@ public class JSONUtils {
             return null;
         }
         try {
-            return (T) (typeReference.getType().equals(String.class) ? str : objectMapper.readValue(str, typeReference));
+            return (T) (typeReference.getType().equals(String.class) ? str : OBJECT_MAPPER.readValue(str, typeReference));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     public static <T> T string2Obj(String str, Class<?> collectionClass, Class<?>... elementClasses) {
-        JavaType javaType = objectMapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
+        JavaType javaType = OBJECT_MAPPER.getTypeFactory().constructParametricType(collectionClass, elementClasses);
         try {
-            return objectMapper.readValue(str, javaType);
+            return OBJECT_MAPPER.readValue(str, javaType);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

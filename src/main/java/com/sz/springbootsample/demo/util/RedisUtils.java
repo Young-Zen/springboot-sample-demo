@@ -1,6 +1,5 @@
 package com.sz.springbootsample.demo.util;
 
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
@@ -31,7 +30,7 @@ public class RedisUtils {
     /**
      * 解锁脚本，原子操作
      */
-    private static final String unlockScript =
+    private static final String UNLOCK_SCRIPT =
             "if redis.call(\"get\",KEYS[1]) == ARGV[1]\n"
                     + "then\n"
                     + "    return redis.call(\"del\",KEYS[1])\n"
@@ -75,7 +74,7 @@ public class RedisUtils {
      */
     public Boolean unLock(String key, String clientId) {
         DefaultRedisScript<Boolean> redisScript = new DefaultRedisScript<>();
-        redisScript.setScriptText(unlockScript);
+        redisScript.setScriptText(UNLOCK_SCRIPT);
         redisScript.setResultType(Boolean.class);
         return redisTemplate.execute(redisScript, Collections.singletonList(key), clientId);
     }
