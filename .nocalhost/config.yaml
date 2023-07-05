@@ -1,0 +1,61 @@
+name: "springboot-sample-demo"
+serviceType: "deployment"
+containers:
+  - name: "springboot-sample-demo"
+    dev:
+      gitUrl: ""
+      image: "openjdk:8-jdk-buster"
+      shell: "bash"
+      workDir: ""
+      storageClass: ""
+      resources:
+        limits:
+          memory: "2048Mi"
+          cpu: "2"
+        requests:
+          memory: "512Mi"
+          cpu: "0.1"
+      persistentVolumeDirs: []
+      command:
+        run:
+          - "cd"
+          - "target"
+          - "&&"
+          - "java"
+          - "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=18080"
+          - "-Djava.security.egd=file:/dev/./urandom"
+          - "-Dspring.datasource.druid.stat-view-servlet.allow="
+          - "-jar"
+          - "./springboot-sample-demo.jar"
+        debug:
+          - "cd"
+          - "target"
+          - "&&"
+          - "java"
+          - "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=18080"
+          - "-Djava.security.egd=file:/dev/./urandom"
+          - "-Dspring.datasource.druid.stat-view-servlet.allow="
+          - "-jar"
+          - "./springboot-sample-demo.jar"
+      debug:
+        language: "java"
+        remoteDebugPort: 18080
+      hotReload: true
+      sync:
+        type: "send"
+        mode: "pattern"
+        filePattern:
+          - "target/springboot-sample-demo.jar"
+        ignoreFilePattern:
+          - ".git"
+        deleteProtection: true
+      env:
+        - name: "ENABLE_DEBUG"
+          value: "true"
+      portForward:
+        - "8080:8080"
+        - "18080:18080"
+      sidecarImage: ""
+      patches:
+        - type: "strategic"
+          patch: "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"app\":\"springboot-sample-demo\",\"version\":\"v2\"}}}}}"

@@ -1,28 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: test
-  name: springboot-sample-demo-deploy
+  name: springboot-sample-demo
   labels:
     app: springboot-sample-demo
+    version: v1
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: springboot-sample-demo
+      version: v1
   template:
     metadata:
       labels:
         app: springboot-sample-demo
+        version: v1
     spec:
       hostname: springboot-sample-demo
-      hostAliases:
-        - ip: "172.16.0.4"
-          hostnames:
-            - "mysql-service-address"
-            - "redis-service-address"
-            - "rabbitmq-service-address"
-            - "admin-service-address"
       imagePullSecrets:
         - name: registry-secret
       containers:
@@ -42,6 +37,24 @@ spec:
                 secretKeyRef:
                   name: config-secret
                   key: mysqlPassword
+            - name: "MYSQL_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: config-secret
+                  key: mysqlHost
+            - name: "MYSQL_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: config-secret
+                  key: mysqlPort
+            - name: "spring.datasource.url"
+              value: "jdbc:mysql://$(MYSQL_HOST):$(MYSQL_PORT)/demo?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=GMT%2B8"
+            - name: "spring.redis.host"
+              value: "redis-service-address"
+            - name: "spring.rabbitmq.host"
+              value: "rabbitmq-service-address"
+            - name: "spring.boot.admin.client.url"
+              value: "http://admin-service-address:8081"
           resources:
             limits:
               cpu: 1000m
@@ -76,7 +89,7 @@ spec:
               containerPort: 8080
               protocol: TCP
             - name: debug
-              containerPort: 9090
+              containerPort: 18080
               protocol: TCP
           volumeMounts:
             - name: upload-data-volume
@@ -90,8 +103,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  namespace: test
-  name: springboot-sample-demo-svc
+  name: springboot-sample-demo
 spec:
   selector:
     app: springboot-sample-demo

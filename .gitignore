@@ -1,5 +1,8 @@
 HELP.md
 target/
+docker/manual/BOOT-INF
+docker/manual/META-INF
+docker/manual/org
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**

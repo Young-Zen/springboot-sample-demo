@@ -1,0 +1,56 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: springboot-sample-demo
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - demo.dev.com
+      port:
+        name: http
+        number: 80
+        protocol: HTTP
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: springboot-sample-demo
+spec:
+  gateways:
+    - springboot-sample-demo
+  hosts:
+    - demo.dev.com
+  http:
+    - match:
+        - headers:
+            app-version:
+              exact: v2
+          uri:
+            prefix: /
+      route:
+        - destination:
+            host: springboot-sample-demo
+            subset: v2
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: springboot-sample-demo
+            subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: springboot-sample-demo
+spec:
+  host: springboot-sample-demo
+  subsets:
+    - labels:
+        version: v1
+      name: v1
+    - labels:
+        version: v2
+      name: v2

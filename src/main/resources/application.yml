@@ -18,7 +18,7 @@ spring:
             user.name: actuator
             user.password: actuator
   datasource:
-    url: jdbc:mysql://mysql-service-address:3306/demo?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+    url: jdbc:mysql://mysql-service-address:3306/demo?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=GMT%2B8
     username: root
     password: mysql123root
     driver-class-name: com.mysql.cj.jdbc.Driver
