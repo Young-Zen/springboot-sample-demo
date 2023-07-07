@@ -43,6 +43,7 @@ public class UploadFileServiceImpl implements UploadFileService {
     @Override
     public String upload(UploadFileForm form) {
         createUploadDir(form);
+        checkVersionExists(form);
         return saveUploadFile(form);
     }
 
@@ -55,11 +56,24 @@ public class UploadFileServiceImpl implements UploadFileService {
             }
 
             File uploadFile = Paths.get(UPLOAD_DIR_PATH, form.getFileName(), form.getFileVersion()).toFile();
+            if (uploadFile.exists() && form.isOverrideVersion()) {
+                uploadFile.delete();
+            }
             if (!uploadTempFile.renameTo(uploadFile)) {
                 throw new BaseException("saveUploadFile fail");
             }
         }
         return uploadId;
+    }
+
+    private void checkVersionExists(UploadFileForm form) {
+        if (form.isOverrideVersion()) {
+            return;
+        }
+        File uploadFile = Paths.get(UPLOAD_DIR_PATH, form.getFileName(), form.getFileVersion()).toFile();
+        if (uploadFile.exists()) {
+            throw new BaseException("File version already exists");
+        }
     }
 
     private String writeTempUploadFile(UploadFileForm form) {

@@ -28,14 +28,14 @@ spec:
             app-version:
               exact: v2
           uri:
-            prefix: /
+            prefix: /api/demo
       route:
         - destination:
             host: springboot-sample-demo
             subset: v2
     - match:
         - uri:
-            prefix: /
+            prefix: /api/demo
       route:
         - destination:
             host: springboot-sample-demo

@@ -43,4 +43,6 @@ public class UploadFileForm {
     private String uploadId;
     // 是否加密
     private boolean encrypt;
+    // 是否覆盖版本
+    private boolean overrideVersion;
 }

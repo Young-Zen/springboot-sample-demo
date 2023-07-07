@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
  */
 @RestController
 @Validated  //校验方法参数
+@RequestMapping("/demo")
 @Api(tags = "Demo 演示类")
 public class DemoController {
 
@@ -51,7 +52,7 @@ public class DemoController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    @GetMapping("/demo/lombok/chain")
+    @GetMapping("/lombok/chain")
     @ApiOperation("Lombok 链式 set 方法例子")
     public DemoVO chain() {
         DemoVO demoVO = new DemoVO();

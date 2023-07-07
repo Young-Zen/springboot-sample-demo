@@ -24,7 +24,7 @@ import java.util.List;
  * @since 2020-03-16
  */
 @RestController
-@RequestMapping("/demo/user")
+@RequestMapping("/user")
 @Api(tags = "用户前端控制器")
 public class UserController {
 

@@ -69,13 +69,13 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
         //http.exceptionHandling().accessDeniedHandler(new DefaultAccessDeniedHandler());
         http.csrf()
                 //.requireCsrfProtectionMatcher(new CsrfRequireMatcher(this.getAllowedRemoteHost(), this.getAllowedRefererList()))
-                .ignoringAntMatchers("/actuator/**", "/druid/**", "/demo/file/**");
+                .ignoringAntMatchers("/actuator/**", "/druid/**", "/file/**");
         http.authorizeRequests()
                 .antMatchers("/", "/ping", "/actuator/health/liveness", "/actuator/health/readiness", "/error", "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**").permitAll()
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR_ADMIN")
                 .antMatchers("/druid/**").hasRole("ACTUATOR_ADMIN")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .antMatchers("/demo/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/demo/**", "/user/**", "/file/**").hasAnyRole("ADMIN", "USER")
                 //.antMatchers("/**").authenticated()
                 .anyRequest().authenticated()
                 .and()

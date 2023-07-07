@@ -26,7 +26,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @Validated
-@RequestMapping("/demo/file")
+@RequestMapping("/file")
 @Api(tags = "文件控制器")
 public class FileController {
 

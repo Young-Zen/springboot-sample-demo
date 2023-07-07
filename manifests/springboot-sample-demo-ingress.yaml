@@ -11,7 +11,7 @@ spec:
   - host: springboot.baiduyun.com
     http:
       paths:
-      - path: /
+      - path: /api/demo
         backend:
           serviceName: springboot-sample-demo-svc
           servicePort: 8080

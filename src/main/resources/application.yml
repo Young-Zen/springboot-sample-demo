@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /
+    context-path: /api/demo
   port: 8080 #comment out this configuration because of adding it with -Dserver.port=80 in VM options
 
 spring:
