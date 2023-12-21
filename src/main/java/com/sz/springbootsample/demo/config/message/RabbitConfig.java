@@ -51,17 +51,23 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Binding mailBinding(@Qualifier(MAIL_DIRECT_EXCHANGE) DirectExchange mailExchange, @Qualifier(MAIL_QUEUE) Queue mailQueue) {
+    public Binding mailBinding(
+            @Qualifier(MAIL_DIRECT_EXCHANGE) DirectExchange mailExchange,
+            @Qualifier(MAIL_QUEUE) Queue mailQueue) {
         return BindingBuilder.bind(mailQueue).to(mailExchange).with(MAIL_ROUTING_KEY);
     }
 
     @Bean
-    public Binding mailFanoutBinding1(@Qualifier(MAIL_FANOUT_EXCHANGE) FanoutExchange mailExchange, @Qualifier(MAIL_QUEUE) Queue mailQueue) {
+    public Binding mailFanoutBinding1(
+            @Qualifier(MAIL_FANOUT_EXCHANGE) FanoutExchange mailExchange,
+            @Qualifier(MAIL_QUEUE) Queue mailQueue) {
         return BindingBuilder.bind(mailQueue).to(mailExchange);
     }
 
     @Bean
-    public Binding mailFanoutBinding2(@Qualifier(MAIL_FANOUT_EXCHANGE) FanoutExchange mailExchange, @Qualifier(MAIL_FANOUT_QUEUE) Queue mailQueue) {
+    public Binding mailFanoutBinding2(
+            @Qualifier(MAIL_FANOUT_EXCHANGE) FanoutExchange mailExchange,
+            @Qualifier(MAIL_FANOUT_QUEUE) Queue mailQueue) {
         return BindingBuilder.bind(mailQueue).to(mailExchange);
     }
 }

@@ -11,11 +11,13 @@ import java.util.function.Supplier;
  */
 public class RetryUtils {
 
-    public static  <T> T retry(Supplier<T> fn, int maxRetries, long retryBackoffMillis, boolean exponential) {
+    public static <T> T retry(
+            Supplier<T> fn, int maxRetries, long retryBackoffMillis, boolean exponential) {
         return retry(fn, maxRetries, Duration.ofMillis(retryBackoffMillis), exponential);
     }
 
-    public static  <T> T retry(Supplier<T> fn, int maxRetries, Duration retryBackoff, boolean exponential) {
+    public static <T> T retry(
+            Supplier<T> fn, int maxRetries, Duration retryBackoff, boolean exponential) {
         int retries = 0;
         while (true) {
             try {

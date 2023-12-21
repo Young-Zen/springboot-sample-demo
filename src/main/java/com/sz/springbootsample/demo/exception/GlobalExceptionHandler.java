@@ -1,8 +1,12 @@
 package com.sz.springbootsample.demo.exception;
 
-import com.sz.springbootsample.demo.dto.ResponseResultDTO;
-import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
-import lombok.extern.slf4j.Slf4j;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -11,12 +15,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.sz.springbootsample.demo.dto.ResponseResultDTO;
+import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 全局异常处理类
@@ -32,7 +34,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseResultDTO handleException(Exception e) {
         log.error("应用程序抛出异常", e);
-        return ResponseResultDTO.fail(ResponseCodeEnum.INTERNAL_SERVER_ERROR.getCode(), e.getClass().getName() + e.getMessage());
+        return ResponseResultDTO.fail(
+                ResponseCodeEnum.INTERNAL_SERVER_ERROR.getCode(),
+                e.getClass().getName() + e.getMessage());
     }
 
     @ExceptionHandler(BaseException.class)
@@ -48,15 +52,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseResultDTO handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    public ResponseResultDTO handleMethodArgumentNotValidException(
+            MethodArgumentNotValidException e) {
         log.warn("请求体校验异常", e);
         List<ObjectError> allErrors = e.getBindingResult().getAllErrors();
         Map<String, String> errors = new HashMap<>(allErrors.size());
-        allErrors.forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
+        allErrors.forEach(
+                (error) -> {
+                    String fieldName = ((FieldError) error).getField();
+                    String errorMessage = error.getDefaultMessage();
+                    errors.put(fieldName, errorMessage);
+                });
         return ResponseResultDTO.fail(ResponseCodeEnum.ARGUMENT_VALID_FAIL).setData(errors);
     }
 
@@ -68,6 +74,7 @@ public class GlobalExceptionHandler {
         for (ConstraintViolation<?> constraintViolation : constraintViolations) {
             sb.append(constraintViolation.getMessage()).append("\n");
         }
-        return ResponseResultDTO.fail(ResponseCodeEnum.ARGUMENT_VALID_FAIL.getCode(), sb.toString());
+        return ResponseResultDTO.fail(
+                ResponseCodeEnum.ARGUMENT_VALID_FAIL.getCode(), sb.toString());
     }
 }

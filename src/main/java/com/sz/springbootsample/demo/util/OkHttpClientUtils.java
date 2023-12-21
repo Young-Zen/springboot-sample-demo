@@ -1,5 +1,8 @@
 package com.sz.springbootsample.demo.util;
 
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.Credentials;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -7,9 +10,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * this module only use for CD
@@ -27,8 +27,7 @@ public final class OkHttpClientUtils {
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    private OkHttpClientUtils() {
-    }
+    private OkHttpClientUtils() {}
 
     public static OkHttpClient createHttpClient() {
         return getOkHttpClientBuilder().build();
@@ -39,15 +38,19 @@ public final class OkHttpClientUtils {
     }
 
     public static OkHttpClient createHttpClient(String user, String password) {
-        return getOkHttpClientBuilder().addInterceptor(new BasicAuthInterceptor(user, password)).build();
+        return getOkHttpClientBuilder()
+                .addInterceptor(new BasicAuthInterceptor(user, password))
+                .build();
     }
 
     public static OkHttpClient.Builder getOkHttpClientBuilder() {
         return new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
-                .addInterceptor(new RetryInterceptor.Builder()
-                        .count(DEFAULT_RETRY_COUNT)
-                        .interval(DEFAULT_RETRY_INTERVAL).build())
+                .addInterceptor(
+                        new RetryInterceptor.Builder()
+                                .count(DEFAULT_RETRY_COUNT)
+                                .interval(DEFAULT_RETRY_INTERVAL)
+                                .build())
                 .connectTimeout(DEFAULT_CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
                 .readTimeout(DEFAULT_READ_TIMEOUT, TimeUnit.MILLISECONDS)
                 .writeTimeout(DEFAULT_WRITE_TIMEOUT, TimeUnit.MILLISECONDS);
@@ -62,12 +65,16 @@ public final class OkHttpClientUtils {
             if (response.body() != null) {
                 responseBody = response.body().string();
             }
-            throw new IOException(String.format("Fail to request GET %s: response %d %s", url, response.code(), responseBody));
+            throw new IOException(
+                    String.format(
+                            "Fail to request GET %s: response %d %s",
+                            url, response.code(), responseBody));
         }
         return response.body().string();
     }
 
-    public static String postJson(OkHttpClient okHttpClient, String url, String json) throws IOException {
+    public static String postJson(OkHttpClient okHttpClient, String url, String json)
+            throws IOException {
         Request.Builder builder = new Request.Builder().url(url);
         builder = builder.post(RequestBody.create(JSON, json));
         Response response = okHttpClient.newCall(builder.build()).execute();
@@ -76,7 +83,10 @@ public final class OkHttpClientUtils {
             if (response.body() != null) {
                 responseBody = response.body().string();
             }
-            throw new IOException(String.format("Fail to request POST %s: response %d %s", url, response.code(), responseBody));
+            throw new IOException(
+                    String.format(
+                            "Fail to request POST %s: response %d %s",
+                            url, response.code(), responseBody));
         }
         return response.body().string();
     }
@@ -91,7 +101,8 @@ public final class OkHttpClientUtils {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
-            Request authenticatedRequest = request.newBuilder().header("Authorization", credentials).build();
+            Request authenticatedRequest =
+                    request.newBuilder().header("Authorization", credentials).build();
             return chain.proceed(authenticatedRequest);
         }
     }
@@ -106,7 +117,8 @@ public final class OkHttpClientUtils {
         @Override
         public Response intercept(final Chain chain) throws IOException {
             Request request = chain.request();
-            Request authenticatedRequest = request.newBuilder().header("Authorization", credentials).build();
+            Request authenticatedRequest =
+                    request.newBuilder().header("Authorization", credentials).build();
             return chain.proceed(authenticatedRequest);
         }
     }

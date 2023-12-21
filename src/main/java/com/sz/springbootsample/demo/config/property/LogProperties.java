@@ -1,8 +1,9 @@
 package com.sz.springbootsample.demo.config.property;
 
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import lombok.Data;
 
 /**
  * 自定义日志属性类

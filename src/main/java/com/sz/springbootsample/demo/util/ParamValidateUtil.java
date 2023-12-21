@@ -1,8 +1,8 @@
 package com.sz.springbootsample.demo.util;
 
-import org.springframework.stereotype.Component;
-
 import javax.validation.Valid;
+
+import org.springframework.stereotype.Component;
 
 /**
  * @author Yanghj
@@ -11,6 +11,5 @@ import javax.validation.Valid;
 @Component
 public class ParamValidateUtil {
 
-    public void verifyParams(@Valid Object... args) {
-    }
+    public void verifyParams(@Valid Object... args) {}
 }

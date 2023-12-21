@@ -1,6 +1,7 @@
 package com.sz.springbootsample.demo.config.security;
 
-import com.google.common.collect.ImmutableList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -13,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
+import com.google.common.collect.ImmutableList;
 
 /**
  * Security配置类
@@ -25,7 +26,8 @@ import java.util.List;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
-    //User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended for sample applications.
+    // User.withDefaultPasswordEncoder() is considered unsafe for production and is only intended
+    // for sample applications.
     /*@Bean
     public UserDetailsService userDetailsService() throws Exception {
         // ensure the passwords are encoded properly
@@ -38,17 +40,19 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //super.configure(auth);    //error
-        //下面注释的是旧版本的创建方式因为新的Spring security 5.0中新增了多种加密方式，也改变了密码的格式,所以无法使用
-        //auth.inMemoryAuthentication().withUser("demo1").password("demo1").roles("DEMO");
+        // super.configure(auth);    //error
+        // 下面注释的是旧版本的创建方式因为新的Spring security 5.0中新增了多种加密方式，也改变了密码的格式,所以无法使用
+        // auth.inMemoryAuthentication().withUser("demo1").password("demo1").roles("DEMO");
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        auth.inMemoryAuthentication().passwordEncoder(bCryptPasswordEncoder)
+        auth.inMemoryAuthentication()
+                .passwordEncoder(bCryptPasswordEncoder)
                 .withUser("user")
                 .password(bCryptPasswordEncoder.encode("user"))
                 .roles("USER");
 
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        auth.inMemoryAuthentication().passwordEncoder(encoder)
+        auth.inMemoryAuthentication()
+                .passwordEncoder(encoder)
                 .withUser("admin")
                 .password(encoder.encode("admin"))
                 .roles("USER", "ADMIN")
@@ -66,18 +70,33 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        //http.exceptionHandling().accessDeniedHandler(new DefaultAccessDeniedHandler());
+        // http.exceptionHandling().accessDeniedHandler(new DefaultAccessDeniedHandler());
         http.csrf()
-                //.requireCsrfProtectionMatcher(new CsrfRequireMatcher(this.getAllowedRemoteHost(), this.getAllowedRefererList()))
+                // .requireCsrfProtectionMatcher(new CsrfRequireMatcher(this.getAllowedRemoteHost(),
+                // this.getAllowedRefererList()))
                 .ignoringAntMatchers("/actuator/**", "/druid/**", "/file/**");
         http.authorizeRequests()
-                .antMatchers("/", "/ping", "/actuator/health/liveness", "/actuator/health/readiness", "/error", "/swagger-ui.html", "/v2/api-docs", "/swagger-resources/**").permitAll()
-                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ACTUATOR_ADMIN")
-                .antMatchers("/druid/**").hasRole("ACTUATOR_ADMIN")
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .antMatchers("/demo/**", "/user/**", "/file/**").hasAnyRole("ADMIN", "USER")
-                //.antMatchers("/**").authenticated()
-                .anyRequest().authenticated()
+                .antMatchers(
+                        "/",
+                        "/ping",
+                        "/actuator/health/liveness",
+                        "/actuator/health/readiness",
+                        "/error",
+                        "/swagger-ui.html",
+                        "/v2/api-docs",
+                        "/swagger-resources/**")
+                .permitAll()
+                .requestMatchers(EndpointRequest.toAnyEndpoint())
+                .hasRole("ACTUATOR_ADMIN")
+                .antMatchers("/druid/**")
+                .hasRole("ACTUATOR_ADMIN")
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .permitAll()
+                .antMatchers("/demo/**", "/user/**", "/file/**")
+                .hasAnyRole("ADMIN", "USER")
+                // .antMatchers("/**").authenticated()
+                .anyRequest()
+                .authenticated()
                 .and()
                 .formLogin()
                 .and()
@@ -96,8 +115,16 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
             port = ":" + port;
         }
 
-        final String swaggerReferer1 = "http://localhost" + port + this.trimTail(applicationContextPath, '/') + "/swagger-ui.html";
-        final String swaggerReferer2 = "http://127.0.0.1" + port + this.trimTail(applicationContextPath, '/') + "/swagger-ui.html";
+        final String swaggerReferer1 =
+                "http://localhost"
+                        + port
+                        + this.trimTail(applicationContextPath, '/')
+                        + "/swagger-ui.html";
+        final String swaggerReferer2 =
+                "http://127.0.0.1"
+                        + port
+                        + this.trimTail(applicationContextPath, '/')
+                        + "/swagger-ui.html";
         List<String> allowedRefererList = ImmutableList.of(swaggerReferer1, swaggerReferer2);
         return allowedRefererList;
     }

@@ -1,15 +1,5 @@
 package com.sz.springbootsample.demo.config.security.xss;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micrometer.core.instrument.util.IOUtils;
-import io.micrometer.core.instrument.util.StringUtils;
-import org.springframework.util.CollectionUtils;
-import org.springframework.web.util.HtmlUtils;
-
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,6 +8,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.servlet.ReadListener;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.util.HtmlUtils;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.micrometer.core.instrument.util.IOUtils;
+import io.micrometer.core.instrument.util.StringUtils;
 
 /**
  * @author Yanghj
@@ -77,7 +79,6 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         return map;
     }
 
-
     @Override
     public ServletInputStream getInputStream() throws IOException {
         // 读取 RequestBody 中的数据
@@ -85,7 +86,8 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         // 进行 XSS 转义
         String escapedRequestBody = escapeJson(requestBody);
         // 将转义后的数据包装成流返回
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(escapedRequestBody.getBytes(StandardCharsets.UTF_8));
+        ByteArrayInputStream byteArrayInputStream =
+                new ByteArrayInputStream(escapedRequestBody.getBytes(StandardCharsets.UTF_8));
 
         return new ServletInputStream() {
             @Override
@@ -99,9 +101,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
             }
 
             @Override
-            public void setReadListener(ReadListener readListener) {
-
-            }
+            public void setReadListener(ReadListener readListener) {}
 
             @Override
             public int read() throws IOException {

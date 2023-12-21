@@ -1,6 +1,7 @@
 package com.sz.springbootsample.demo.exception;
 
 import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
+
 import lombok.Data;
 
 /**
@@ -11,14 +12,10 @@ import lombok.Data;
  */
 @Data
 public class BaseException extends RuntimeException {
-    /**
-     * 异常编码
-     */
+    /** 异常编码 */
     private String code;
 
-    /**
-     * 异常消息
-     */
+    /** 异常消息 */
     private String msg;
 
     public BaseException() {

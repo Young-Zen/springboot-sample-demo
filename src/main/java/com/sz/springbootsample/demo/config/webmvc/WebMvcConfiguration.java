@@ -1,12 +1,13 @@
 package com.sz.springbootsample.demo.config.webmvc;
 
-import com.sz.springbootsample.demo.config.property.LogProperties;
-import com.sz.springbootsample.demo.config.webmvc.interceptor.LogInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import com.sz.springbootsample.demo.config.property.LogProperties;
+import com.sz.springbootsample.demo.config.webmvc.interceptor.LogInterceptor;
 
 /**
  * Spring WebMvc配置类
@@ -17,8 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
-    @Autowired
-    LogProperties logProperties;
+    @Autowired LogProperties logProperties;
 
     @Value("${server.servlet.context-path:/}")
     private String applicationContextPath;
@@ -26,7 +26,8 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         if (logProperties.getEnable()) {
-            LogInterceptor logInterceptor = new LogInterceptor(logProperties.getAdditionalSkipPattern());
+            LogInterceptor logInterceptor =
+                    new LogInterceptor(logProperties.getAdditionalSkipPattern());
             logInterceptor.setApplicationContextPath(applicationContextPath);
             registry.addInterceptor(logInterceptor);
         }

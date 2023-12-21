@@ -1,10 +1,10 @@
 package com.sz.springbootsample.demo.config.security;
 
-import org.springframework.security.web.util.matcher.RequestMatcher;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 /**
  * Swagger忽略csrf的规则匹配类
@@ -34,7 +34,8 @@ public class CsrfRequireMatcher implements RequestMatcher {
         // CSRF not required on localhost when swagger-ui is referer
         final String remoteHost = request.getRemoteHost();
         final String referer = request.getHeader("Referer");
-        if (remoteHost != null && referer != null
+        if (remoteHost != null
+                && referer != null
                 && allowedRemoteHost.contains(remoteHost)
                 && allowedRefererList.contains(referer)) {
             return false;

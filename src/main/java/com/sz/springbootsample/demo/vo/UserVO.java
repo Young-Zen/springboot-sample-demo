@@ -1,20 +1,19 @@
 package com.sz.springbootsample.demo.vo;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import javax.validation.constraints.Email;
+
 import com.sz.springbootsample.demo.annotation.validator.ValidPassword;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.validation.constraints.Email;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 /**
- * <p>
  * 用户
- * </p>
  *
  * @author Yanghj
  * @since 2020-03-16
@@ -22,7 +21,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value="User对象", description="用户")
+@ApiModel(value = "User对象", description = "用户")
 public class UserVO {
 
     @ApiModelProperty(value = "主键 id")
@@ -35,7 +34,7 @@ public class UserVO {
     @ValidPassword
     private String password;
 
-    @ApiModelProperty(value = "生日",example = "2020-01-01")
+    @ApiModelProperty(value = "生日", example = "2020-01-01")
     private LocalDate birthday;
 
     @ApiModelProperty(value = "手机号")
@@ -56,5 +55,4 @@ public class UserVO {
 
     @ApiModelProperty(value = "更新时间")
     private LocalDateTime updateTime;
-
 }

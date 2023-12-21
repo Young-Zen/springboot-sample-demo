@@ -1,11 +1,10 @@
 package com.sz.springbootsample.demo.form;
 
-import com.sz.springbootsample.demo.vo.DemoVO;
-import lombok.Data;
-
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
+import lombok.Data;
 
 /**
  * this module only use for CD

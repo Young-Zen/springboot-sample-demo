@@ -1,16 +1,16 @@
 package com.sz.springbootsample.demo.thread.executor;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.util.concurrent.ListenableFuture;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadPoolExecutor;
 
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.util.concurrent.ListenableFuture;
+
+import lombok.extern.slf4j.Slf4j;
+
 /**
- * “可视化”的异步线程池；
- * 通过日志打印线程池的状态
+ * “可视化”的异步线程池； 通过日志打印线程池的状态
  *
  * @author Yanghj
  * @date 1/2/2020
@@ -25,7 +25,8 @@ public class VisitableThreadPoolTaskExecutor extends ThreadPoolTaskExecutor {
             return;
         }
 
-        log.info("{} {}. taskCount [{}], completedTaskCount [{}], activeCount [{}], queueSize [{}]",
+        log.info(
+                "{} {}. taskCount [{}], completedTaskCount [{}], activeCount [{}], queueSize [{}]",
                 this.getThreadNamePrefix(),
                 prefix,
                 threadPoolExecutor.getTaskCount(),

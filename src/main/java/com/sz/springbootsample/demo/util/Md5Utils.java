@@ -1,11 +1,12 @@
 package com.sz.springbootsample.demo.util;
 
-import com.sz.springbootsample.demo.exception.BaseException;
-import org.springframework.util.DigestUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
+import org.springframework.util.DigestUtils;
+
+import com.sz.springbootsample.demo.exception.BaseException;
 
 /**
  * this module only use for CD

@@ -1,17 +1,18 @@
 package com.sz.springbootsample.demo.util;
 
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import org.springframework.util.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.springframework.util.StringUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * this module only use for CD
@@ -52,7 +53,9 @@ public class JSONUtils {
             return null;
         }
         try {
-            return obj instanceof String ? (String) obj : OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
+            return obj instanceof String
+                    ? (String) obj
+                    : OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(obj);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -76,8 +79,7 @@ public class JSONUtils {
         }
         String str = (obj instanceof String) ? (String) obj : JSONUtils.writeValueAsString(obj);
         try {
-            return (OBJECT_MAPPER.readValue(str, new TypeReference<HashMap<String, Object>>() {
-            }));
+            return (OBJECT_MAPPER.readValue(str, new TypeReference<HashMap<String, Object>>() {}));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -88,8 +90,8 @@ public class JSONUtils {
             return null;
         }
         try {
-            return (T) (OBJECT_MAPPER.readValue(str, new TypeReference<HashMap<String, String>>() {
-            }));
+            return (T)
+                    (OBJECT_MAPPER.readValue(str, new TypeReference<HashMap<String, String>>() {}));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -100,19 +102,25 @@ public class JSONUtils {
             return null;
         }
         try {
-            return (T) (typeReference.getType().equals(String.class) ? str : OBJECT_MAPPER.readValue(str, typeReference));
+            return (T)
+                    (typeReference.getType().equals(String.class)
+                            ? str
+                            : OBJECT_MAPPER.readValue(str, typeReference));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static <T> T string2Obj(String str, Class<?> collectionClass, Class<?>... elementClasses) {
-        JavaType javaType = OBJECT_MAPPER.getTypeFactory().constructParametricType(collectionClass, elementClasses);
+    public static <T> T string2Obj(
+            String str, Class<?> collectionClass, Class<?>... elementClasses) {
+        JavaType javaType =
+                OBJECT_MAPPER
+                        .getTypeFactory()
+                        .constructParametricType(collectionClass, elementClasses);
         try {
             return OBJECT_MAPPER.readValue(str, javaType);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
 }

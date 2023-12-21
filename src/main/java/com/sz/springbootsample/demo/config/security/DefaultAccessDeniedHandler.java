@@ -1,15 +1,16 @@
 package com.sz.springbootsample.demo.config.security;
 
-import com.sz.springbootsample.demo.dto.ResponseResultDTO;
-import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
-import com.sz.springbootsample.demo.util.JSONUtils;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
-
+import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.access.AccessDeniedHandler;
+
+import com.sz.springbootsample.demo.dto.ResponseResultDTO;
+import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
+import com.sz.springbootsample.demo.util.JSONUtils;
 
 /**
  * security拒绝访问时的处理类
@@ -20,8 +21,16 @@ import java.io.IOException;
 public class DefaultAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
-    public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException e) throws IOException, ServletException {
+    public void handle(
+            HttpServletRequest httpServletRequest,
+            HttpServletResponse httpServletResponse,
+            AccessDeniedException e)
+            throws IOException, ServletException {
         httpServletResponse.setCharacterEncoding("utf-8");
-        httpServletResponse.getWriter().write(JSONUtils.writeValueAsString(ResponseResultDTO.fail(ResponseCodeEnum.FORBIDDEN)));
+        httpServletResponse
+                .getWriter()
+                .write(
+                        JSONUtils.writeValueAsString(
+                                ResponseResultDTO.fail(ResponseCodeEnum.FORBIDDEN)));
     }
 }

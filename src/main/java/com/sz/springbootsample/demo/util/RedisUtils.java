@@ -1,11 +1,11 @@
 package com.sz.springbootsample.demo.util;
 
+import java.util.Collections;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
-
-import java.util.Collections;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Yanghj
@@ -20,16 +20,15 @@ public class RedisUtils {
     }
 
     private RedisUtils() {
-        redisTemplate = (RedisTemplate<String, Object>) ApplicationContextUtils.getBean("redisTemplate");
+        redisTemplate =
+                (RedisTemplate<String, Object>) ApplicationContextUtils.getBean("redisTemplate");
     }
 
     public static final RedisUtils getInstance() {
         return RedisUtilsHolder.INSTANCE;
     }
 
-    /**
-     * 解锁脚本，原子操作
-     */
+    /** 解锁脚本，原子操作 */
     private static final String UNLOCK_SCRIPT =
             "if redis.call(\"get\",KEYS[1]) == ARGV[1]\n"
                     + "then\n"
@@ -50,15 +49,13 @@ public class RedisUtils {
     }
 
     /**
-     * 该加锁方法仅针对单实例 Redis 可实现分布式加锁
-     * 对于 Redis 集群则无法使用
-     * 集群用 redisson
-     * <p>
-     * 支持重复，线程安全
+     * 该加锁方法仅针对单实例 Redis 可实现分布式加锁 对于 Redis 集群则无法使用 集群用 redisson
      *
-     * @param key      加锁键
+     * <p>支持重复，线程安全
+     *
+     * @param key 加锁键
      * @param clientId 加锁客户端唯一标识(采用UUID)
-     * @param seconds  锁过期时间
+     * @param seconds 锁过期时间
      * @return
      */
     public Boolean tryLock(String key, String clientId, long seconds) {

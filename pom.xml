@@ -28,6 +28,7 @@
 		<org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
 		<alibaba.transmittable-thread-local.version>2.14.2</alibaba.transmittable-thread-local.version>
 		<alibaba.p3c-pmd.version>1.3.6</alibaba.p3c-pmd.version>
+		<spotless.version>2.30.0</spotless.version>
 		<spring-boot-admin.version>2.3.1</spring-boot-admin.version>
 		<swagger.version>2.9.2</swagger.version>
 		<swagger-models.version>1.5.24</swagger-models.version>
@@ -354,6 +355,69 @@
 						<version>${alibaba.p3c-pmd.version}</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>com.rudikershaw.gitbuildhook</groupId>
+				<artifactId>git-build-hook-maven-plugin</artifactId>
+				<version>3.4.1</version>
+				<configuration>
+					<installHooks>
+						<pre-commit>hooks/pre-commit</pre-commit>
+					</installHooks>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>install</goal>
+						</goals>
+						<phase>compile</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.diffplug.spotless</groupId>
+				<artifactId>spotless-maven-plugin</artifactId>
+				<version>${spotless.version}</version>
+				<configuration>
+					<formats>
+						<!-- you can define as many formats as you want, each is independent -->
+						<format>
+							<!-- define the files to apply to -->
+							<includes>
+								<include>.gitattributes</include>
+								<include>.gitignore</include>
+							</includes>
+							<!-- define the steps to apply to those files -->
+							<trimTrailingWhitespace/>
+							<endWithNewline/>
+							<indent>
+								<spaces>true</spaces>
+							</indent>
+						</format>
+					</formats>
+					<!-- define a language-specific format -->
+					<java>
+						<!-- no need to specify files, inferred automatically, but you can if you want -->
+
+						<!-- apply a specific flavor of google-java-format and reflow long strings -->
+						<googleJavaFormat>
+							<version>1.7</version>
+							<style>AOSP</style>
+						</googleJavaFormat>
+						<removeUnusedImports/>
+						<importOrder>
+							<order>java|javax,org,com,com.sz,,\#com.sz,\#</order>
+						</importOrder>
+					</java>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<phase>compile</phase>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

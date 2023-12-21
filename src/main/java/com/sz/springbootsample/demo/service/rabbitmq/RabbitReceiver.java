@@ -1,12 +1,14 @@
 package com.sz.springbootsample.demo.service.rabbitmq;
 
-import com.rabbitmq.client.Channel;
-import com.sz.springbootsample.demo.config.message.RabbitConfig;
+import java.io.IOException;
+
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
+import com.rabbitmq.client.Channel;
+
+import com.sz.springbootsample.demo.config.message.RabbitConfig;
 
 /**
  * @author Yanghj

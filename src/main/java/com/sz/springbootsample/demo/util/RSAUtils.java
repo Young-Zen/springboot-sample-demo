@@ -1,11 +1,11 @@
 package com.sz.springbootsample.demo.util;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
 import lombok.extern.slf4j.Slf4j;
-
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 /**
  * @author Yanghj
@@ -35,7 +35,10 @@ public class RSAUtils {
     }
 
     public static byte[] decrypt(String ciphertext) {
-        byte[] decrypt = RSA.decrypt(Base64.getDecoder().decode(ciphertext.getBytes(StandardCharsets.UTF_8)), KeyType.PrivateKey);
+        byte[] decrypt =
+                RSA.decrypt(
+                        Base64.getDecoder().decode(ciphertext.getBytes(StandardCharsets.UTF_8)),
+                        KeyType.PrivateKey);
         return decrypt;
     }
 }

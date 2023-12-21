@@ -1,6 +1,14 @@
 package com.sz.springbootsample.demo;
 
-import cn.hutool.crypto.asymmetric.RSA;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.Base64;
+import java.util.Objects;
+
+import org.junit.Test;
+
 import com.sz.springbootsample.demo.dto.ResponseResultDTO;
 import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
 import com.sz.springbootsample.demo.exception.BaseException;
@@ -10,16 +18,10 @@ import com.sz.springbootsample.demo.util.Md5Utils;
 import com.sz.springbootsample.demo.util.OkHttpClientUtils;
 import com.sz.springbootsample.demo.util.RSAUtils;
 import com.sz.springbootsample.demo.util.RetryUtils;
+
+import cn.hutool.crypto.asymmetric.RSA;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
-import org.junit.Test;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.time.Duration;
-import java.util.Base64;
-import java.util.Objects;
 
 /**
  * this module only use for CD
@@ -47,7 +49,13 @@ public class UploadFileTests {
         }
     }
 
-    private static String doUploadFile(OkHttpClient okHttpClient, String filePath, String fileName, String fileVersion, boolean encrypt) throws IOException {
+    private static String doUploadFile(
+            OkHttpClient okHttpClient,
+            String filePath,
+            String fileName,
+            String fileVersion,
+            boolean encrypt)
+            throws IOException {
         String rsaPublicKey = getRsaPublicKey(okHttpClient);
 
         File file = new File(filePath);
@@ -64,7 +72,7 @@ public class UploadFileTests {
         System.out.println(shardSize);
         System.out.println(lastShardSize);
 
-        try(FileInputStream fileInputStream = new FileInputStream(file)) {
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
             byte[] shardBytes = new byte[shardSize];
             String uploadId = null;
             for (int shardIndex = 1; shardIndex <= shardTotal; shardIndex++) {
@@ -86,15 +94,20 @@ public class UploadFileTests {
                 if (shardIndex == shardTotal) {
                     form.setMd5(Md5Utils.getFileMd5(filePath));
                 }
-                uploadId = RetryUtils.retry(() -> {
-                    try {
-                        return uploadFile(okHttpClient, form);
-                    } catch (Exception e) {
-                        log.error("uploadFile error: ", e);
-                        // forces a retry
-                        throw new IllegalStateException(e);
-                    }
-                }, 4, Duration.ofMillis(1000), false);
+                uploadId =
+                        RetryUtils.retry(
+                                () -> {
+                                    try {
+                                        return uploadFile(okHttpClient, form);
+                                    } catch (Exception e) {
+                                        log.error("uploadFile error: ", e);
+                                        // forces a retry
+                                        throw new IllegalStateException(e);
+                                    }
+                                },
+                                4,
+                                Duration.ofMillis(1000),
+                                false);
             }
             return uploadId;
         }
@@ -108,10 +121,14 @@ public class UploadFileTests {
         return RSAUtils.encrypt(rsa, shardBytes);
     }
 
-    private static String uploadFile(OkHttpClient okHttpClient, UploadFileForm form) throws IOException {
+    private static String uploadFile(OkHttpClient okHttpClient, UploadFileForm form)
+            throws IOException {
         String body = JSONUtils.writeValueAsString(form);
-        String response = OkHttpClientUtils.postJson(okHttpClient, FILE_SERVER_BASE_URL + "/api/demo/file/upload", body);
-        ResponseResultDTO responseResultDTO = JSONUtils.readValue(response, ResponseResultDTO.class);
+        String response =
+                OkHttpClientUtils.postJson(
+                        okHttpClient, FILE_SERVER_BASE_URL + "/api/demo/file/upload", body);
+        ResponseResultDTO responseResultDTO =
+                JSONUtils.readValue(response, ResponseResultDTO.class);
         if (!Objects.equals(responseResultDTO.getCode(), ResponseCodeEnum.OK.getCode())) {
             throw new BaseException(responseResultDTO.getCode(), responseResultDTO.getMsg());
         }
@@ -119,8 +136,11 @@ public class UploadFileTests {
     }
 
     private static String getRsaPublicKey(OkHttpClient okHttpClient) throws IOException {
-        String response = OkHttpClientUtils.get(okHttpClient, FILE_SERVER_BASE_URL + "/api/demo/file/getRsaPublicKey");
-        ResponseResultDTO responseResultDTO = JSONUtils.readValue(response, ResponseResultDTO.class);
+        String response =
+                OkHttpClientUtils.get(
+                        okHttpClient, FILE_SERVER_BASE_URL + "/api/demo/file/getRsaPublicKey");
+        ResponseResultDTO responseResultDTO =
+                JSONUtils.readValue(response, ResponseResultDTO.class);
         if (!Objects.equals(responseResultDTO.getCode(), ResponseCodeEnum.OK.getCode())) {
             throw new BaseException(responseResultDTO.getCode(), responseResultDTO.getMsg());
         }

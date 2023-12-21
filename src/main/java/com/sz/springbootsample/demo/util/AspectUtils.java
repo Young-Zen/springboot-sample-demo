@@ -1,12 +1,12 @@
 package com.sz.springbootsample.demo.util;
 
+import java.lang.annotation.Annotation;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import java.lang.annotation.Annotation;
 
 /**
  * AOP工具类
@@ -19,8 +19,7 @@ public class AspectUtils {
         private static final AspectUtils INSTANCE = new AspectUtils();
     }
 
-    private AspectUtils() {
-    }
+    private AspectUtils() {}
 
     public static final AspectUtils getInstance() {
         return AspectUtilsHolder.INSTANCE;
@@ -39,9 +38,14 @@ public class AspectUtils {
         Object[] params = joinPoint.getArgs();
         Object[] arguments = new Object[params.length];
         for (int i = 0; i < params.length; i++) {
-            if (params[i] instanceof ServletRequest || params[i] instanceof ServletResponse || params[i] instanceof MultipartFile) {
-                //ServletRequest不能序列化，从入参里排除，否则报异常：java.lang.IllegalStateException: It is illegal to call this method if the current request is not in asynchronous mode (i.e. isAsyncStarted() returns false)
-                //ServletResponse不能序列化 从入参里排除，否则报异常：java.lang.IllegalStateException: getOutputStream() has already been called for this response
+            if (params[i] instanceof ServletRequest
+                    || params[i] instanceof ServletResponse
+                    || params[i] instanceof MultipartFile) {
+                // ServletRequest不能序列化，从入参里排除，否则报异常：java.lang.IllegalStateException: It is illegal
+                // to call this method if the current request is not in asynchronous mode (i.e.
+                // isAsyncStarted() returns false)
+                // ServletResponse不能序列化 从入参里排除，否则报异常：java.lang.IllegalStateException:
+                // getOutputStream() has already been called for this response
                 continue;
             }
             arguments[i] = params[i];
@@ -56,11 +60,14 @@ public class AspectUtils {
      * @param annotationClass 注解的类型
      * @return 方法上的注解
      */
-    public <T extends Annotation> T getMethodAnnotation(JoinPoint joinPoint, Class<T> annotationClass) {
+    public <T extends Annotation> T getMethodAnnotation(
+            JoinPoint joinPoint, Class<T> annotationClass) {
         if (joinPoint == null) {
             return null;
         }
-        return ((MethodSignature) joinPoint.getSignature()).getMethod().getAnnotation(annotationClass);
+        return ((MethodSignature) joinPoint.getSignature())
+                .getMethod()
+                .getAnnotation(annotationClass);
     }
 
     /**
@@ -70,10 +77,14 @@ public class AspectUtils {
      * @param annotationClass 注解的类型
      * @return 类上的注解
      */
-    public <T extends Annotation> T getClassAnnotation(JoinPoint joinPoint, Class<T> annotationClass) {
+    public <T extends Annotation> T getClassAnnotation(
+            JoinPoint joinPoint, Class<T> annotationClass) {
         if (joinPoint == null) {
             return null;
         }
-        return ((MethodSignature) joinPoint.getSignature()).getMethod().getDeclaringClass().getAnnotation(annotationClass);
+        return ((MethodSignature) joinPoint.getSignature())
+                .getMethod()
+                .getDeclaringClass()
+                .getAnnotation(annotationClass);
     }
 }
