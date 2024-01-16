@@ -41,7 +41,7 @@ import io.swagger.annotations.ApiParam;
  * @date 1/1/2020
  */
 @RestController
-@Validated // 校验方法参数
+@Validated
 @RequestMapping("/demo")
 @Api(tags = "Demo 演示类")
 public class DemoController {
@@ -55,10 +55,10 @@ public class DemoController {
     @GetMapping("/lombok/chain")
     @ApiOperation("Lombok 链式 set 方法例子")
     public DemoVO chain() {
-        DemoVO demoVO = new DemoVO();
-        demoVO.setDemoId(520L).setName("chain").setAge(1).setCreateTime(new Date());
-        DemoPO demoPO = DemoMapper.INSTANCE.demoVO2DemoPO(demoVO);
-        return DemoMapper.INSTANCE.demoPO2DemoVO(demoPO);
+        DemoVO demoVo = new DemoVO();
+        demoVo.setDemoId(520L).setName("chain").setAge(1).setCreateTime(new Date());
+        DemoPO demoPo = DemoMapper.INSTANCE.demoVo2DemoPo(demoVo);
+        return DemoMapper.INSTANCE.demoPo2DemoVO(demoPo);
     }
 
     @GetMapping("/security")
@@ -82,14 +82,14 @@ public class DemoController {
             @ApiParam(name = "DemoVO对象", value = "json格式", required = true)
                     @Validated(DemoVO.Add.class)
                     @RequestBody
-                    DemoVO demoVO) {
-        demoService.save(DemoMapper.INSTANCE.demoVO2DemoPO(demoVO));
+                    DemoVO demoVo) {
+        demoService.save(DemoMapper.INSTANCE.demoVo2DemoPo(demoVo));
 
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.last("limit 1");
         wrapper.orderByDesc("pk_demo_id");
-        DemoPO demoPO = demoService.getOne(wrapper);
-        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPO2DemoVO(demoPO));
+        DemoPO demoPo = demoService.getOne(wrapper);
+        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPo2DemoVO(demoPo));
     }
 
     @PostMapping("/delete")
@@ -107,26 +107,26 @@ public class DemoController {
     @GetMapping("/mybatisPlus")
     @ApiOperation("MybatisPlus 例子")
     public ResponseResultDTO mybatisPlus() {
-        DemoVO demoVO = new DemoVO();
-        demoVO.setAge(1)
+        DemoVO demoVo = new DemoVO();
+        demoVo.setAge(1)
                 .setName("mybatisPlus")
                 .setAccount(new BigDecimal("5.2"))
                 .setCreateTime(new Date());
-        demoService.save(DemoMapper.INSTANCE.demoVO2DemoPO(demoVO));
+        demoService.save(DemoMapper.INSTANCE.demoVo2DemoPo(demoVo));
 
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("name", "mybatisPlus");
         wrapper.last("limit 1");
         wrapper.orderByDesc("pk_demo_id");
-        DemoPO demoPO = demoService.getOne(wrapper);
-        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPO2DemoVO(demoPO));
+        DemoPO demoPo = demoService.getOne(wrapper);
+        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPo2DemoVO(demoPo));
     }
 
     @GetMapping("/mybatisPlus/list")
     @ApiOperation("MybatisPlus list 方法例子")
     public ResponseResultDTO list() {
-        List<DemoPO> demoPOList = demoService.list();
-        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPOs2demoVOs(demoPOList));
+        List<DemoPO> demoPoList = demoService.list();
+        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPos2demoVos(demoPoList));
     }
 
     @GetMapping("/mybatisPlus/page")
@@ -135,7 +135,7 @@ public class DemoController {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.orderByDesc("pk_demo_id");
         IPage<DemoPO> page = demoService.page(new Page<>(0, 10), wrapper);
-        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPOPage2demoVOPage(page));
+        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPoPage2demoVoPage(page));
     }
 
     @GetMapping("/ignoreTracing")
@@ -145,7 +145,7 @@ public class DemoController {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("name", "mybatisPlus");
         wrapper.last("limit 1");
-        DemoPO demoPO = demoService.getOne(wrapper);
+        DemoPO demoPo = demoService.getOne(wrapper);
         return ResponseResultDTO.ok("look console");
     }
 
@@ -158,22 +158,23 @@ public class DemoController {
 
     @GetMapping("/redis")
     public void redis() {
-        DemoVO demoVO = new DemoVO();
-        demoVO.setName("name").setAge(10).setAccount(new BigDecimal("5.2"));
-        redisTemplate.opsForValue().set("demoVO-1", demoVO, 300, TimeUnit.SECONDS);
+        DemoVO demoVo = new DemoVO();
+        demoVo.setName("name").setAge(10).setAccount(new BigDecimal("5.2"));
+        redisTemplate.opsForValue().set("demoVo-1", demoVo, 300, TimeUnit.SECONDS);
     }
 
     @GetMapping("/redis/id")
-    public long redisID() {
-        return RedisUtils.getInstance().generateID("key1");
+    public long redisId() {
+        return RedisUtils.getInstance().generateId("key1");
     }
 
     @GetMapping("/redis/distributedLock")
     public void distributedLock() {
         String key = "lock-1";
+        long seconds = 100L;
         String clientId = UUID.randomUUID().toString();
         try {
-            if (RedisUtils.getInstance().tryLock(key, clientId, 100)) {
+            if (RedisUtils.getInstance().tryLock(key, clientId, seconds)) {
                 System.out.println("lock");
             }
         } finally {
@@ -183,16 +184,16 @@ public class DemoController {
 
     @GetMapping("/rabbitmq/direct")
     public void direct() {
-        DemoVO demoVO = new DemoVO();
-        demoVO.setName("direct").setAge(10).setAccount(new BigDecimal("5.2"));
+        DemoVO demoVo = new DemoVO();
+        demoVo.setName("direct").setAge(10).setAccount(new BigDecimal("5.2"));
         rabbitTemplate.convertAndSend(
-                RabbitConfig.MAIL_DIRECT_EXCHANGE, RabbitConfig.MAIL_ROUTING_KEY, demoVO);
+                RabbitConfig.MAIL_DIRECT_EXCHANGE, RabbitConfig.MAIL_ROUTING_KEY, demoVo);
     }
 
     @GetMapping("/rabbitmq/fanout")
     public void fanout() {
-        DemoVO demoVO = new DemoVO();
-        demoVO.setName("fanout").setAge(10).setAccount(new BigDecimal("5.2"));
-        rabbitTemplate.convertAndSend(RabbitConfig.MAIL_FANOUT_EXCHANGE, "", demoVO);
+        DemoVO demoVo = new DemoVO();
+        demoVo.setName("fanout").setAge(10).setAccount(new BigDecimal("5.2"));
+        rabbitTemplate.convertAndSend(RabbitConfig.MAIL_FANOUT_EXCHANGE, "", demoVo);
     }
 }

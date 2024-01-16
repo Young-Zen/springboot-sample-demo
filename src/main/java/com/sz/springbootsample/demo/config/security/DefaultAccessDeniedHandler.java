@@ -10,7 +10,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 
 import com.sz.springbootsample.demo.dto.ResponseResultDTO;
 import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
-import com.sz.springbootsample.demo.util.JSONUtils;
+import com.sz.springbootsample.demo.util.JsonUtils;
 
 /**
  * security拒绝访问时的处理类
@@ -30,7 +30,7 @@ public class DefaultAccessDeniedHandler implements AccessDeniedHandler {
         httpServletResponse
                 .getWriter()
                 .write(
-                        JSONUtils.writeValueAsString(
+                        JsonUtils.writeValueAsString(
                                 ResponseResultDTO.fail(ResponseCodeEnum.FORBIDDEN)));
     }
 }

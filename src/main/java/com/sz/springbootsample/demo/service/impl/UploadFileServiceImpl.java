@@ -18,7 +18,7 @@ import com.sz.springbootsample.demo.exception.BaseException;
 import com.sz.springbootsample.demo.form.UploadFileForm;
 import com.sz.springbootsample.demo.service.UploadFileService;
 import com.sz.springbootsample.demo.util.Md5Utils;
-import com.sz.springbootsample.demo.util.RSAUtils;
+import com.sz.springbootsample.demo.util.RsaUtils;
 
 import lombok.extern.slf4j.Slf4j;
 import sun.security.action.GetPropertyAction;
@@ -105,7 +105,7 @@ public class UploadFileServiceImpl implements UploadFileService {
             return Base64.getDecoder()
                     .decode(form.getFileContent().getBytes(StandardCharsets.UTF_8));
         }
-        return RSAUtils.decrypt(form.getFileContent());
+        return RsaUtils.decrypt(form.getFileContent());
     }
 
     private void createUploadDir(UploadFileForm form) {

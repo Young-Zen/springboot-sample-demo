@@ -23,23 +23,53 @@ import com.sz.springbootsample.demo.vo.UserVO;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+    /**
+     * userVo to UserPo
+     *
+     * @param userVo
+     * @return
+     */
     @Mappings({@Mapping(source = "userId", target = "pkUserId")})
-    UserPO userVO2UserPO(UserVO userVO);
+    UserPO userVo2UserPo(UserVO userVo);
 
+    /**
+     * userPo to UserVO
+     *
+     * @param userPo
+     * @return
+     */
     @Mappings({@Mapping(source = "pkUserId", target = "userId")})
-    UserVO userPO2UserVO(UserPO userPO);
+    UserVO userPo2UserVO(UserPO userPo);
 
-    List<UserPO> userVOs2UserPOs(List<UserVO> userVOs);
+    /**
+     * userVos to UserPos
+     *
+     * @param userVos
+     * @return
+     */
+    List<UserPO> userVos2UserPos(List<UserVO> userVos);
 
-    List<UserVO> userPOs2UserVOs(List<UserPO> userPOs);
+    /**
+     * userPos to UserVos
+     *
+     * @param userPos
+     * @return
+     */
+    List<UserVO> userPos2UserVos(List<UserPO> userPos);
 
-    default IPage<UserVO> userPOPage2UserVOPage(IPage<UserPO> userPOIPage) {
-        if (userPOIPage == null) {
+    /**
+     * userPoPage to UserVoPage
+     *
+     * @param userPoPage
+     * @return
+     */
+    default IPage<UserVO> userPoPage2UserVoPage(IPage<UserPO> userPoPage) {
+        if (userPoPage == null) {
             return null;
         }
-        IPage<UserVO> userVOIPage =
-                new Page<>(userPOIPage.getCurrent(), userPOIPage.getSize(), userPOIPage.getTotal());
-        userVOIPage.setRecords(this.userPOs2UserVOs(userPOIPage.getRecords()));
-        return userVOIPage;
+        IPage<UserVO> userVoPage =
+                new Page<>(userPoPage.getCurrent(), userPoPage.getSize(), userPoPage.getTotal());
+        userVoPage.setRecords(this.userPos2UserVos(userPoPage.getRecords()));
+        return userVoPage;
     }
 }

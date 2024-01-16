@@ -23,23 +23,53 @@ import com.sz.springbootsample.demo.vo.DemoVO;
 public interface DemoMapper {
     DemoMapper INSTANCE = Mappers.getMapper(DemoMapper.class);
 
+    /**
+     * demoVo to DemoPo
+     *
+     * @param demoVo
+     * @return
+     */
     @Mappings({@Mapping(source = "demoId", target = "pkDemoId")})
-    DemoPO demoVO2DemoPO(DemoVO demoVO);
+    DemoPO demoVo2DemoPo(DemoVO demoVo);
 
+    /**
+     * demoPo to DemoVO
+     *
+     * @param demoPo
+     * @return
+     */
     @Mappings({@Mapping(source = "pkDemoId", target = "demoId")})
-    DemoVO demoPO2DemoVO(DemoPO demoPO);
+    DemoVO demoPo2DemoVO(DemoPO demoPo);
 
-    List<DemoPO> demoVOs2demoPOs(List<DemoVO> demoVOs);
+    /**
+     * demoVos to demoPos
+     *
+     * @param demoVos
+     * @return
+     */
+    List<DemoPO> demoVos2demoPos(List<DemoVO> demoVos);
 
-    List<DemoVO> demoPOs2demoVOs(List<DemoPO> demoPOs);
+    /**
+     * demoPos to demoVos
+     *
+     * @param demoPos
+     * @return
+     */
+    List<DemoVO> demoPos2demoVos(List<DemoPO> demoPos);
 
-    default IPage<DemoVO> demoPOPage2demoVOPage(IPage<DemoPO> demoPOIPage) {
-        if (demoPOIPage == null) {
+    /**
+     * demoPoPage to demoVoPage
+     *
+     * @param demoPoPage
+     * @return
+     */
+    default IPage<DemoVO> demoPoPage2demoVoPage(IPage<DemoPO> demoPoPage) {
+        if (demoPoPage == null) {
             return null;
         }
-        IPage<DemoVO> demoVOIPage =
-                new Page<>(demoPOIPage.getCurrent(), demoPOIPage.getSize(), demoPOIPage.getTotal());
-        demoVOIPage.setRecords(this.demoPOs2demoVOs(demoPOIPage.getRecords()));
-        return demoVOIPage;
+        IPage<DemoVO> demoVoPage =
+                new Page<>(demoPoPage.getCurrent(), demoPoPage.getSize(), demoPoPage.getTotal());
+        demoVoPage.setRecords(this.demoPos2demoVos(demoPoPage.getRecords()));
+        return demoVoPage;
     }
 }

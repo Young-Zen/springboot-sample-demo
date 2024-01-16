@@ -3,6 +3,8 @@ package com.sz.springbootsample.demo.util;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import org.springframework.http.HttpStatus;
+
 import okhttp3.Credentials;
 import okhttp3.Interceptor;
 import okhttp3.MediaType;
@@ -142,7 +144,8 @@ public final class OkHttpClientUtils {
             try {
                 Response response = chain.proceed(request);
                 int statusCode = response.code();
-                if (statusCode >= 200 && statusCode < 500) {
+                if (statusCode >= HttpStatus.OK.value()
+                        && statusCode < HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                     return response;
                 }
                 if (count > 0) {

@@ -30,27 +30,6 @@ public class LogAspect {
     @Autowired private LogProperties logProperties;
 
     /**
-     * 方法环绕通知，设置 isIgnoreTracing
-     *
-     * @param proceedingJoinPoint
-     */
-    /*@Around(value = "com.sz.springbootsample.demo.aspect.Pointcuts.controllerAspect()")
-    public Object methodAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        System.out.println(proceedingJoinPoint.getSignature() + "LogAspect around before proceed advice");
-        LogDTO logDto = LogHolder.getLogDto();
-        logDto.setAdviceCount(logDto.getAdviceCount() + 1);
-        if (AspectUtils.getInstance().getAnnotation(proceedingJoinPoint, IgnoreTracing.class) != null) {
-            logDto.setIsIgnoreTracing(true);
-        }
-        LogHolder.setLogDto(logDto);
-        try {
-            return proceedingJoinPoint.proceed();
-        } finally {
-            System.out.println(proceedingJoinPoint.getSignature() + "LogAspect around after proceed advice");
-        }
-    }*/
-
-    /**
      * 方法前置通知，打印方法入参
      *
      * @param joinPoint

@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2023/6/28 11:59
  */
 @Slf4j
-public class RSAUtils {
+public class RsaUtils {
 
     private static final RSA RSA = new RSA();
 

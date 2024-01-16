@@ -15,8 +15,6 @@ import io.swagger.annotations.ApiOperation;
  * @date 1/13/2020
  */
 @RestController
-// @ConditionalOnProperty(name = {"custom.swagger.enable", "custom.swagger.csrf.enable"},
-// havingValue = "true")
 @ConditionalOnExpression("${custom.swagger.enable:true} && ${custom.swagger.csrf.enable:false}")
 @Api(tags = "设置csrf token")
 public class CsrfController {

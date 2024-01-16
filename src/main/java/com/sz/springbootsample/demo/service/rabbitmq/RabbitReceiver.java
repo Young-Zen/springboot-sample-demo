@@ -20,16 +20,16 @@ public class RabbitReceiver {
     @RabbitListener(queues = RabbitConfig.MAIL_QUEUE)
     public void consume(Message message, Channel channel) throws IOException {
         byte[] bytes = message.getBody();
-        String demoVO = new String(bytes, "UTF-8");
-        System.out.println(demoVO);
+        String demoVo = new String(bytes, "UTF-8");
+        System.out.println(demoVo);
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
     }
 
     @RabbitListener(queues = RabbitConfig.MAIL_FANOUT_QUEUE)
     public void consume1(Message message, Channel channel) throws IOException {
         byte[] bytes = message.getBody();
-        String demoVO = new String(bytes, "UTF-8");
-        System.out.println(demoVO);
+        String demoVo = new String(bytes, "UTF-8");
+        System.out.println(demoVo);
         channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
     }
 }

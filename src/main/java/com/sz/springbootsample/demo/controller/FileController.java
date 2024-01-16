@@ -14,7 +14,7 @@ import com.sz.springbootsample.demo.dto.ResponseResultDTO;
 import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
 import com.sz.springbootsample.demo.form.UploadFileForm;
 import com.sz.springbootsample.demo.service.UploadFileService;
-import com.sz.springbootsample.demo.util.RSAUtils;
+import com.sz.springbootsample.demo.util.RsaUtils;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,7 +41,7 @@ public class FileController {
         return ResponseResultDTO.ok(
                 ResponseCodeEnum.OK.getCode(),
                 ResponseCodeEnum.OK.getMsg(),
-                RSAUtils.getPublicKey());
+                RsaUtils.getPublicKey());
     }
 
     @PostMapping("/upload")

@@ -16,8 +16,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sz.springbootsample.demo.annotation.IgnoreTracing;
 import com.sz.springbootsample.demo.dto.LogDTO;
 import com.sz.springbootsample.demo.thread.threadlocal.LogHolder;
-import com.sz.springbootsample.demo.util.RequestUtils;
 
+import cn.hutool.extra.servlet.ServletUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -90,7 +90,7 @@ public class LogInterceptor implements HandlerInterceptor {
                 "{}，服务器IP：{}，请求IP：{}，请求方式：{}，URL：{}",
                 logCode,
                 InetAddress.getLocalHost().getHostAddress(),
-                RequestUtils.getInstance().getRemoteIp(request),
+                ServletUtil.getClientIP(request),
                 request.getMethod(),
                 request.getRequestURL());
         return true;

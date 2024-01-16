@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
  * @author yanghaojia CD-Group
  * @date 2022/8/10 16:39
  */
-public class JSONUtils {
+public class JsonUtils {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -77,7 +77,7 @@ public class JSONUtils {
         if (Objects.isNull(obj)) {
             return null;
         }
-        String str = (obj instanceof String) ? (String) obj : JSONUtils.writeValueAsString(obj);
+        String str = (obj instanceof String) ? (String) obj : JsonUtils.writeValueAsString(obj);
         try {
             return (OBJECT_MAPPER.readValue(str, new TypeReference<HashMap<String, Object>>() {}));
         } catch (Exception e) {

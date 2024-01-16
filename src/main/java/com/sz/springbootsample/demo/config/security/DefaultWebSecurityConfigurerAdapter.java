@@ -1,6 +1,7 @@
 package com.sz.springbootsample.demo.config.security;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.util.StringUtils;
 
 import com.google.common.collect.ImmutableList;
 
@@ -108,8 +110,10 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
         return allowedRemoteHost;
     }
 
+    public static final String HTTP_DEFAULT_PORT = "80";
+
     private List<String> getAllowedRefererList() {
-        if ("80".equals(port)) {
+        if (Objects.equals(port, HTTP_DEFAULT_PORT)) {
             port = "";
         } else {
             port = ":" + port;
@@ -130,19 +134,6 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
     }
 
     private String trimTail(String source, char tail) {
-        int len = source.length();
-        int st = 0;
-
-        while ((st < len) && (source.charAt(st) <= ' ')) {
-            st++;
-        }
-        while ((st < len) && (source.charAt(len - 1) <= ' ')) {
-            len--;
-        }
-
-        while ((st < len) && (source.charAt(len - 1) == tail)) {
-            len--;
-        }
-        return ((st > 0) || (len < source.length())) ? source.substring(st, len) : source;
+        return StringUtils.trimTrailingCharacter(source.trim(), tail);
     }
 }

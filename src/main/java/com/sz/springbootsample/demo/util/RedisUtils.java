@@ -43,7 +43,7 @@ public class RedisUtils {
      * @param key
      * @return
      */
-    public long generateID(String key) {
+    public long generateId(String key) {
         RedisAtomicLong counter = new RedisAtomicLong(key, redisTemplate.getConnectionFactory());
         return counter.incrementAndGet();
     }

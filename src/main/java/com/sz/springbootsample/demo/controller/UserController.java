@@ -34,32 +34,32 @@ public class UserController {
     @ApiOperation("插入")
     public ResponseResultDTO add(
             @ApiParam(name = "UserVO对象", value = "json格式", required = true) @RequestBody
-                    UserVO userVO) {
-        paramValidateUtil.verifyParams(userVO);
+                    UserVO userVo) {
+        paramValidateUtil.verifyParams(userVo);
 
-        UserPO userPO = UserMapper.INSTANCE.userVO2UserPO(userVO);
-        userService.save(userPO);
+        UserPO userPo = UserMapper.INSTANCE.userVo2UserPo(userVo);
+        userService.save(userPo);
 
-        // userPO = userService.getById(userPO.getPkUserId());
-        return ResponseResultDTO.ok(UserMapper.INSTANCE.userPO2UserVO(userPO));
+        // userPo = userService.getById(userPo.getPkUserId());
+        return ResponseResultDTO.ok(UserMapper.INSTANCE.userPo2UserVO(userPo));
     }
 
     @PostMapping("/update")
     @ApiOperation("更新")
     public ResponseResultDTO update(
             @ApiParam(name = "UserVO对象", value = "json格式", required = true) @RequestBody
-                    UserVO userVO) {
-        UserPO userPO = UserMapper.INSTANCE.userVO2UserPO(userVO);
-        userService.updateById(userPO);
+                    UserVO userVo) {
+        UserPO userPo = UserMapper.INSTANCE.userVo2UserPo(userVo);
+        userService.updateById(userPo);
 
-        // userPO = userService.getById(userPO.getPkUserId());
-        return ResponseResultDTO.ok(UserMapper.INSTANCE.userPO2UserVO(userPO));
+        // userPo = userService.getById(userPo.getPkUserId());
+        return ResponseResultDTO.ok(UserMapper.INSTANCE.userPo2UserVO(userPo));
     }
 
     @GetMapping("/list")
     @ApiOperation("用户列表")
     public ResponseResultDTO list() {
-        List<UserPO> userPOList = userService.list();
-        return ResponseResultDTO.ok(UserMapper.INSTANCE.userPOs2UserVOs(userPOList));
+        List<UserPO> userPoList = userService.list();
+        return ResponseResultDTO.ok(UserMapper.INSTANCE.userPos2UserVos(userPoList));
     }
 }

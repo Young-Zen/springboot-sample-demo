@@ -11,5 +11,6 @@ import com.sz.springbootsample.demo.po.DemoPO;
  * @date 1/1/2020
  */
 public interface DemoService extends IService<DemoPO> {
+    /** test async */
     public void async();
 }

@@ -13,11 +13,11 @@ import com.sz.springbootsample.demo.dto.ResponseResultDTO;
 import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
 import com.sz.springbootsample.demo.exception.BaseException;
 import com.sz.springbootsample.demo.form.UploadFileForm;
-import com.sz.springbootsample.demo.util.JSONUtils;
+import com.sz.springbootsample.demo.util.JsonUtils;
 import com.sz.springbootsample.demo.util.Md5Utils;
 import com.sz.springbootsample.demo.util.OkHttpClientUtils;
-import com.sz.springbootsample.demo.util.RSAUtils;
 import com.sz.springbootsample.demo.util.RetryUtils;
+import com.sz.springbootsample.demo.util.RsaUtils;
 
 import cn.hutool.crypto.asymmetric.RSA;
 import lombok.extern.slf4j.Slf4j;
@@ -118,17 +118,17 @@ public class UploadFileTests {
             return Base64.getEncoder().encodeToString(shardBytes);
         }
         RSA rsa = new RSA(null, rsaPublicKey);
-        return RSAUtils.encrypt(rsa, shardBytes);
+        return RsaUtils.encrypt(rsa, shardBytes);
     }
 
     private static String uploadFile(OkHttpClient okHttpClient, UploadFileForm form)
             throws IOException {
-        String body = JSONUtils.writeValueAsString(form);
+        String body = JsonUtils.writeValueAsString(form);
         String response =
                 OkHttpClientUtils.postJson(
                         okHttpClient, FILE_SERVER_BASE_URL + "/api/demo/file/upload", body);
         ResponseResultDTO responseResultDTO =
-                JSONUtils.readValue(response, ResponseResultDTO.class);
+                JsonUtils.readValue(response, ResponseResultDTO.class);
         if (!Objects.equals(responseResultDTO.getCode(), ResponseCodeEnum.OK.getCode())) {
             throw new BaseException(responseResultDTO.getCode(), responseResultDTO.getMsg());
         }
@@ -140,7 +140,7 @@ public class UploadFileTests {
                 OkHttpClientUtils.get(
                         okHttpClient, FILE_SERVER_BASE_URL + "/api/demo/file/getRsaPublicKey");
         ResponseResultDTO responseResultDTO =
-                JSONUtils.readValue(response, ResponseResultDTO.class);
+                JsonUtils.readValue(response, ResponseResultDTO.class);
         if (!Objects.equals(responseResultDTO.getCode(), ResponseCodeEnum.OK.getCode())) {
             throw new BaseException(responseResultDTO.getCode(), responseResultDTO.getMsg());
         }

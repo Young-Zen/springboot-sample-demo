@@ -10,5 +10,11 @@ import com.sz.springbootsample.demo.form.UploadFileForm;
  */
 public interface UploadFileService {
 
+    /**
+     * Upload file
+     *
+     * @param form
+     * @return
+     */
     public String upload(UploadFileForm form);
 }
