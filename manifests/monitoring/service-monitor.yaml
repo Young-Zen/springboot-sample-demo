@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: springboot-sample-demo
+spec:
+  endpoints:
+    - interval: 30s
+      port: http # 填写 service yaml 中 Prometheus Exporter 对应的 Port 的 Name
+      path: /api/demo/actuator/prometheus  # 填写 Prometheus Exporter 对应的 Path 的值，不填默认 /metrics
+      basicAuth:
+        username:
+          name: actuator-secret
+          key: username
+        password:
+          name: actuator-secret
+          key: password
+  namespaceSelector:  # 选择要监控 service 所在的 namespace
+    matchNames:
+      - test
+      - default
+  selector: # 填写要监控 service 的 Label 值，以定位目标 service
+    matchLabels:
+      app: springboot-sample-demo

@@ -39,6 +39,7 @@ public class DefaultResponseBodyAdvice implements ResponseBodyAdvice {
             HttpServletResponse response =
                     ((ServletServerHttpResponse) serverHttpResponse).getServletResponse();
             response.setHeader("PointcutCount", LogHolder.getLogDto().getAdviceCount().toString());
+            response.setHeader("LogCode", LogHolder.getLogDto().getLogCode());
             response.setHeader("LogStep", LogHolder.getLogDto().getLogStep().toString());
         }
         return o;

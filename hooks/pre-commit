@@ -1,3 +1,2 @@
 #!/usr/bin/env bash
-mvn spotless:apply
-git add -A
+mvn spotless:check
