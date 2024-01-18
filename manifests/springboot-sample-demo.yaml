@@ -26,7 +26,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: JAVA_OPTS
-              value: "-Djava.security.egd=file:/dev/./urandom -Dspring.datasource.druid.stat-view-servlet.allow="
+              value: "-XshowSettings:vm -Djava.security.egd=file:/dev/./urandom -Dspring.datasource.druid.stat-view-servlet.allow="
             - name: NAMESPACE
               valueFrom:
                 fieldRef:

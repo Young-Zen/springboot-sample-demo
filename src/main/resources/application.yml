@@ -133,7 +133,7 @@ management:
     health:
       probes:
         enabled: true
-      show-details: never
+      show-details: always
 
 custom:
   log:
