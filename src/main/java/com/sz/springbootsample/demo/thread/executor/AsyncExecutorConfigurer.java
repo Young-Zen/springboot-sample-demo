@@ -2,8 +2,11 @@ package com.sz.springbootsample.demo.thread.executor;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
+import javax.annotation.Resource;
 
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.sleuth.instrument.async.LazyTraceExecutor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -36,6 +39,8 @@ public class AsyncExecutorConfigurer extends AsyncConfigurerSupport {
     @Value("${custom.async-executor.keep-alive-seconds:60}")
     private int keepAliveSeconds;
 
+    @Resource private BeanFactory beanFactory;
+
     @Override
     public Executor getAsyncExecutor() {
         log.info("start asyncServiceExecutor");
@@ -57,6 +62,6 @@ public class AsyncExecutorConfigurer extends AsyncConfigurerSupport {
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         // 执行初始化
         executor.initialize();
-        return TtlExecutors.getTtlExecutor(executor);
+        return TtlExecutors.getTtlExecutor(new LazyTraceExecutor(beanFactory, executor));
     }
 }
