@@ -51,7 +51,7 @@ spring:
           enabled: true
           db-type: mysql
           config:
-            delete-allow: false
+            delete-allow: true
             drop-table-allow: false
       # 监控过滤器
       web-stat-filter:

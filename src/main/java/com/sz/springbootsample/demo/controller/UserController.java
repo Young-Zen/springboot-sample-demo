@@ -1,15 +1,11 @@
 package com.sz.springbootsample.demo.controller;
 
-import java.util.List;
+import javax.annotation.Resource;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.sz.springbootsample.demo.dto.ResponseResultDTO;
-import com.sz.springbootsample.demo.mapper.UserMapper;
-import com.sz.springbootsample.demo.po.UserPO;
 import com.sz.springbootsample.demo.service.UserService;
-import com.sz.springbootsample.demo.util.ParamValidateUtil;
 import com.sz.springbootsample.demo.vo.UserVO;
 
 import io.swagger.annotations.Api;
@@ -27,21 +23,20 @@ import io.swagger.annotations.ApiParam;
 @Api(tags = "用户前端控制器")
 public class UserController {
 
-    @Autowired private UserService userService;
-    @Autowired private ParamValidateUtil paramValidateUtil;
+    @Resource private UserService userService;
 
     @PostMapping("/add")
     @ApiOperation("插入")
     public ResponseResultDTO add(
             @ApiParam(name = "UserVO对象", value = "json格式", required = true) @RequestBody
                     UserVO userVo) {
-        paramValidateUtil.verifyParams(userVo);
+        return ResponseResultDTO.ok(userService.saveUser(userVo));
+    }
 
-        UserPO userPo = UserMapper.INSTANCE.userVo2UserPo(userVo);
-        userService.save(userPo);
-
-        // userPo = userService.getById(userPo.getPkUserId());
-        return ResponseResultDTO.ok(UserMapper.INSTANCE.userPo2UserVO(userPo));
+    @PostMapping("/{userId}")
+    @ApiOperation("获取")
+    public ResponseResultDTO get(@PathVariable("userId") Long userId) {
+        return ResponseResultDTO.ok(userService.getUser(userId));
     }
 
     @PostMapping("/update")
@@ -49,17 +44,19 @@ public class UserController {
     public ResponseResultDTO update(
             @ApiParam(name = "UserVO对象", value = "json格式", required = true) @RequestBody
                     UserVO userVo) {
-        UserPO userPo = UserMapper.INSTANCE.userVo2UserPo(userVo);
-        userService.updateById(userPo);
+        return ResponseResultDTO.ok(userService.updateUser(userVo));
+    }
 
-        // userPo = userService.getById(userPo.getPkUserId());
-        return ResponseResultDTO.ok(UserMapper.INSTANCE.userPo2UserVO(userPo));
+    @DeleteMapping("/{userId}")
+    @ApiOperation("获取")
+    public ResponseResultDTO delete(@PathVariable("userId") Long userId) {
+        userService.deleteUser(userId);
+        return ResponseResultDTO.ok();
     }
 
     @GetMapping("/list")
     @ApiOperation("用户列表")
     public ResponseResultDTO list() {
-        List<UserPO> userPoList = userService.list();
-        return ResponseResultDTO.ok(UserMapper.INSTANCE.userPos2UserVos(userPoList));
+        return ResponseResultDTO.ok(userService.listUsers());
     }
 }
