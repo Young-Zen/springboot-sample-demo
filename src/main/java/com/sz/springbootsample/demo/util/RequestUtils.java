@@ -31,7 +31,7 @@ public class RequestUtils {
      * @return {@link ServletRequestAttributes}
      */
     public ServletRequestAttributes getServletRequestAttributes() {
-        return (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        return (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
     }
 
     /**
