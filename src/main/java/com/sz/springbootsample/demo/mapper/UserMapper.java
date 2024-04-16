@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import com.sz.springbootsample.demo.po.UserPO;
+import com.sz.springbootsample.demo.entity.UserEntity;
 import com.sz.springbootsample.demo.vo.UserVO;
 
 /**
@@ -24,52 +24,55 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     /**
-     * userVo to UserPo
+     * userVo to userEntity
      *
      * @param userVo
      * @return
      */
     @Mappings({@Mapping(source = "userId", target = "pkUserId")})
-    UserPO userVo2UserPo(UserVO userVo);
+    UserEntity userVo2UserEntity(UserVO userVo);
 
     /**
-     * userPo to UserVO
+     * userEntity to UserVO
      *
-     * @param userPo
+     * @param userEntity
      * @return
      */
     @Mappings({@Mapping(source = "pkUserId", target = "userId")})
-    UserVO userPo2UserVO(UserPO userPo);
+    UserVO userEntity2UserVO(UserEntity userEntity);
 
     /**
-     * userVos to UserPos
+     * userVos to userEntities
      *
      * @param userVos
      * @return
      */
-    List<UserPO> userVos2UserPos(List<UserVO> userVos);
+    List<UserEntity> userVos2UserEntities(List<UserVO> userVos);
 
     /**
-     * userPos to UserVos
+     * userEntities to UserVos
      *
-     * @param userPos
+     * @param userEntities
      * @return
      */
-    List<UserVO> userPos2UserVos(List<UserPO> userPos);
+    List<UserVO> userEntities2UserVos(List<UserEntity> userEntities);
 
     /**
-     * userPoPage to UserVoPage
+     * userEntityPage to UserVoPage
      *
-     * @param userPoPage
+     * @param userEntityPage
      * @return
      */
-    default IPage<UserVO> userPoPage2UserVoPage(IPage<UserPO> userPoPage) {
-        if (userPoPage == null) {
+    default IPage<UserVO> userEntityPage2UserVoPage(IPage<UserEntity> userEntityPage) {
+        if (userEntityPage == null) {
             return null;
         }
         IPage<UserVO> userVoPage =
-                new Page<>(userPoPage.getCurrent(), userPoPage.getSize(), userPoPage.getTotal());
-        userVoPage.setRecords(this.userPos2UserVos(userPoPage.getRecords()));
+                new Page<>(
+                        userEntityPage.getCurrent(),
+                        userEntityPage.getSize(),
+                        userEntityPage.getTotal());
+        userVoPage.setRecords(this.userEntities2UserVos(userEntityPage.getRecords()));
         return userVoPage;
     }
 }

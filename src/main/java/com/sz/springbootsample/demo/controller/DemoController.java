@@ -23,9 +23,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sz.springbootsample.demo.annotation.IgnoreTracing;
 import com.sz.springbootsample.demo.config.message.RabbitConfig;
 import com.sz.springbootsample.demo.dto.ResponseResultDTO;
+import com.sz.springbootsample.demo.entity.DemoEntity;
 import com.sz.springbootsample.demo.exception.BaseException;
 import com.sz.springbootsample.demo.mapper.DemoMapper;
-import com.sz.springbootsample.demo.po.DemoPO;
 import com.sz.springbootsample.demo.service.DemoService;
 import com.sz.springbootsample.demo.util.RedisUtils;
 import com.sz.springbootsample.demo.vo.DemoVO;
@@ -57,8 +57,8 @@ public class DemoController {
     public DemoVO chain() {
         DemoVO demoVo = new DemoVO();
         demoVo.setDemoId(520L).setName("chain").setAge(1).setCreateTime(new Date());
-        DemoPO demoPo = DemoMapper.INSTANCE.demoVo2DemoPo(demoVo);
-        return DemoMapper.INSTANCE.demoPo2DemoVO(demoPo);
+        DemoEntity demoEntity = DemoMapper.INSTANCE.demoVo2DemoEntity(demoVo);
+        return DemoMapper.INSTANCE.demoEntity2DemoVO(demoEntity);
     }
 
     @GetMapping("/security")
@@ -83,13 +83,13 @@ public class DemoController {
                     @Validated(DemoVO.Add.class)
                     @RequestBody
                     DemoVO demoVo) {
-        demoService.save(DemoMapper.INSTANCE.demoVo2DemoPo(demoVo));
+        demoService.save(DemoMapper.INSTANCE.demoVo2DemoEntity(demoVo));
 
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.last("limit 1");
         wrapper.orderByDesc("pk_demo_id");
-        DemoPO demoPo = demoService.getOne(wrapper);
-        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPo2DemoVO(demoPo));
+        DemoEntity demoEntity = demoService.getOne(wrapper);
+        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoEntity2DemoVO(demoEntity));
     }
 
     @PostMapping("/delete")
@@ -112,21 +112,21 @@ public class DemoController {
                 .setName("mybatisPlus")
                 .setAccount(new BigDecimal("5.2"))
                 .setCreateTime(new Date());
-        demoService.save(DemoMapper.INSTANCE.demoVo2DemoPo(demoVo));
+        demoService.save(DemoMapper.INSTANCE.demoVo2DemoEntity(demoVo));
 
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("name", "mybatisPlus");
         wrapper.last("limit 1");
         wrapper.orderByDesc("pk_demo_id");
-        DemoPO demoPo = demoService.getOne(wrapper);
-        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPo2DemoVO(demoPo));
+        DemoEntity demoEntity = demoService.getOne(wrapper);
+        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoEntity2DemoVO(demoEntity));
     }
 
     @GetMapping("/mybatisPlus/list")
     @ApiOperation("MybatisPlus list 方法例子")
     public ResponseResultDTO list() {
-        List<DemoPO> demoPoList = demoService.list();
-        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPos2demoVos(demoPoList));
+        List<DemoEntity> demoEntityList = demoService.list();
+        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoEntities2demoVos(demoEntityList));
     }
 
     @GetMapping("/mybatisPlus/page")
@@ -134,8 +134,8 @@ public class DemoController {
     public ResponseResultDTO page() {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.orderByDesc("pk_demo_id");
-        IPage<DemoPO> page = demoService.page(new Page<>(0, 10), wrapper);
-        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoPoPage2demoVoPage(page));
+        IPage<DemoEntity> page = demoService.page(new Page<>(0, 10), wrapper);
+        return ResponseResultDTO.ok(DemoMapper.INSTANCE.demoEntityPage2demoVoPage(page));
     }
 
     @GetMapping("/ignoreTracing")
@@ -145,7 +145,7 @@ public class DemoController {
         QueryWrapper wrapper = new QueryWrapper();
         wrapper.eq("name", "mybatisPlus");
         wrapper.last("limit 1");
-        DemoPO demoPo = demoService.getOne(wrapper);
+        DemoEntity demoEntity = demoService.getOne(wrapper);
         return ResponseResultDTO.ok("look console");
     }
 

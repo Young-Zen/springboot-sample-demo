@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import com.sz.springbootsample.demo.dao.UserDAO;
+import com.sz.springbootsample.demo.entity.UserEntity;
 import com.sz.springbootsample.demo.mapper.UserMapper;
-import com.sz.springbootsample.demo.po.UserPO;
 import com.sz.springbootsample.demo.service.UserService;
 import com.sz.springbootsample.demo.util.ParamValidateUtil;
 import com.sz.springbootsample.demo.vo.UserVO;
@@ -24,7 +24,7 @@ import com.sz.springbootsample.demo.vo.UserVO;
  * @since 2020-03-16
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserDAO, UserPO> implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserDAO, UserEntity> implements UserService {
 
     @Resource private ParamValidateUtil paramValidateUtil;
 
@@ -33,26 +33,26 @@ public class UserServiceImpl extends ServiceImpl<UserDAO, UserPO> implements Use
     public UserVO saveUser(UserVO userVo) {
         paramValidateUtil.verifyParams(userVo);
 
-        UserPO userPo = UserMapper.INSTANCE.userVo2UserPo(userVo);
-        super.save(userPo);
+        UserEntity userEntity = UserMapper.INSTANCE.userVo2UserEntity(userVo);
+        super.save(userEntity);
 
-        return UserMapper.INSTANCE.userPo2UserVO(userPo);
+        return UserMapper.INSTANCE.userEntity2UserVO(userEntity);
     }
 
     @Cacheable(value = "USERS", key = "#userId", unless = "#result == null")
     @Override
     public UserVO getUser(Long userId) {
-        UserPO userPo = super.getById(userId);
-        return UserMapper.INSTANCE.userPo2UserVO(userPo);
+        UserEntity userEntity = super.getById(userId);
+        return UserMapper.INSTANCE.userEntity2UserVO(userEntity);
     }
 
     @CachePut(value = "USERS", key = "#result.userId", unless = "#result.userId == null")
     @Override
     public UserVO updateUser(UserVO userVo) {
-        UserPO userPo = UserMapper.INSTANCE.userVo2UserPo(userVo);
-        super.updateById(userPo);
+        UserEntity userEntity = UserMapper.INSTANCE.userVo2UserEntity(userVo);
+        super.updateById(userEntity);
 
-        return UserMapper.INSTANCE.userPo2UserVO(userPo);
+        return UserMapper.INSTANCE.userEntity2UserVO(userEntity);
     }
 
     @CacheEvict(value = "USERS", key = "#userId")
@@ -63,7 +63,7 @@ public class UserServiceImpl extends ServiceImpl<UserDAO, UserPO> implements Use
 
     @Override
     public List<UserVO> listUsers() {
-        List<UserPO> userPoList = super.list();
-        return UserMapper.INSTANCE.userPos2UserVos(userPoList);
+        List<UserEntity> userEntityList = super.list();
+        return UserMapper.INSTANCE.userEntities2UserVos(userEntityList);
     }
 }

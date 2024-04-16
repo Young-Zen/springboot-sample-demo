@@ -1,4 +1,4 @@
-package com.sz.springbootsample.demo.po;
+package com.sz.springbootsample.demo.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -22,7 +22,7 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("t_user")
-public class UserPO implements Serializable {
+public class UserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

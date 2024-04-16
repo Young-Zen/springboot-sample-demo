@@ -2,7 +2,7 @@ package com.sz.springbootsample.demo.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import com.sz.springbootsample.demo.po.UserPO;
+import com.sz.springbootsample.demo.entity.UserEntity;
 
 /**
  * 用户 Mapper 接口
@@ -10,4 +10,4 @@ import com.sz.springbootsample.demo.po.UserPO;
  * @author Yanghj
  * @since 2020-03-16
  */
-public interface UserDAO extends BaseMapper<UserPO> {}
+public interface UserDAO extends BaseMapper<UserEntity> {}

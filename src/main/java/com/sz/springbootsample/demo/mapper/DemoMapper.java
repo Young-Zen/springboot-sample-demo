@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import com.sz.springbootsample.demo.po.DemoPO;
+import com.sz.springbootsample.demo.entity.DemoEntity;
 import com.sz.springbootsample.demo.vo.DemoVO;
 
 /**
@@ -24,52 +24,55 @@ public interface DemoMapper {
     DemoMapper INSTANCE = Mappers.getMapper(DemoMapper.class);
 
     /**
-     * demoVo to DemoPo
+     * demoVo to demoEntity
      *
      * @param demoVo
      * @return
      */
     @Mappings({@Mapping(source = "demoId", target = "pkDemoId")})
-    DemoPO demoVo2DemoPo(DemoVO demoVo);
+    DemoEntity demoVo2DemoEntity(DemoVO demoVo);
 
     /**
-     * demoPo to DemoVO
+     * demoEntity to DemoVO
      *
-     * @param demoPo
+     * @param demoEntity
      * @return
      */
     @Mappings({@Mapping(source = "pkDemoId", target = "demoId")})
-    DemoVO demoPo2DemoVO(DemoPO demoPo);
+    DemoVO demoEntity2DemoVO(DemoEntity demoEntity);
 
     /**
-     * demoVos to demoPos
+     * demoVos to demoEntities
      *
      * @param demoVos
      * @return
      */
-    List<DemoPO> demoVos2demoPos(List<DemoVO> demoVos);
+    List<DemoEntity> demoVos2demoEntities(List<DemoVO> demoVos);
 
     /**
-     * demoPos to demoVos
+     * demoEntities to demoVos
      *
-     * @param demoPos
+     * @param demoEntities
      * @return
      */
-    List<DemoVO> demoPos2demoVos(List<DemoPO> demoPos);
+    List<DemoVO> demoEntities2demoVos(List<DemoEntity> demoEntities);
 
     /**
-     * demoPoPage to demoVoPage
+     * demoEntityPage to demoVoPage
      *
-     * @param demoPoPage
+     * @param demoEntityPage
      * @return
      */
-    default IPage<DemoVO> demoPoPage2demoVoPage(IPage<DemoPO> demoPoPage) {
-        if (demoPoPage == null) {
+    default IPage<DemoVO> demoEntityPage2demoVoPage(IPage<DemoEntity> demoEntityPage) {
+        if (demoEntityPage == null) {
             return null;
         }
         IPage<DemoVO> demoVoPage =
-                new Page<>(demoPoPage.getCurrent(), demoPoPage.getSize(), demoPoPage.getTotal());
-        demoVoPage.setRecords(this.demoPos2demoVos(demoPoPage.getRecords()));
+                new Page<>(
+                        demoEntityPage.getCurrent(),
+                        demoEntityPage.getSize(),
+                        demoEntityPage.getTotal());
+        demoVoPage.setRecords(this.demoEntities2demoVos(demoEntityPage.getRecords()));
         return demoVoPage;
     }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import com.sz.springbootsample.demo.po.UserPO;
+import com.sz.springbootsample.demo.entity.UserEntity;
 import com.sz.springbootsample.demo.vo.UserVO;
 
 /**
@@ -13,7 +13,7 @@ import com.sz.springbootsample.demo.vo.UserVO;
  * @author Yanghj
  * @since 2020-03-16
  */
-public interface UserService extends IService<UserPO> {
+public interface UserService extends IService<UserEntity> {
 
     /**
      * save User

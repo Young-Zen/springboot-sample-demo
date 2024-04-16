@@ -23,7 +23,7 @@
 		<docker.maven.version>1.2.1</docker.maven.version>
 		<dockerfile-maven-version>1.4.13</dockerfile-maven-version>
 		<docker.repository.url>baiduyun.com</docker.repository.url>
-		<druid.version>1.2.21</druid.version>
+		<druid.version>1.2.22</druid.version>
 		<baomidou.mybatis-plus.version>3.5.5</baomidou.mybatis-plus.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 		<alibaba.transmittable-thread-local.version>2.14.5</alibaba.transmittable-thread-local.version>

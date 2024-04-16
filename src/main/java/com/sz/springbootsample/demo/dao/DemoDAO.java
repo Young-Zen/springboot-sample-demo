@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import com.sz.springbootsample.demo.po.DemoPO;
+import com.sz.springbootsample.demo.entity.DemoEntity;
 
 /**
  * Demo数据访问对象
@@ -13,4 +13,4 @@ import com.sz.springbootsample.demo.po.DemoPO;
  * @date 1/1/2020
  */
 @Mapper
-public interface DemoDAO extends BaseMapper<DemoPO> {}
+public interface DemoDAO extends BaseMapper<DemoEntity> {}

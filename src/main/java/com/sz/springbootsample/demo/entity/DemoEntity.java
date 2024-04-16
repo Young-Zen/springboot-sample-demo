@@ -1,4 +1,4 @@
-package com.sz.springbootsample.demo.po;
+package com.sz.springbootsample.demo.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -20,7 +20,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @TableName("t_boot_demo")
-public class DemoPO {
+public class DemoEntity {
 
     @TableId(type = IdType.AUTO)
     @TableField("pk_demo_id")
