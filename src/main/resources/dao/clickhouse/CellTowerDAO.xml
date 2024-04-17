@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sz.springbootsample.demo.dao.clickhouse.CellTowerDAO">
+    <select id="countByType" resultType="java.util.Map">
+        SELECT radio, count() AS total FROM cell_towers GROUP BY radio ORDER BY total DESC
+    </select>
+</mapper>

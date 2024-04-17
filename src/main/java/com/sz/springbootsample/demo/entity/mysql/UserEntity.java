@@ -1,4 +1,4 @@
-package com.sz.springbootsample.demo.entity;
+package com.sz.springbootsample.demo.entity.mysql;
 
 import java.io.Serializable;
 import java.time.LocalDate;

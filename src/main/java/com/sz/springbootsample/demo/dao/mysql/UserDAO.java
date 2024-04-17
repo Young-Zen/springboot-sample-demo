@@ -1,8 +1,8 @@
-package com.sz.springbootsample.demo.dao;
+package com.sz.springbootsample.demo.dao.mysql;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
-import com.sz.springbootsample.demo.entity.UserEntity;
+import com.sz.springbootsample.demo.entity.mysql.UserEntity;
 
 /**
  * 用户 Mapper 接口

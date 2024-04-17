@@ -22,6 +22,6 @@ public class Pointcuts {
     @Pointcut("execution(* com.baomidou.mybatisplus.core.mapper.*.*(..))")
     public void daoMybatisAspect() {}
 
-    @Pointcut("execution(* com.sz..dao.*.*(..)) || daoMybatisAspect()")
+    @Pointcut("execution(* com.sz..dao.*.*.*(..)) || daoMybatisAspect()")
     public void daoAspect() {}
 }

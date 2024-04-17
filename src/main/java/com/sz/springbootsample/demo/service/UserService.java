@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import com.sz.springbootsample.demo.entity.UserEntity;
+import com.sz.springbootsample.demo.entity.mysql.UserEntity;
 import com.sz.springbootsample.demo.vo.UserVO;
 
 /**

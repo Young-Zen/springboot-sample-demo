@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import com.sz.springbootsample.demo.dao.DemoDAO;
-import com.sz.springbootsample.demo.entity.DemoEntity;
+import com.sz.springbootsample.demo.dao.mysql.DemoDAO;
+import com.sz.springbootsample.demo.entity.mysql.DemoEntity;
 import com.sz.springbootsample.demo.service.DemoService;
 import com.sz.springbootsample.demo.thread.threadlocal.LogHolder;
 
@@ -26,5 +26,10 @@ public class DemoServiceImpl extends ServiceImpl<DemoDAO, DemoEntity> implements
     @Async
     public void async() {
         log.info(LogHolder.getLogDto().getLogCode());
+        DemoEntity demoEntity = new DemoEntity();
+        demoEntity.setName(System.currentTimeMillis() + "-test");
+        demoEntity.setAge(10);
+        super.save(demoEntity);
+        super.getBaseMapper().updateAge(demoEntity.getPkDemoId());
     }
 }

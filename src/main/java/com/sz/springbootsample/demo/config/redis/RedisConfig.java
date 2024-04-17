@@ -1,8 +1,9 @@
-package com.sz.springbootsample.demo.config.data;
+package com.sz.springbootsample.demo.config.redis;
 
 import java.time.Duration;
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
@@ -32,6 +33,9 @@ public class RedisConfig extends CachingConfigurerSupport {
 
     @Resource private RedisConnectionFactory redisConnectionFactory;
 
+    @Value("${spring.redis.cachePrefix}")
+    private String cachePrefix;
+
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {
         RedisTemplate<String, Object> template = new RedisTemplate();
@@ -48,7 +52,7 @@ public class RedisConfig extends CachingConfigurerSupport {
                 RedisCacheConfiguration.defaultCacheConfig()
                         .entryTtl(Duration.ofSeconds(3600L))
                         .disableCachingNullValues()
-                        .computePrefixWith(cacheName -> "SJD:" + cacheName)
+                        .computePrefixWith(cacheName -> cachePrefix + cacheName)
                         .serializeKeysWith(
                                 RedisSerializationContext.SerializationPair.fromSerializer(
                                         stringRedisSerializer))

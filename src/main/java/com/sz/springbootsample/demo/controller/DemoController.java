@@ -3,6 +3,7 @@ package com.sz.springbootsample.demo.controller;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
@@ -10,7 +11,6 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -23,7 +23,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sz.springbootsample.demo.annotation.IgnoreTracing;
 import com.sz.springbootsample.demo.config.message.RabbitConfig;
 import com.sz.springbootsample.demo.dto.ResponseResultDTO;
-import com.sz.springbootsample.demo.entity.DemoEntity;
+import com.sz.springbootsample.demo.entity.mysql.DemoEntity;
 import com.sz.springbootsample.demo.exception.BaseException;
 import com.sz.springbootsample.demo.mapper.DemoMapper;
 import com.sz.springbootsample.demo.service.DemoService;
@@ -33,6 +33,7 @@ import com.sz.springbootsample.demo.vo.DemoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * Demo演示类
@@ -46,11 +47,17 @@ import io.swagger.annotations.ApiParam;
 @Api(tags = "Demo 演示类")
 public class DemoController {
 
-    @Autowired private DemoService demoService;
+    @Resource private DemoService demoService;
 
     @Resource private RedisTemplate<String, Object> redisTemplate;
 
-    @Autowired private RabbitTemplate rabbitTemplate;
+    @Resource private RabbitTemplate rabbitTemplate;
+
+    @GetMapping("/headers")
+    @ApiOperation("返回 HTTP Header")
+    public Map<String, String> headers(@RequestHeader @ApiIgnore Map<String, String> headers) {
+        return headers;
+    }
 
     @GetMapping("/lombok/chain")
     @ApiOperation("Lombok 链式 set 方法例子")

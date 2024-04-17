@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
-import com.sz.springbootsample.demo.dao.UserDAO;
-import com.sz.springbootsample.demo.entity.UserEntity;
+import com.sz.springbootsample.demo.dao.mysql.UserDAO;
+import com.sz.springbootsample.demo.entity.mysql.UserEntity;
 import com.sz.springbootsample.demo.mapper.UserMapper;
 import com.sz.springbootsample.demo.service.UserService;
 import com.sz.springbootsample.demo.util.ParamValidateUtil;

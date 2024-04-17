@@ -2,7 +2,7 @@ package com.sz.springbootsample.demo.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 
-import com.sz.springbootsample.demo.entity.DemoEntity;
+import com.sz.springbootsample.demo.entity.mysql.DemoEntity;
 
 /**
  * Demo相关的服务接口

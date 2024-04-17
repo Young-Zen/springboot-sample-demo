@@ -18,59 +18,26 @@ spring:
             user.name: actuator
             user.password: actuator
   datasource:
-    url: jdbc:mysql://mysql-service-address:3306/demo?useUnicode=true&characterEncoding=utf8&autoReconnect=true&useSSL=false&serverTimezone=GMT%2B8
-    username: root
-    password: mysql123root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    druid:
-      # 初始化大小，最小，最大
-      initialSize: 5
-      minIdle: 5
-      maxActive: 20
-      # 配置获取连接等待超时的时间
-      maxWait: 60000
-      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
-      timeBetweenEvictionRunsMillis: 60000
-      # 配置一个连接在池中最小生存的时间，单位是毫秒
-      minEvictableIdleTimeMillis: 300000
-      validationQuery: SELECT 1 FROM DUAL
-      testWhileIdle: true
-      testOnBorrow: false
-      testOnReturn: false
-      # 是否缓存preparedStatement，也就是PSCache MySQL下建议关闭
-      poolPreparedStatements: true
-      filter:
-        # SQL状态监控
-        stat:
-          enabled: true
-          db-type: mysql
-          log-slow-sql: true
-          slow-sql-millis: 1000
-        # SQL防火墙
-        wall:
-          enabled: true
-          db-type: mysql
-          config:
-            delete-allow: true
-            drop-table-allow: false
-      # 监控过滤器
-      web-stat-filter:
-        enabled: true
-        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid*,/actuator*,/swagger*,/webjars/*,/v2/api-docs"
-      # druid 监控页面
-      stat-view-servlet:
-        enabled: true
-        # 禁止手动重置监控数据
-        reset-enable: false
-      # Spring监控配置
-      aop-patterns: com.sz.springbootsample.demo.controller.*,com.sz.springbootsample.demo.service.*,com.sz.springbootsample.demo.dao.*
+    mysql:
+      url: jdbc:mysql://mysql-service-address:3306/demo?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=GMT%2B8
+      username: root
+      password: Mysql123Conductor
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    clickhouse:
+      url: jdbc:clickhouse://ck-service-address:8123/default
+      username: clickhouse
+      password: clickhouse123admin
+      driver-class-name: com.clickhouse.jdbc.ClickHouseDriver
   flyway:
+    url: ${spring.datasource.mysql.url}
+    user: ${spring.datasource.mysql.username}
+    password: ${spring.datasource.mysql.password}
     # 启用或禁用 flyway
     enabled: true
     # flyway 的 clean 命令会删除指定 schema 下的所有 table, 生产务必禁掉。这个默认值是 false 理论上作为默认配置是不科学的。
     clean-disabled: true
     # SQL 脚本的目录，多个路径使用逗号分隔 默认值 classpath:db/migration
-    locations: classpath:db/migration
+    locations: classpath:db/migration/mysql
     #  metadata 版本控制信息表 默认 flyway_schema_history
     table: t_flyway_schema_history
     # 如果没有 flyway_schema_history 这个 metadata 表，在执行 flyway migrate 命令之前，必须先执行 flyway baseline 命令
@@ -109,6 +76,7 @@ spring:
     port: 6379
     password: Redis123admin
     database: 0
+    cachePrefix: 'SJD:'
     lettuce:
       pool:
         max-active: 8   #连接池最大连接数（使用负值表示没有限制），默认8
@@ -152,13 +120,14 @@ custom:
 ---
 spring:
   profiles: test
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  level:
+    com:
+      sz:
+        springbootsample:
+          demo:
+            dao: debug
 custom:
-  mybatisPlus:
-    performance:
-      enable: true
   swagger:
     csrf:
       enable: true

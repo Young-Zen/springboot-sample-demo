@@ -24,7 +24,6 @@ containers:
           - "java"
           - "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=18080"
           - "-Djava.security.egd=file:/dev/./urandom"
-          - "-Dspring.datasource.druid.stat-view-servlet.allow="
           - "-jar"
           - "./springboot-sample-demo.jar"
         debug:
@@ -34,7 +33,6 @@ containers:
           - "java"
           - "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=18080"
           - "-Djava.security.egd=file:/dev/./urandom"
-          - "-Dspring.datasource.druid.stat-view-servlet.allow="
           - "-jar"
           - "./springboot-sample-demo.jar"
       debug:

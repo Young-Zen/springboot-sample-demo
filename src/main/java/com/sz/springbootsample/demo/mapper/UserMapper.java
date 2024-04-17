@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 
-import com.sz.springbootsample.demo.entity.UserEntity;
+import com.sz.springbootsample.demo.entity.mysql.UserEntity;
 import com.sz.springbootsample.demo.vo.UserVO;
 
 /**

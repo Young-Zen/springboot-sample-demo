@@ -1,4 +1,4 @@
-package com.sz.springbootsample.demo.entity;
+package com.sz.springbootsample.demo.entity.mysql;
 
 import java.math.BigDecimal;
 import java.util.Date;
