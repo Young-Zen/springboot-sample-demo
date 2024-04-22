@@ -1,0 +1,1 @@
+org.springframework.boot.env.EnvironmentPostProcessor=com.sz.springbootsample.demo.config.property.DecryptedPropertyEnvironmentPostProcessor

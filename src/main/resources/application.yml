@@ -21,12 +21,12 @@ spring:
     mysql:
       url: jdbc:mysql://mysql-service-address:3306/demo?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=GMT%2B8
       username: root
-      password: Mysql123Conductor
+      password: PASS(TXlzcWwxMjNDb25kdWN0b3I=)
       driver-class-name: com.mysql.cj.jdbc.Driver
     clickhouse:
       url: jdbc:clickhouse://ck-service-address:8123/default
       username: clickhouse
-      password: clickhouse123admin
+      password: PASS(Y2xpY2tob3VzZTEyM2FkbWlu)
       driver-class-name: com.clickhouse.jdbc.ClickHouseDriver
   flyway:
     url: ${spring.datasource.mysql.url}
@@ -59,7 +59,7 @@ spring:
     host: rabbitmq-service-address
     port: 5672
     username: rabbitmq
-    password: rabbitmq123admin
+    password: PASS(cmFiYml0bXExMjNhZG1pbg==)
     virtual-host: /
     publisher-confirms: true  # 开启confirms回调 P -> Exchange，默认false
     publisher-returns: true   # 开启returnedMessage回调 Exchange -> Queue，默认false
@@ -74,7 +74,7 @@ spring:
   redis:
     host: redis-service-address
     port: 6379
-    password: Redis123admin
+    password: PASS(UmVkaXMxMjNDb25kdWN0b3I=)
     database: 0
     cachePrefix: 'SJD:'
     lettuce:
@@ -104,6 +104,11 @@ management:
       show-details: always
 
 custom:
+  decrypt:
+    property:
+      key: spring.datasource.mysql.password,spring.datasource.clickhouse.password,spring.redis.password,spring.rabbitmq.password
+      prefix: PASS(
+      suffix: )
   log:
     additional-skip-pattern: /|/ping
     result: false
