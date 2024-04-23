@@ -8,7 +8,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -31,27 +32,23 @@ import com.zaxxer.hikari.HikariDataSource;
 @MapperScan(basePackages = "com.sz.**.dao.mysql", sqlSessionTemplateRef = "mysqlSqlSessionTemplate")
 public class MysqlDataSourceConfig {
 
-    @Value("${spring.datasource.mysql.url}")
-    private String mysqlUrl;
-
-    @Value("${spring.datasource.mysql.username}")
-    private String mysqlUsername;
-
-    @Value("${spring.datasource.mysql.password}")
-    private String mysqlPassword;
-
-    @Value("${spring.datasource.mysql.driver-class-name}")
-    private String mysqlDriverClassName;
+    @Primary
+    @Bean(name = "mysqlDataSourceProperties")
+    @ConfigurationProperties("spring.datasource.mysql")
+    public DataSourceProperties mysqlDataSourceProperties() {
+        // https://docs.spring.io/spring-boot/docs/2.3.12.RELEASE/reference/html/howto.html#howto-two-datasources
+        return new DataSourceProperties();
+    }
 
     @Primary
     @Bean(name = "mysqlDataSource")
-    public DataSource mysqlDataSource() {
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl(mysqlUrl);
-        dataSource.setUsername(mysqlUsername);
-        dataSource.setPassword(mysqlPassword);
-        dataSource.setDriverClassName(mysqlDriverClassName);
-        return dataSource;
+    @ConfigurationProperties(prefix = "spring.datasource.mysql.hikari")
+    public HikariDataSource mysqlDataSource(
+            @Qualifier("mysqlDataSourceProperties") DataSourceProperties dataSourceProperties) {
+        return dataSourceProperties
+                .initializeDataSourceBuilder()
+                .type(HikariDataSource.class)
+                .build();
     }
 
     @Primary

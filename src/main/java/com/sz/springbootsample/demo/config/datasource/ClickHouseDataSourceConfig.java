@@ -8,7 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,27 +31,21 @@ import com.zaxxer.hikari.HikariDataSource;
         sqlSessionTemplateRef = "clickhouseSqlSessionTemplate")
 public class ClickHouseDataSourceConfig {
 
-    @Value("${spring.datasource.clickhouse.url}")
-    private String clickhouseUrl;
-
-    @Value("${spring.datasource.clickhouse.username}")
-    private String clickhouseUsername;
-
-    @Value("${spring.datasource.clickhouse.password}")
-    private String clickhousePassword;
-
-    @Value("${spring.datasource.clickhouse.driver-class-name}")
-    private String clickhouseDriverClassName;
+    @Bean(name = "clickhouseDataSourceProperties")
+    @ConfigurationProperties("spring.datasource.clickhouse")
+    public DataSourceProperties clickhouseDataSourceProperties() {
+        return new DataSourceProperties();
+    }
 
     @Bean(name = "clickhouseDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.clickhouse")
-    public DataSource clickhouseDataSource() {
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setJdbcUrl(clickhouseUrl);
-        dataSource.setUsername(clickhouseUsername);
-        dataSource.setPassword(clickhousePassword);
-        dataSource.setDriverClassName(clickhouseDriverClassName);
-        return dataSource;
+    @ConfigurationProperties(prefix = "spring.datasource.clickhouse.hikari")
+    public HikariDataSource clickhouseDataSource(
+            @Qualifier("clickhouseDataSourceProperties")
+                    DataSourceProperties dataSourceProperties) {
+        return dataSourceProperties
+                .initializeDataSourceBuilder()
+                .type(HikariDataSource.class)
+                .build();
     }
 
     @Bean(name = "clickhouseSqlSessionFactory")
