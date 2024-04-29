@@ -105,6 +105,10 @@ spring:
         max-concurrency: 8  #最大消费者数量
     connection-timeout: 10s #连接超时时间
     requested-heartbeat: 3s #心跳超时时间
+  data:
+    redis:
+      repositories:
+        enabled: false
   redis:
     host: redis-service-address
     port: 6379

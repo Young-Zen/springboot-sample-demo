@@ -2,6 +2,7 @@ package com.sz.springbootsample.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Demo应用程序
@@ -9,7 +10,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Yanghj
  * @date 1/1/2020
  */
-@SpringBootApplication(scanBasePackages = "com.sz")
+@EnableTransactionManagement
+@SpringBootApplication
 public class DemoApplication {
 
     public static void main(String[] args) {

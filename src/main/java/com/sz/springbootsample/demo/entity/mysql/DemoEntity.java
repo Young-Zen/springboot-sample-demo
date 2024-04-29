@@ -22,8 +22,7 @@ import lombok.experimental.Accessors;
 @TableName("t_boot_demo")
 public class DemoEntity {
 
-    @TableId(type = IdType.AUTO)
-    @TableField("pk_demo_id")
+    @TableId(value = "pk_demo_id", type = IdType.AUTO)
     private Long pkDemoId;
 
     @TableField("name")
