@@ -2,6 +2,7 @@ package com.sz.springbootsample.demo.util;
 
 import java.util.Set;
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
@@ -28,11 +29,7 @@ public class ParamValidateUtil {
     public <T> void verifyParams(T object, Class<?>... groups) {
         Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object, groups);
         if (!constraintViolations.isEmpty()) {
-            StringBuilder sb = new StringBuilder();
-            for (ConstraintViolation<Object> constraintViolation : constraintViolations) {
-                sb.append(constraintViolation.getMessage()).append("\n");
-            }
-            throw new IllegalArgumentException(sb.toString());
+            throw new ConstraintViolationException(constraintViolations);
         }
     }
 }
