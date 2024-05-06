@@ -1,7 +1,6 @@
 package com.sz.springbootsample.demo.service.impl;
 
 import java.util.List;
-import javax.annotation.Resource;
 
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -26,12 +25,10 @@ import com.sz.springbootsample.demo.vo.UserVO;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserDAO, UserEntity> implements UserService {
 
-    @Resource private ParamValidateUtil paramValidateUtil;
-
     @CachePut(value = "USERS", key = "#result.userId", unless = "#result.userId == null")
     @Override
     public UserVO saveUser(UserVO userVo) {
-        paramValidateUtil.verifyParams(userVo);
+        ParamValidateUtil.getInstance().verifyParams(userVo);
 
         UserEntity userEntity = UserMapper.INSTANCE.userVo2UserEntity(userVo);
         super.save(userEntity);
