@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -eu
 
-FLYWAY_URL=$1
-FLYWAY_USER=$2
-FLYWAY_PASSWORD=$3
+eval "FLYWAY_URL=\"$1\""
+eval "FLYWAY_USER=\"$2\""
+eval "FLYWAY_PASSWORD=\"$3\""
 FLYWAY_SCHEMAS=$4
 FLYWAY_TABLE=$5
 FLYWAY_LOCATIONS=$6
