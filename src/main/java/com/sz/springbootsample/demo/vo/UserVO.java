@@ -21,7 +21,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@ApiModel(value = "User对象", description = "用户")
+@ApiModel(description = "用户")
 public class UserVO {
 
     @ApiModelProperty(value = "主键 id")

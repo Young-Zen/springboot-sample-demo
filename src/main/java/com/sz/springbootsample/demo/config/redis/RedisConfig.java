@@ -9,8 +9,10 @@ import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
@@ -59,11 +61,22 @@ public class RedisConfig extends CachingConfigurerSupport {
                         .serializeValuesWith(
                                 RedisSerializationContext.SerializationPair.fromSerializer(
                                         jackson2JsonRedisSerializer()));
-        RedisCacheManager cacheManager =
-                RedisCacheManager.builder(redisConnectionFactory)
-                        .cacheDefaults(redisCacheConfiguration)
-                        .build();
-        return cacheManager;
+        return new RedisCacheManager(
+                RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory),
+                redisCacheConfiguration) {
+            @Override
+            protected RedisCache createRedisCache(
+                    String name, RedisCacheConfiguration cacheConfig) {
+                // 解析 name 获取过期时间
+                String[] parts = name.split("#");
+                String cacheName = parts[0];
+                if (parts.length > 1) {
+                    long expiration = Long.parseLong(parts[1]);
+                    cacheConfig = cacheConfig.entryTtl(Duration.ofSeconds(expiration));
+                }
+                return super.createRedisCache(cacheName, cacheConfig);
+            }
+        };
     }
 
     private Jackson2JsonRedisSerializer jackson2JsonRedisSerializer() {
