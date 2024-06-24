@@ -125,6 +125,14 @@ spring:
   profiles:
     active: test
 
+grpc:
+  server:
+    port: 28080
+  client:
+    stockQuote:
+      host: localhost
+      port: 28080
+
 management:
   endpoints:
     web:

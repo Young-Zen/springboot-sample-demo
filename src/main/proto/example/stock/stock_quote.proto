@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "grpc/example/stock";
+option java_multiple_files = true;
+option java_package = "io.grpc.example.stock";
+option java_outer_classname = "StockQuoteProto";
+
+package proto.example.stock;
+
+service StockQuoteProvider {
+
+  rpc getStockQuote(Stock) returns (StockQuote) {}
+
+  rpc serverSideStreamingGetListStockQuotes(Stock) returns (stream StockQuote) {}
+
+  rpc clientSideStreamingGetStatisticsOfStocks(stream Stock) returns (StockQuote) {}
+
+  rpc bidirectionalStreamingGetListsStockQuotes(stream Stock) returns (stream StockQuote) {}
+}
+
+message Stock {
+  string ticker_symbol = 1;
+  string company_name = 2;
+  string description = 3;
+}
+
+message StockQuote {
+  double price = 1;
+  int32 offer_number = 2;
+  string description = 3;
+}

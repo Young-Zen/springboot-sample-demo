@@ -16,7 +16,7 @@ public class Pointcuts {
     @Pointcut("execution(* com.baomidou.mybatisplus.*.service.*.*(..))")
     public void serviceMybatisAspect() {}
 
-    @Pointcut("execution(* com.sz..service.*.*(..)) || serviceMybatisAspect()")
+    @Pointcut("execution(* com.sz..service..*.*(..)) || serviceMybatisAspect()")
     public void serviceAspect() {}
 
     @Pointcut("execution(* com.baomidou.mybatisplus.core.mapper.*.*(..))")
