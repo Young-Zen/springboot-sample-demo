@@ -1,6 +1,6 @@
 package com.sz.springbootsample.demo.config.webmvc;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -32,7 +32,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
     @Autowired private LogProperties logProperties;
 
     @Autowired(required = false)
-    private Map<String, ParamResolver> paramResolverMap = new HashMap<>(2);
+    private Map<String, ParamResolver> paramResolverMap = Collections.emptyMap();
 
     @Value("${server.servlet.context-path:/}")
     private String applicationContextPath;
