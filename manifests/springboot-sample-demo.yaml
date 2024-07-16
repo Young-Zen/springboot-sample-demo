@@ -26,7 +26,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: JAVA_OPTS
-              value: "-XX:MaxRAMPercentage=50.0 -XshowSettings:vm -Djava.security.egd=file:/dev/./urandom"
+              value: "-XX:InitialRAMPercentage=70.0 -XX:MaxRAMPercentage=70.0 -XX:MetaspaceSize=176m -XX:MaxMetaspaceSize=176m -XshowSettings:vm -Djava.security.egd=file:/dev/./urandom"
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
@@ -65,8 +65,8 @@ spec:
               value: "http://admin-service-address:8081"
           resources:
             limits:
-              cpu: 1000m
-              memory: 768Mi
+              cpu: 2000m
+              memory: 1024Mi
             requests:
               cpu: 50m
               memory: 512Mi
