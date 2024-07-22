@@ -26,7 +26,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: JAVA_OPTS
-              value: "-XX:InitialRAMPercentage=70.0 -XX:MaxRAMPercentage=70.0 -XX:MetaspaceSize=176m -XX:MaxMetaspaceSize=176m -XshowSettings:vm -Djava.security.egd=file:/dev/./urandom"
+              value: "-XX:+UseContainerSupport -XX:InitialRAMPercentage=70.0 -XX:MaxRAMPercentage=70.0 -XX:MetaspaceSize=176m -XX:MaxMetaspaceSize=176m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/dump-${NAMESPACE}-${POD_NAME}-$(date '+%s').hprof -XshowSettings:vm -Djava.security.egd=file:/dev/./urandom -Dfile.encoding=UTF-8"
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
@@ -35,6 +35,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.labels['app']
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: spring.datasource.username
               valueFrom:
                 secretKeyRef:
@@ -75,18 +79,18 @@ spec:
               port: http
               path: /api/demo/actuator/health/readiness
             initialDelaySeconds: 30
-            periodSeconds: 5
+            periodSeconds: 10
             timeoutSeconds: 2
-            failureThreshold: 4
+            failureThreshold: 3
             successThreshold: 1
           livenessProbe:
             httpGet:
               port: http
               path: /api/demo/actuator/health/liveness
             initialDelaySeconds: 30
-            periodSeconds: 5
+            periodSeconds: 10
             timeoutSeconds: 2
-            failureThreshold: 4
+            failureThreshold: 3
             successThreshold: 1
           lifecycle:
             preStop:

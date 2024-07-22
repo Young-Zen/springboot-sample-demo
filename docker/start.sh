@@ -1,1 +1,1 @@
-exec java -jar -server -XX:+HeapDumpOnOutOfMemoryError -XX:+UnlockExperimentalVMOptions $JAVA_OPTS $*
+exec java -jar -server ${ENABLE_DEBUG:+'-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=18080'} $JAVA_OPTS $*
