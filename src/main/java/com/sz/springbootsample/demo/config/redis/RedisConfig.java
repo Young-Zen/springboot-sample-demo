@@ -44,6 +44,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         template.setConnectionFactory(redisConnectionFactory);
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = jackson2JsonRedisSerializer();
         template.setDefaultSerializer(jackson2JsonRedisSerializer);
+        template.setKeySerializer(new StringRedisSerializer());
         return template;
     }
 
