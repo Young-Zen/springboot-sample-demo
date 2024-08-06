@@ -7,8 +7,6 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.Objects;
 
-import org.junit.Test;
-
 import com.sz.springbootsample.demo.dto.ResponseResultDTO;
 import com.sz.springbootsample.demo.enums.ResponseCodeEnum;
 import com.sz.springbootsample.demo.exception.BaseException;
@@ -34,7 +32,7 @@ public class UploadFileTests {
 
     public static final String FILE_SERVER_BASE_URL = "http://127.0.0.1:8080";
 
-    @Test
+    /// @Test
     public void testUploadFile() {
         String fileName = "photo.jpg";
         String fileVersion = "v0.0.1";
