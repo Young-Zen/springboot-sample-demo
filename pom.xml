@@ -36,6 +36,7 @@
 		<protobuf.version>3.23.4</protobuf.version>
 		<protobuf-plugin.version>0.6.1</protobuf-plugin.version>
 		<grpc.version>1.58.0</grpc.version>
+		<mockito.version>3.12.4</mockito.version>
 	</properties>
 
 	<dependencies>
@@ -138,6 +139,24 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-inline</artifactId>
+			<version>${mockito.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -556,7 +575,32 @@
 						</configuration>
 					</execution>
 				</executions>
+				<configuration>
+					<excludes>
+						<exclude>io/grpc/example/**</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>unit-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<compilerArgs>
+								<!-- 如果使用 @SpyBean 监视具有按名称引用参数的 @Cacheable 方法的bean，则必须使用 -parameters 编译应用程序。这确保了一旦bean被监视，参数名就可用于缓存基础结构。 https://www.cnblogs.com/lw5946/p/12159685.html -->
+								<arg>-parameters</arg>
+							</compilerArgs>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

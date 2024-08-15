@@ -18,5 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DemoApplicationTests {
 
     @Test
-    public void contextLoads() {}
+    public void contextLoads() {
+        // https://medium.com/@bubu.tripathy/testing-spring-boot-applications-c5d8212f6e72
+    }
 }
