@@ -419,6 +419,15 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.12.4</version>
+				<configuration>
+					<!-- https://blog.csdn.net/friendlytkyj/article/details/130900505 -->
+					<argLine>-Dfile.encoding=UTF-8 ${argLine}</argLine>
+				</configuration>
+			</plugin>
 			<!-- 编码规约扫描命令： mvn pmd:pmd -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -567,7 +576,7 @@
 										<limit>
 											<counter>LINE</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0.10</minimum>
+											<minimum>0.25</minimum>
 										</limit>
 									</limits>
 								</rule>
