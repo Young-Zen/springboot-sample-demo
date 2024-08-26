@@ -27,10 +27,11 @@ import io.micrometer.core.instrument.util.StringUtils;
  */
 public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper;
 
-    public XssHttpServletRequestWrapper(HttpServletRequest request) {
+    public XssHttpServletRequestWrapper(HttpServletRequest request, ObjectMapper objectMapper) {
         super(request);
+        this.objectMapper = objectMapper;
     }
 
     @Override

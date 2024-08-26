@@ -2,6 +2,7 @@ package com.sz.springbootsample.demo.config.security.xss;
 
 import java.io.IOException;
 import java.util.Objects;
+import javax.annotation.Resource;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -14,16 +15,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 /**
  * @author Yanghj
  * @date 2023/6/25 16:46
  */
 @Configuration
 public class XssConfig {
+
+    @Resource private ObjectMapper objectMapper;
+
     @Bean
     public FilterRegistrationBean<Filter> xxsFilterRegistration() {
         FilterRegistrationBean<Filter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(new XssFilter());
+        registration.setFilter(new XssFilter(objectMapper));
         registration.addUrlPatterns("/*");
         registration.setName("XssFilter");
         registration.setOrder(1);
@@ -31,6 +37,13 @@ public class XssConfig {
     }
 
     public static class XssFilter implements Filter {
+
+        private ObjectMapper objectMapper;
+
+        public XssFilter(ObjectMapper objectMapper) {
+            this.objectMapper = objectMapper;
+        }
+
         @Override
         public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
                 throws IOException, ServletException {
@@ -43,7 +56,8 @@ public class XssConfig {
             }
 
             // 如果不是文件上传请求，进行XSS过滤
-            chain.doFilter(new XssHttpServletRequestWrapper(httpServletRequest), response);
+            chain.doFilter(
+                    new XssHttpServletRequestWrapper(httpServletRequest, objectMapper), response);
         }
     }
 }

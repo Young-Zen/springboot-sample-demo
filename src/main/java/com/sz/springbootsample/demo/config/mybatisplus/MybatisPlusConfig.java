@@ -1,12 +1,17 @@
 package com.sz.springbootsample.demo.config.mybatisplus;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.baomidou.mybatisplus.core.incrementer.IKeyGenerator;
+import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler;
 import com.baomidou.mybatisplus.extension.incrementer.H2KeyGenerator;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * MybatisPlus配置类
@@ -16,6 +21,15 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
  */
 @Configuration
 public class MybatisPlusConfig {
+
+    @Resource private ObjectMapper objectMapper;
+
+    @PostConstruct
+    void init() {
+        // https://blog.csdn.net/HO1_K/article/details/129675462
+        // https://github.com/spring-projects/spring-boot/issues/26859#issuecomment-864963998
+        JacksonTypeHandler.setObjectMapper(objectMapper);
+    }
 
     /** 添加分页插件 */
     @Bean
