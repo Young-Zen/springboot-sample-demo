@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @author Yanghj
  * @date 1/2/2020
  */
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ElementType.TYPE, ElementType.METHOD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface IgnoreTracing {}

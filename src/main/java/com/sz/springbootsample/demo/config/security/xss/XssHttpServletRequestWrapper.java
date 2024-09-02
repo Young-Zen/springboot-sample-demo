@@ -38,7 +38,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     public String getQueryString() {
         String value = super.getQueryString();
         if (StringUtils.isNotBlank(value)) {
-            value = HtmlUtils.htmlEscape(value);
+            value = HtmlUtils.htmlEscape(value, StandardCharsets.UTF_8.name());
         }
         return value;
     }
@@ -47,7 +47,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
     public String getParameter(String name) {
         String value = super.getParameter(name);
         if (StringUtils.isNotBlank(value)) {
-            value = HtmlUtils.htmlEscape(value);
+            value = HtmlUtils.htmlEscape(value, StandardCharsets.UTF_8.name());
         }
         return value;
     }
@@ -58,7 +58,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         if (Objects.nonNull(values)) {
             for (int i = 0; i < values.length; i++) {
                 if (StringUtils.isNotBlank(values[i])) {
-                    values[i] = HtmlUtils.htmlEscape(values[i]);
+                    values[i] = HtmlUtils.htmlEscape(values[i], StandardCharsets.UTF_8.name());
                 }
             }
         }
@@ -72,7 +72,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
             for (String[] values : map.values()) {
                 for (int i = 0; i < values.length; i++) {
                     if (StringUtils.isNotBlank(values[i])) {
-                        values[i] = HtmlUtils.htmlEscape(values[i]);
+                        values[i] = HtmlUtils.htmlEscape(values[i], StandardCharsets.UTF_8.name());
                     }
                 }
             }
@@ -136,7 +136,7 @@ public class XssHttpServletRequestWrapper extends HttpServletRequestWrapper {
         }
 
         if (object instanceof String) {
-            return HtmlUtils.htmlEscape((String) object);
+            return HtmlUtils.htmlEscape((String) object, StandardCharsets.UTF_8.name());
         } else if (object instanceof Map) {
             Map<Object, Object> map = (Map<Object, Object>) object;
             for (Map.Entry<Object, Object> entry : map.entrySet()) {

@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
@@ -19,6 +20,7 @@ import lombok.experimental.Accessors;
  * @since 2020-03-16
  */
 @Data
+@ToString(exclude = {"password", "phone", "email"})
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @ApiModel(description = "用户")

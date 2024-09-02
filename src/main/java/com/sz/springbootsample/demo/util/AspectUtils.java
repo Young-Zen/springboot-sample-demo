@@ -1,12 +1,15 @@
 package com.sz.springbootsample.demo.util;
 
 import java.lang.annotation.Annotation;
+import java.util.Objects;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.sz.springbootsample.demo.annotation.IgnoreTracing;
 
 /**
  * AOP工具类
@@ -35,9 +38,13 @@ public class AspectUtils {
         if (joinPoint == null) {
             return null;
         }
+
+        Annotation[][] parameterAnnotations =
+                ((MethodSignature) joinPoint.getSignature()).getMethod().getParameterAnnotations();
         Object[] params = joinPoint.getArgs();
-        Object[] arguments = new Object[params.length];
-        for (int i = 0; i < params.length; i++) {
+        int length = Math.min(params.length, parameterAnnotations.length);
+        Object[] arguments = new Object[length];
+        for (int i = 0; i < length; i++) {
             if (params[i] instanceof ServletRequest
                     || params[i] instanceof ServletResponse
                     || params[i] instanceof MultipartFile) {
@@ -48,9 +55,28 @@ public class AspectUtils {
                 // getOutputStream() has already been called for this response
                 continue;
             }
+
+            if (isIgnoreParamLog(parameterAnnotations[i])) {
+                arguments[i] = "***";
+                continue;
+            }
+
             arguments[i] = params[i];
         }
         return arguments;
+    }
+
+    private boolean isIgnoreParamLog(Annotation[] parameterAnnotation) {
+        if (parameterAnnotation == null || parameterAnnotation.length == 0) {
+            return false;
+        }
+
+        for (Annotation annotation : parameterAnnotation) {
+            if (Objects.equals(annotation.annotationType(), IgnoreTracing.class)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
