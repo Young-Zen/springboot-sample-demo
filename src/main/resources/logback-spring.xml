@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="Console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <!-- https://docs.spring.io/spring-cloud-sleuth/docs/2.2.8.RELEASE/reference/html/#json-logback-with-logstash -->
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{traceId},%X{spanId}] [%thread] %-5level %logger{36} - %replace(%replace(%msg){'\r', '\\r'}){'\n', '\\n'}%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="Async" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="Console" />
+        <!-- 设置异步阻塞队列的大小，为了不丢失日志建议设置的大一些，单机压测时100000是没问题的，应该不用担心OOM -->
+        <queueSize>2048</queueSize>
+        <!-- 设置丢弃DEBUG、TRACE、INFO日志的阀值，不丢失 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 设置队列入队时非阻塞，当队列满时会直接丢弃日志，但是对性能提升极大 -->
+        <neverBlock>true</neverBlock>
+    </appender>
+
+    <!-- LOG everything at INFO level -->
+    <root level="info">
+        <appender-ref ref="Async" />
+    </root>
+
+</configuration>
