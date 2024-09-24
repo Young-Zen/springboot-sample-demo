@@ -17,7 +17,8 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<java.encoding>UTF-8</java.encoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<maven.compiler.version>3.8.1</maven.compiler.version>
 		<maven.pmd.version>3.11.0</maven.pmd.version>
 		<docker.maven.version>1.2.1</docker.maven.version>
@@ -339,7 +340,7 @@
 				<configuration>
 					<source>${maven.compiler.source}</source>
 					<target>${maven.compiler.target}</target>
-					<encoding>${java.encoding}</encoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
 					<!-- See https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html -->
 					<!-- Classpath elements to supply as annotation processor path. If specified, the compiler   -->
 					<!-- will detect annotation processors only in those classpath elements. If omitted, the     -->
