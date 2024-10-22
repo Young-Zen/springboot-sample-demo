@@ -137,7 +137,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: 'health,info,prometheus'
+        include: 'health,info,prometheus,loggers'
   metrics:
     tags:
       application: ${spring.application.name}
@@ -157,7 +157,7 @@ custom:
       suffix: )
   log:
     additional-skip-pattern: /|/ping
-    result: false
+    result: true
 #    enable: false
 
 #override the method WebSecurityConfigurerAdapter.configure(AuthenticationManagerBuilder auth),the following configurations fails
@@ -171,13 +171,7 @@ custom:
 ---
 spring:
   profiles: test
-logging:
-  level:
-    com:
-      sz:
-        springbootsample:
-          demo:
-            dao: debug
+
 custom:
   swagger:
     csrf:

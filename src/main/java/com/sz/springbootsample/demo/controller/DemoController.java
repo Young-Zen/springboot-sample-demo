@@ -33,6 +33,7 @@ import com.sz.springbootsample.demo.vo.DemoVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
@@ -41,6 +42,7 @@ import springfox.documentation.annotations.ApiIgnore;
  * @author Yanghj
  * @date 1/1/2020
  */
+@Slf4j
 @RestController
 @Validated
 @RequestMapping("/demo")
@@ -182,7 +184,7 @@ public class DemoController {
         String clientId = UUID.randomUUID().toString();
         try {
             if (RedisUtils.getInstance().tryLock(key, clientId, seconds)) {
-                System.out.println("lock");
+                log.info("lock");
             }
         } finally {
             RedisUtils.getInstance().unLock(key, clientId);

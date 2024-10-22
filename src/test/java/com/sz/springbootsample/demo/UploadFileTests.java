@@ -65,10 +65,12 @@ public class UploadFileTests {
             lastShardSize = shardSize;
         }
 
-        System.out.println(size);
-        System.out.println(shardTotal);
-        System.out.println(shardSize);
-        System.out.println(lastShardSize);
+        log.info(
+                "size: {}, shardTotal: {}, shardSize: {}, lastShardSize: {}",
+                size,
+                shardTotal,
+                shardSize,
+                lastShardSize);
 
         try (FileInputStream fileInputStream = new FileInputStream(file)) {
             byte[] shardBytes = new byte[shardSize];

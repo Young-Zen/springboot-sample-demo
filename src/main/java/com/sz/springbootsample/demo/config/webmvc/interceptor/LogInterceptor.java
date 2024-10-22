@@ -86,13 +86,15 @@ public class LogInterceptor implements HandlerInterceptor {
         }
 
         LogHolder.setLogDto(logDTO);
-        log.info(
-                "[{}]服务器IP：{}，请求IP：{}，请求方式：{}，URL：{}",
-                logCode,
-                InetAddress.getLocalHost().getHostAddress(),
-                ServletUtil.getClientIP(request),
-                request.getMethod(),
-                request.getRequestURL());
+        if (log.isInfoEnabled()) {
+            log.info(
+                    "[{}]服务器IP：{}，请求IP：{}，请求方式：{}，URL：{}",
+                    logCode,
+                    InetAddress.getLocalHost().getHostAddress(),
+                    ServletUtil.getClientIP(request),
+                    request.getMethod(),
+                    request.getRequestURL());
+        }
         return true;
     }
 

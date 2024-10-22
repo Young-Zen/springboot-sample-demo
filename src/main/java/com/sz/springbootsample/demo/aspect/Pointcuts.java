@@ -13,15 +13,9 @@ public class Pointcuts {
             "((@within(org.springframework.stereotype.Controller) || @within(org.springframework.web.bind.annotation.RestController)) && execution(public * com.sz..*.*(..)))")
     public void controllerAspect() {}
 
-    @Pointcut("execution(* com.baomidou.mybatisplus.*.service.*.*(..))")
-    public void serviceMybatisAspect() {}
-
-    @Pointcut("execution(* com.sz..service..*.*(..)) || serviceMybatisAspect()")
+    @Pointcut("execution(* com.sz..service..*.*(..))")
     public void serviceAspect() {}
 
-    @Pointcut("execution(* com.baomidou.mybatisplus.core.mapper.*.*(..))")
-    public void daoMybatisAspect() {}
-
-    @Pointcut("execution(* com.sz..dao.*.*.*(..)) || daoMybatisAspect()")
+    @Pointcut("execution(* com.sz..dao..*.*(..))")
     public void daoAspect() {}
 }
