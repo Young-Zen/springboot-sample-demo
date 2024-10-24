@@ -36,24 +36,24 @@ public class LogAspect {
      */
     @Before(
             value =
-                    "com.sz.springbootsample.demo.aspect.Pointcuts.controllerAspect()"
+                    "!com.sz.springbootsample.demo.aspect.Pointcuts.ignoreTracingAspect()"
+                            + "&&(com.sz.springbootsample.demo.aspect.Pointcuts.controllerAspect()"
                             + "||com.sz.springbootsample.demo.aspect.Pointcuts.serviceAspect()"
-                            + "||com.sz.springbootsample.demo.aspect.Pointcuts.daoAspect()")
+                            + "||com.sz.springbootsample.demo.aspect.Pointcuts.daoAspect())")
     public void methodBefore(JoinPoint joinPoint) {
         if (log.isDebugEnabled()) {
             log.debug("LogAspect before advice: {}", joinPoint.getSignature());
         }
         LogDTO logDTO = LogHolder.getLogDto();
         logDTO.setLogStep(logDTO.getLogStep() + 1).setAdviceCount(logDTO.getAdviceCount() + 1);
-        //        LogHolder.setLogDto(logDTO);
         if (logDTO.getIsIgnoreTracing() || !logProperties.getParam()) {
             return;
         }
         if (log.isInfoEnabled()) {
             log.info(
-                    "第{}步，方法名：{}，参数：{}",
+                    "第{}步，[{}] 参数：{}",
                     logDTO.getLogStep(),
-                    joinPoint.getSignature(),
+                    joinPoint.getSignature().toShortString(),
                     AspectUtils.getInstance().getMethodParams(joinPoint));
         }
     }
@@ -66,27 +66,29 @@ public class LogAspect {
      */
     @AfterReturning(
             value =
-                    "com.sz.springbootsample.demo.aspect.Pointcuts.controllerAspect()"
+                    "!com.sz.springbootsample.demo.aspect.Pointcuts.ignoreTracingAspect()"
+                            + "&&(com.sz.springbootsample.demo.aspect.Pointcuts.controllerAspect()"
                             + "||com.sz.springbootsample.demo.aspect.Pointcuts.serviceAspect()"
-                            + "||com.sz.springbootsample.demo.aspect.Pointcuts.daoAspect()",
+                            + "||com.sz.springbootsample.demo.aspect.Pointcuts.daoAspect())",
             returning = "result")
-    public void methodAferReturning(JoinPoint joinPoint, Object result) {
+    public void methodAfterReturning(JoinPoint joinPoint, Object result) {
         if (log.isDebugEnabled()) {
             log.debug("LogAspect after returning advice: {}", joinPoint.getSignature());
         }
         LogDTO logDTO = LogHolder.getLogDto();
         logDTO.setAdviceCount(logDTO.getAdviceCount() + 1);
-        //        LogHolder.setLogDto(logDTO);
         if (logDTO.getIsIgnoreTracing() || !logProperties.getResult()) {
             return;
         }
         if (log.isInfoEnabled()) {
-            log.info("结果：[{}] {}", joinPoint.getSignature(), result);
+            log.info("[{}] 结果：{}", joinPoint.getSignature().toShortString(), result);
         }
     }
 
     @AfterThrowing(
-            value = "com.sz.springbootsample.demo.aspect.Pointcuts.controllerAspect()",
+            value =
+                    "!com.sz.springbootsample.demo.aspect.Pointcuts.ignoreTracingAspect()"
+                            + "&&com.sz.springbootsample.demo.aspect.Pointcuts.controllerAspect()",
             throwing = "cause")
     public void methodAfterThrowing(JoinPoint joinPoint, Throwable cause) {
         if (log.isDebugEnabled()) {
@@ -94,6 +96,5 @@ public class LogAspect {
         }
         LogDTO logDTO = LogHolder.getLogDto();
         logDTO.setAdviceCount(logDTO.getAdviceCount() + 1).setIsThrowing(true);
-        //        LogHolder.setLogDto(logDTO);
     }
 }

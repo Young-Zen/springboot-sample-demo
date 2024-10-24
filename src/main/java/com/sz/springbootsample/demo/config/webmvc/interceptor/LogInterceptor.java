@@ -61,18 +61,7 @@ public class LogInterceptor implements HandlerInterceptor {
                 .setLogStep(0)
                 .setAdviceCount(0)
                 .setIsThrowing(false)
-                .setIsIgnoreTracing(false);
-        // 设置 isIgnoreTracing
-        Method method = ((HandlerMethod) handler).getMethod();
-        IgnoreTracing ignoreTracing = method.getAnnotation(IgnoreTracing.class);
-        if (ignoreTracing == null) {
-            // ignoreTracing = ((HandlerMethod)
-            // handler).getBeanType().getAnnotation(IgnoreTracing.class);
-            ignoreTracing = method.getDeclaringClass().getAnnotation(IgnoreTracing.class);
-        }
-        if (ignoreTracing != null) {
-            logDTO.setIsIgnoreTracing(true);
-        }
+                .setIsIgnoreTracing(this.isIgnoreTracing(handler));
 
         Matcher matcher =
                 pattern.matcher(
@@ -111,6 +100,14 @@ public class LogInterceptor implements HandlerInterceptor {
             HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
             throws Exception {
         LogHolder.clean();
+    }
+
+    private boolean isIgnoreTracing(Object handler) {
+        Method method = ((HandlerMethod) handler).getMethod();
+        boolean isIgnoreTracing = method.isAnnotationPresent(IgnoreTracing.class);
+        return isIgnoreTracing
+                ? true
+                : method.getDeclaringClass().isAnnotationPresent(IgnoreTracing.class);
     }
 
     private String trimHead(String source, String prefix) {

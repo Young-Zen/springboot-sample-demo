@@ -18,4 +18,7 @@ public class Pointcuts {
 
     @Pointcut("execution(* com.sz..dao..*.*(..))")
     public void daoAspect() {}
+
+    @Pointcut("@annotation(com.sz.springbootsample.demo.annotation.IgnoreTracing)")
+    public void ignoreTracingAspect() {}
 }
