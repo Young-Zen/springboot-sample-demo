@@ -1,11 +1,16 @@
 package com.sz.springbootsample.demo.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * 响应码及对应消息枚举类
  *
  * @author Yanghj
  * @date 1/1/2020
  */
+@Getter
+@AllArgsConstructor
 public enum ResponseCodeEnum {
     /** 通用操作成功 */
     OK("0", "操作成功"),
@@ -25,30 +30,9 @@ public enum ResponseCodeEnum {
     /** 系统内部异常 */
     INTERNAL_SERVER_ERROR("500", "系统内部异常");
 
-    ResponseCodeEnum(String code, String msg) {
-        this.code = code;
-        this.msg = msg;
-    }
-
     /** 编码 */
     private String code;
 
     /** 消息 */
     private String msg;
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
 }

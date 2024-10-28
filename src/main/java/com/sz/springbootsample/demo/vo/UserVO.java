@@ -3,8 +3,11 @@ package com.sz.springbootsample.demo.vo;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 
+import com.sz.springbootsample.demo.annotation.Sensitive;
 import com.sz.springbootsample.demo.annotation.validator.ValidPassword;
+import com.sz.springbootsample.demo.enums.SensitiveStrategyEnum;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -34,16 +37,20 @@ public class UserVO {
 
     @ApiModelProperty(value = "密码")
     @ValidPassword
+    @Sensitive
     private String password;
 
     @ApiModelProperty(value = "生日", example = "2020-01-01")
     private LocalDate birthday;
 
     @ApiModelProperty(value = "手机号")
+    @Pattern(regexp = "^1[3-9]\\d{9}$", message = "手机号格式错误")
+    @Sensitive(strategy = SensitiveStrategyEnum.PHONE)
     private String phone;
 
     @ApiModelProperty(value = "邮箱")
     @Email
+    @Sensitive(strategy = SensitiveStrategyEnum.EMAIL)
     private String email;
 
     @ApiModelProperty(value = "是否禁用")

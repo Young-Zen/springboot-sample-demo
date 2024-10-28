@@ -1,6 +1,7 @@
 package com.sz.springbootsample.demo.controller;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class UserController {
     @PostMapping("/add")
     @ApiOperation("插入")
     public ResponseResultDTO add(
-            @ApiParam(name = "UserVO对象", value = "json格式", required = true) @RequestBody
+            @ApiParam(name = "UserVO对象", value = "json格式", required = true) @Valid @RequestBody
                     UserVO userVo) {
         return ResponseResultDTO.ok(userService.saveUser(userVo));
     }
@@ -42,7 +43,7 @@ public class UserController {
     @PostMapping("/update")
     @ApiOperation("更新")
     public ResponseResultDTO update(
-            @ApiParam(name = "UserVO对象", value = "json格式", required = true) @RequestBody
+            @ApiParam(name = "UserVO对象", value = "json格式", required = true) @Valid @RequestBody
                     UserVO userVo) {
         return ResponseResultDTO.ok(userService.updateUser(userVo));
     }
