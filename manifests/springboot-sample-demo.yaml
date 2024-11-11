@@ -26,7 +26,8 @@ spec:
           imagePullPolicy: Always
           env:
             - name: JAVA_OPTS
-              value: "-XX:+UseContainerSupport -XX:InitialRAMPercentage=70.0 -XX:MaxRAMPercentage=70.0 -XX:MetaspaceSize=176m -XX:MaxMetaspaceSize=176m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/dump-${NAMESPACE}-${POD_NAME}-$(date '+%s').hprof -XshowSettings:vm -Djava.security.egd=file:/dev/./urandom -Dfile.encoding=UTF-8"
+              # https://help.aliyun.com/zh/sae/serverless-app-engine-classic/use-cases/best-practices-for-jvm-heap-size-configuration
+              value: "-XX:+UseContainerSupport -XX:InitialRAMPercentage=70.0 -XX:MaxRAMPercentage=70.0 -XX:MetaspaceSize=184m -XX:MaxMetaspaceSize=184m -Xss512k -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp/dump-${NAMESPACE}-${POD_NAME}-$(date '+%s').hprof -XshowSettings:vm -Djava.security.egd=file:/dev/./urandom -Dfile.encoding=UTF-8"
             - name: NAMESPACE
               valueFrom:
                 fieldRef:
