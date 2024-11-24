@@ -3,6 +3,7 @@ package com.sz.springbootsample.demo.config.datasource;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.session.LocalCacheScope;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
@@ -60,7 +61,12 @@ public class MysqlDataSourceConfig {
         MybatisSqlSessionFactoryBean factory = new MybatisSqlSessionFactoryBean();
         factory.setDataSource(dataSource);
         factory.setVfs(SpringBootVFS.class);
-        factory.setConfiguration(new MybatisConfiguration());
+        MybatisConfiguration mybatisConfiguration = new MybatisConfiguration();
+        // 关闭一级缓存
+        mybatisConfiguration.setLocalCacheScope(LocalCacheScope.STATEMENT);
+        // 关闭二级缓存
+        mybatisConfiguration.setCacheEnabled(false);
+        factory.setConfiguration(mybatisConfiguration);
         factory.setPlugins(interceptorsProvider.getIfAvailable());
         factory.setMapperLocations(
                 new PathMatchingResourcePatternResolver()
