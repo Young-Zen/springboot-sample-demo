@@ -11,10 +11,10 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 
 import com.sz.springbootsample.demo.annotation.Sensitive;
-import com.sz.springbootsample.demo.enums.SensitiveStrategyEnum;
+import com.sz.springbootsample.demo.enums.DesensitizationStrategyEnum;
 
 /**
- * 自定义序列化注解实现
+ * 自定义序列化注解实现，用于敏感数据脱敏
  *
  * @author Yanghj
  * @date 2024/10/24 19:17
@@ -22,7 +22,7 @@ import com.sz.springbootsample.demo.enums.SensitiveStrategyEnum;
 public class SensitiveJsonSerializer extends JsonSerializer<String>
         implements ContextualSerializer {
 
-    private SensitiveStrategyEnum sensitiveStrategy;
+    private DesensitizationStrategyEnum sensitiveStrategy;
 
     @Override
     public void serialize(

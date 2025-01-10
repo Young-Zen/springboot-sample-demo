@@ -7,7 +7,7 @@ import javax.validation.constraints.Pattern;
 
 import com.sz.springbootsample.demo.annotation.Sensitive;
 import com.sz.springbootsample.demo.annotation.validator.ValidPassword;
-import com.sz.springbootsample.demo.enums.SensitiveStrategyEnum;
+import com.sz.springbootsample.demo.enums.DesensitizationStrategyEnum;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -45,12 +45,12 @@ public class UserVO {
 
     @ApiModelProperty(value = "手机号")
     @Pattern(regexp = "^1[3-9]\\d{9}$", message = "手机号格式错误")
-    @Sensitive(strategy = SensitiveStrategyEnum.PHONE)
+    @Sensitive(strategy = DesensitizationStrategyEnum.PHONE)
     private String phone;
 
     @ApiModelProperty(value = "邮箱")
     @Email
-    @Sensitive(strategy = SensitiveStrategyEnum.EMAIL)
+    @Sensitive(strategy = DesensitizationStrategyEnum.EMAIL)
     private String email;
 
     @ApiModelProperty(value = "是否禁用")

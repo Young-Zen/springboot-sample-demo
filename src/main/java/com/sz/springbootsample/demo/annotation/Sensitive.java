@@ -8,11 +8,11 @@ import java.lang.annotation.Target;
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import com.sz.springbootsample.demo.enums.SensitiveStrategyEnum;
+import com.sz.springbootsample.demo.enums.DesensitizationStrategyEnum;
 import com.sz.springbootsample.demo.serializer.SensitiveJsonSerializer;
 
 /**
- * 接口数据脱敏
+ * 接口数据脱敏注解
  *
  * @author Yanghj
  * @date 2024/10/24 19:16
@@ -24,5 +24,5 @@ import com.sz.springbootsample.demo.serializer.SensitiveJsonSerializer;
 public @interface Sensitive {
 
     /** 脱敏策略 */
-    SensitiveStrategyEnum strategy() default SensitiveStrategyEnum.DEFAULT;
+    DesensitizationStrategyEnum strategy() default DesensitizationStrategyEnum.DEFAULT;
 }

@@ -5,8 +5,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import com.sz.springbootsample.demo.config.mybatisplus.CryptoJacksonTypeHandler;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -23,7 +26,7 @@ import lombok.experimental.Accessors;
 @ToString(exclude = {"password", "phone", "email"})
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("t_user")
+@TableName(value = "t_user", autoResultMap = true)
 public class UserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -33,6 +36,7 @@ public class UserEntity implements Serializable {
 
     private String userName;
 
+    @TableField(value = "password", typeHandler = CryptoJacksonTypeHandler.class)
     private String password;
 
     private LocalDate birthday;

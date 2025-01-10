@@ -29,6 +29,7 @@ public class MybatisPlusConfig {
         // https://blog.csdn.net/HO1_K/article/details/129675462
         // https://github.com/spring-projects/spring-boot/issues/26859#issuecomment-864963998
         JacksonTypeHandler.setObjectMapper(objectMapper);
+        CryptoJacksonTypeHandler.setObjectMapper(objectMapper);
     }
 
     /** 添加分页插件 */

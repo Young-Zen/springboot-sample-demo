@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `t_person` (
 CREATE TABLE IF NOT EXISTS `t_user` (
     `pk_user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
     `user_name` varchar(64) DEFAULT NULL,
-    `password` varchar(64) NOT NULL,
+    `password` varchar(1024) NOT NULL,
     `birthday` date DEFAULT NULL,
     `phone` char(11) DEFAULT NULL,
     `email` varchar(32) DEFAULT NULL,

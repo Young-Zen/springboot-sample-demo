@@ -124,6 +124,8 @@ spring:
     timeout: 10s        #连接超时时间
   profiles:
     active: test
+  jackson:
+    default-property-inclusion: non_null
 
 grpc:
   server:

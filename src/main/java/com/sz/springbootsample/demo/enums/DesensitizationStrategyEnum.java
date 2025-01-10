@@ -13,9 +13,10 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public enum SensitiveStrategyEnum {
+public enum DesensitizationStrategyEnum {
     /** 默认 */
     DEFAULT(s -> "***"),
+
     /** 用户名 */
     USERNAME(s -> s.replaceAll("(\\S)\\S(\\S*)", "$1*$2")),
 
