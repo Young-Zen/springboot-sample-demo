@@ -2,6 +2,7 @@ package com.sz.springbootsample.demo.enums;
 
 import java.util.function.Function;
 
+import cn.hutool.core.util.DesensitizedUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,19 +19,13 @@ public enum DesensitizationStrategyEnum {
     DEFAULT(s -> "***"),
 
     /** 用户名 */
-    USERNAME(s -> s.replaceAll("(\\S)\\S(\\S*)", "$1*$2")),
-
-    /** 身份证 */
-    ID_CARD(s -> s.replaceAll("(\\d{4})\\d{10}(\\w{4})", "$1***$2")),
+    USERNAME(DesensitizedUtil::chineseName),
 
     /** 手机号 */
-    PHONE(s -> s.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2")),
+    PHONE(DesensitizedUtil::mobilePhone),
 
     /** 电子邮件 */
-    EMAIL(s -> s.replaceAll("^(\\w)(\\w+)(\\w)(@.*)$", "$1***$3$4")),
-
-    /** 地址 */
-    ADDRESS(s -> s.replaceAll("(\\S{3})\\S{2}(\\S*)\\S{2}", "$1***$2***"));
+    EMAIL(DesensitizedUtil::email);
 
     /** 脱敏策略 */
     private final Function<String, String> desensitization;
