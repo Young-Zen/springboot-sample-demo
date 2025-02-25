@@ -1,5 +1,6 @@
 package com.sz.springbootsample.demo.annotation.validator;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,7 +12,15 @@ import javax.validation.Payload;
  * @author Yanghj
  * @date 2023/6/25 15:55
  */
-@Target({ElementType.FIELD})
+@Documented
+@Target({
+    ElementType.METHOD,
+    ElementType.FIELD,
+    ElementType.ANNOTATION_TYPE,
+    ElementType.CONSTRUCTOR,
+    ElementType.PARAMETER,
+    ElementType.TYPE_USE
+})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = PasswordValidator.class)
 public @interface ValidPassword {

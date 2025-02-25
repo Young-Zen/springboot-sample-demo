@@ -40,7 +40,7 @@ public class CryptoJacksonTypeHandler extends AbstractJsonTypeHandler<Object> {
 
     static {
         // 定义密钥（16 字节）
-        String key = "1234567890123456"; // 16 字节的密钥
+        String key = "1234567890123456";
         // 创建 AES 加密对象
         aes = new SymmetricCrypto(SymmetricAlgorithm.AES, key.getBytes(StandardCharsets.UTF_8));
     }
