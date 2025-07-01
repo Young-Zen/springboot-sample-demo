@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-slim
+FROM eclipse-temurin:8u452-b09-jdk-focal
 
 RUN groupadd -r -g 1000 app \
     && useradd -m -d /home/app/ -s /bin/bash -u 1000 -r -g app app \

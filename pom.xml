@@ -383,7 +383,7 @@
 				<version>${docker.maven.version}</version>
 				<configuration>
 					<imageName>${docker.repository.url}/${project.artifactId}</imageName>
-					<baseImage>openjdk:8-jdk-alpine</baseImage>
+					<baseImage>eclipse-temurin:8u452-b09-jdk-focal</baseImage>
 					<imageTags>
 						<imageTag>${project.version}</imageTag>
 						<!--<imageTag>latest</imageTag>-->

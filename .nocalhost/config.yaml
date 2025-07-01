@@ -4,7 +4,7 @@ containers:
   - name: "springboot-sample-demo"
     dev:
       gitUrl: ""
-      image: "openjdk:8-jdk-buster"
+      image: "eclipse-temurin:8u452-b09-jdk-focal"
       shell: "bash"
       workDir: ""
       storageClass: ""
