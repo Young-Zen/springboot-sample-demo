@@ -1,2 +1,12 @@
-#!/usr/bin/env bash
-mvn spotless:check
+#!/usr/bin/env sh
+set -e
+if [ -x "$(command -v mvn)" ]; then
+  mvn spotless:check
+  mvn verify -DskipTests
+elif [ -x "$(command -v mvnd)" ]; then
+  mvnd spotless:check
+  mvnd verify -DskipTests
+else
+  echo "Neither mvn nor mvnd are installed, exiting with error"
+  exit 1
+fi

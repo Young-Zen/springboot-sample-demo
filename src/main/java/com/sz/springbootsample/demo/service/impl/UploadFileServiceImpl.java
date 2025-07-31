@@ -21,9 +21,6 @@ import com.sz.springbootsample.demo.util.Md5Utils;
 import com.sz.springbootsample.demo.util.RsaUtils;
 
 import lombok.extern.slf4j.Slf4j;
-import sun.security.action.GetPropertyAction;
-
-import static java.security.AccessController.doPrivileged;
 
 /**
  * this module only use for CD
@@ -38,7 +35,7 @@ public class UploadFileServiceImpl implements UploadFileService {
     public static final String UPLOAD_DIR_PATH;
 
     static {
-        Path path = Paths.get(doPrivileged(new GetPropertyAction("java.io.tmpdir")));
+        Path path = Paths.get(System.getProperty("java.io.tmpdir"));
         UPLOAD_DIR_PATH = Paths.get(path.toString(), "upload").toString();
     }
 
