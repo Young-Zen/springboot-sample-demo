@@ -128,5 +128,5 @@ spec:
     - name: http
       port: 8080
       protocol: TCP
-      targetPort: 8080
+      targetPort: http
       nodePort: 8080
