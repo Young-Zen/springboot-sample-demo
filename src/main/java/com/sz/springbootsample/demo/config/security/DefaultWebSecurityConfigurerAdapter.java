@@ -70,13 +70,17 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
     @Value("${server.servlet.context-path:/}")
     private String applicationContextPath;
 
+    @Value("${custom.proxy.aiPass.servletUrl}")
+    private String proxyServletUrl;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // http.exceptionHandling().accessDeniedHandler(new DefaultAccessDeniedHandler());
         http.csrf()
                 // .requireCsrfProtectionMatcher(new CsrfRequireMatcher(this.getAllowedRemoteHost(),
                 // this.getAllowedRefererList()))
-                .ignoringAntMatchers("/actuator/**", "/druid/**", "/file/**");
+                .ignoringAntMatchers(
+                        "/actuator/**", "/druid/**", "/file/**", proxyServletUrl + "/**");
         http.authorizeRequests()
                 .antMatchers(
                         "/",
@@ -86,7 +90,8 @@ public class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAd
                         "/error",
                         "/swagger-ui.html",
                         "/v2/api-docs",
-                        "/swagger-resources/**")
+                        "/swagger-resources/**",
+                        proxyServletUrl + "/**")
                 .permitAll()
                 .requestMatchers(EndpointRequest.toAnyEndpoint())
                 .hasRole("ACTUATOR_ADMIN")

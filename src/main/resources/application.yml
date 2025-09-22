@@ -161,6 +161,11 @@ custom:
     additional-skip-pattern: /|/ping
     result: true
 #    enable: false
+  proxy:
+    aiPass:
+      servletUrl: /aipass
+      targetUrl: ${AIPASS_BASE_URL:https://aipass-service-address}
+      token: aiPassToken
 
 #override the method WebSecurityConfigurerAdapter.configure(AuthenticationManagerBuilder auth),the following configurations fails
 #spring:
