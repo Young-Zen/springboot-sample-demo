@@ -11,7 +11,7 @@
 
 CREATE TABLE IF NOT EXISTS `t_boot_demo` (
     `pk_demo_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键id',
-    `name` varchar(64) DEFAULT NULL COMMENT '昵称',
+    `name` varchar(128) DEFAULT NULL COMMENT '昵称',
     `age` tinyint(3) unsigned DEFAULT NULL COMMENT '年龄',
     `account` decimal(8,2) DEFAULT NULL COMMENT '账户余额',
     `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `t_boot_demo` (
 
 CREATE TABLE IF NOT EXISTS `t_person` (
     `pk_person_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-    `name` varchar(64) DEFAULT NULL,
+    `name` varchar(128) DEFAULT NULL,
     `age` tinyint(3) unsigned DEFAULT NULL,
     `birthday` date DEFAULT NULL,
     `account` decimal(16,2) NOT NULL DEFAULT '0.00',
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `t_person` (
 
 CREATE TABLE IF NOT EXISTS `t_user` (
     `pk_user_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-    `user_name` varchar(64) DEFAULT NULL,
+    `user_name` varchar(128) DEFAULT NULL,
     `password` varchar(1024) NOT NULL,
     `birthday` date DEFAULT NULL,
     `phone` char(11) DEFAULT NULL,

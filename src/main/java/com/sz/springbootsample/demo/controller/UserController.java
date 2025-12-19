@@ -40,7 +40,7 @@ public class UserController {
         return ResponseResultDTO.ok(userService.saveUser(userVo));
     }
 
-    @PostMapping("/{userId}")
+    @GetMapping("/{userId}")
     @ApiOperation("获取")
     public ResponseResultDTO get(@PathVariable("userId") Long userId) {
         return ResponseResultDTO.ok(userService.getUser(userId));
@@ -55,7 +55,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    @ApiOperation("获取")
+    @ApiOperation("删除")
     public ResponseResultDTO delete(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
         return ResponseResultDTO.ok();

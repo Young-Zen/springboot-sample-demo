@@ -8,9 +8,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.groups.Default;
 
-import org.hibernate.validator.constraints.Length;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import com.sz.springbootsample.demo.annotation.validator.HtmlEncodingLength;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -37,7 +37,7 @@ public class DemoVO {
     @NotNull(
             groups = {Add.class, Update.class},
             message = "用户名不能为空")
-    @Length(
+    @HtmlEncodingLength(
             groups = {Add.class, Update.class},
             min = 5,
             max = 64,
