@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -56,8 +57,14 @@ public class XssConfig {
             }
 
             // 如果不是文件上传请求，进行XSS过滤
+            XssHttpServletResponseWrapper responseWrapper =
+                    new XssHttpServletResponseWrapper((HttpServletResponse) response, objectMapper);
             chain.doFilter(
-                    new XssHttpServletRequestWrapper(httpServletRequest, objectMapper), response);
+                    new XssHttpServletRequestWrapper(httpServletRequest, objectMapper),
+                    responseWrapper);
+            byte[] responseData = responseWrapper.getResponseData();
+            response.getOutputStream().write(responseData);
+            response.getOutputStream().flush();
         }
     }
 }

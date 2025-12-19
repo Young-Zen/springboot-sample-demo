@@ -35,14 +35,8 @@ public class UserVO {
     private Long userId;
 
     @ApiModelProperty(value = "用户名")
-    @NotNull(
-            groups = {DemoVO.Add.class, DemoVO.Update.class},
-            message = "用户名不能为空")
-    @HtmlEncodingLength(
-            groups = {DemoVO.Add.class, DemoVO.Update.class},
-            min = 5,
-            max = 64,
-            message = "用户名个数必须为5-64位")
+    @NotNull(message = "用户名不能为空")
+    @HtmlEncodingLength(min = 5, max = 64, message = "用户名个数必须为5-64位")
     private String userName;
 
     @ApiModelProperty(value = "密码")
