@@ -75,12 +75,20 @@ spec:
             requests:
               cpu: 50m
               memory: 512Mi
-          readinessProbe:
+          startupProbe:
             httpGet:
               port: http
               path: /api/demo/actuator/health/readiness
             initialDelaySeconds: 30
-            periodSeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 12
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              port: http
+              path: /api/demo/actuator/health/readiness
+            periodSeconds: 5
             timeoutSeconds: 2
             failureThreshold: 3
             successThreshold: 1
@@ -88,8 +96,7 @@ spec:
             httpGet:
               port: http
               path: /api/demo/actuator/health/liveness
-            initialDelaySeconds: 30
-            periodSeconds: 10
+            periodSeconds: 5
             timeoutSeconds: 2
             failureThreshold: 3
             successThreshold: 1
